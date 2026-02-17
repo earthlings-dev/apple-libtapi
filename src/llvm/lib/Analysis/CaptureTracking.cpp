@@ -189,7 +189,7 @@ namespace {
 /// storing the value (or part of it) into memory anywhere automatically
 /// counts as capturing it or not.
 bool llvm::PointerMayBeCaptured(const Value *V,
-                                bool ReturnCaptures, bool StoreCaptures,
+                                bool ReturnCaptures, [[maybe_unused]] bool StoreCaptures,
                                 unsigned MaxUsesToExplore) {
   assert(!isa<GlobalValue>(V) &&
          "It doesn't make sense to ask whether a global is captured.");
@@ -198,7 +198,6 @@ bool llvm::PointerMayBeCaptured(const Value *V,
   // to determine whether this store is not actually an escape point.
   // In that case, BasicAliasAnalysis should be updated as well to
   // take advantage of this.
-  (void)StoreCaptures;
 
   SimpleCaptureTracker SCT(ReturnCaptures);
   PointerMayBeCaptured(V, &SCT, MaxUsesToExplore);

@@ -59,9 +59,9 @@ TYPED_TEST(ValueMapTest, FollowsValue) {
 
 TYPED_TEST(ValueMapTest, OperationsWork) {
   ValueMap<TypeParam*, int> VM;
-  ValueMap<TypeParam*, int> VM2(16);  (void)VM2;
+  [[maybe_unused]] ValueMap<TypeParam*, int> VM2(16);
   typename ValueMapConfig<TypeParam*>::ExtraData Data;
-  ValueMap<TypeParam*, int> VM3(Data, 16);  (void)VM3;
+  [[maybe_unused]] ValueMap<TypeParam*, int> VM3(Data, 16);
   EXPECT_TRUE(VM.empty());
 
   VM[this->BitcastV.get()] = 7;
@@ -127,7 +127,7 @@ TYPED_TEST(ValueMapTest, Iteration) {
   for (typename ValueMap<TypeParam*, int>::iterator I = VM.begin(), E = VM.end();
        I != E; ++I) {
     ++size;
-    std::pair<TypeParam*, int> value = *I; (void)value;
+    [[maybe_unused]] std::pair<TypeParam*, int> value = *I;
     CompileAssertHasType<TypeParam*>(I->first);
     if (I->second == 2) {
       EXPECT_EQ(this->BitcastV.get(), I->first);
@@ -149,7 +149,7 @@ TYPED_TEST(ValueMapTest, Iteration) {
   for (typename ValueMap<TypeParam*, int>::const_iterator I = CVM.begin(),
          E = CVM.end(); I != E; ++I) {
     ++size;
-    std::pair<TypeParam*, int> value = *I;  (void)value;
+    [[maybe_unused]] std::pair<TypeParam*, int> value = *I;
     CompileAssertHasType<TypeParam*>(I->first);
     if (I->second == 5) {
       EXPECT_EQ(this->BitcastV.get(), I->first);

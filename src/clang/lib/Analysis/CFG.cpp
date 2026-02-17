@@ -1341,9 +1341,8 @@ void CFGBuilder::consumeConstructionContext(
     const ConstructionContextLayer *Layer, Expr *E) {
   assert((isa<CXXConstructExpr>(E) || isa<CallExpr>(E) ||
           isa<ObjCMessageExpr>(E)) && "Expression cannot construct an object!");
-  if (const ConstructionContextLayer *PreviouslyStoredLayer =
+  if ([[maybe_unused]] const ConstructionContextLayer *PreviouslyStoredLayer =
           ConstructionContextMap.lookup(E)) {
-    (void)PreviouslyStoredLayer;
     // We might have visited this child when we were finding construction
     // contexts within its parents.
     assert(PreviouslyStoredLayer->isStrictlyMoreSpecificThan(Layer) &&
@@ -4428,12 +4427,11 @@ CFGBlock *CFGBuilder::VisitCXXForRangeStmt(CXXForRangeStmt *S) {
   // Now add the actual condition to the condition block.
   if (Expr *C = S->getCond()) {
     Block = ConditionBlock;
-    CFGBlock *BeginConditionBlock = addStmt(C);
+    [[maybe_unused]] CFGBlock *BeginConditionBlock = addStmt(C);
     if (badCFG)
       return nullptr;
     assert(BeginConditionBlock == ConditionBlock &&
            "condition block in for-range was unexpectedly complex");
-    (void)BeginConditionBlock;
   }
 
   // The condition block is the implicit successor for the loop body as well as

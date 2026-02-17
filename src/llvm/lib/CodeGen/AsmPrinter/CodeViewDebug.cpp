@@ -229,9 +229,8 @@ unsigned CodeViewDebug::maybeRecordFile(const DIFile *F) {
         break;
       }
     }
-    bool Success = OS.EmitCVFileDirective(NextId, FullPath, ChecksumAsBytes,
+    [[maybe_unused]] bool Success = OS.EmitCVFileDirective(NextId, FullPath, ChecksumAsBytes,
                                           static_cast<unsigned>(CSKind));
-    (void)Success;
     assert(Success && ".cv_file directive failed");
   }
   return Insertion.first->second;
@@ -450,8 +449,7 @@ TypeIndex CodeViewDebug::getMemberFunctionType(const DISubprogram *SP,
 TypeIndex CodeViewDebug::recordTypeIndexForDINode(const DINode *Node,
                                                   TypeIndex TI,
                                                   const DIType *ClassTy) {
-  auto InsertResult = TypeIndices.insert({{Node, ClassTy}, TI});
-  (void)InsertResult;
+  [[maybe_unused]] auto InsertResult = TypeIndices.insert({{Node, ClassTy}, TI});
   assert(InsertResult.second && "DINode was already assigned a type index");
   return TI;
 }

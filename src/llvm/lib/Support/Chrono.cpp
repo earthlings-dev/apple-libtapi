@@ -27,14 +27,12 @@ static inline struct tm getStructTM(TimePoint<> TP) {
   std::time_t OurTime = toTimeT(TP);
 
 #if defined(LLVM_ON_UNIX)
-  struct tm *LT = ::localtime_r(&OurTime, &Storage);
+  [[maybe_unused]] struct tm *LT = ::localtime_r(&OurTime, &Storage);
   assert(LT);
-  (void)LT;
 #endif
 #if defined(_WIN32)
-  int Error = ::localtime_s(&Storage, &OurTime);
+  [[maybe_unused]] int Error = ::localtime_s(&Storage, &OurTime);
   assert(!Error);
-  (void)Error;
 #endif
 
   return Storage;

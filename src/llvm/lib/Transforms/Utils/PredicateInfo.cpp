@@ -166,7 +166,8 @@ struct ValueDFS_Compare {
 
   // For two phi related values, return the ordering.
   bool comparePHIRelated(const ValueDFS &A, const ValueDFS &B) const {
-    BasicBlock *ASrc, *ADest, *BSrc, *BDest;
+    [[maybe_unused]] BasicBlock *ASrc, *ADest;
+    [[maybe_unused]] BasicBlock *BSrc, *BDest;
     std::tie(ASrc, ADest) = getBlockEdge(A);
     std::tie(BSrc, BDest) = getBlockEdge(B);
 
@@ -180,8 +181,6 @@ struct ValueDFS_Compare {
            "DFS numbers for B should match the ones of the source block");
     assert(A.DFSIn == B.DFSIn && "Values must be in the same block");
 #endif
-    (void)ASrc;
-    (void)BSrc;
 
     // Use DFS numbers to compare destination blocks, to guarantee a
     // deterministic order.

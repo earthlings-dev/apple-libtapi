@@ -2121,8 +2121,8 @@ ConstantLValueEmitter::emitPointerAuthSignConstant(const CallExpr *E) {
 
 llvm::Constant *ConstantLValueEmitter::emitPointerAuthPointer(const Expr *E) {
   Expr::EvalResult result;
-  bool succeeded = E->EvaluateAsRValue(result, CGM.getContext());
-  assert(succeeded); (void) succeeded;
+  [[maybe_unused]] bool succeeded = E->EvaluateAsRValue(result, CGM.getContext());
+  assert(succeeded);
 
   // The assertions here are all checked by Sema.
   assert(result.Val.isLValue());
@@ -2331,8 +2331,7 @@ llvm::GlobalVariable *CodeGenModule::getAddrOfConstantCompoundLiteralIfEmitted(
 
 void CodeGenModule::setAddrOfConstantCompoundLiteral(
     const CompoundLiteralExpr *CLE, llvm::GlobalVariable *GV) {
-  bool Ok = EmittedCompoundLiterals.insert(std::make_pair(CLE, GV)).second;
-  (void)Ok;
+  [[maybe_unused]] bool Ok = EmittedCompoundLiterals.insert(std::make_pair(CLE, GV)).second;
   assert(Ok && "CLE has already been emitted!");
 }
 

@@ -1023,12 +1023,11 @@ inline Value **unwrap(LLVMValueRef *Vals) {
 }
 
 template<typename T>
-inline T **unwrap(LLVMValueRef *Vals, unsigned Length) {
+inline T **unwrap(LLVMValueRef *Vals, [[maybe_unused]] unsigned Length) {
 #ifndef NDEBUG
   for (LLVMValueRef *I = Vals, *E = Vals + Length; I != E; ++I)
     unwrap<T>(*I); // For side effect of calling assert on invalid usage.
 #endif
-  (void)Length;
   return reinterpret_cast<T**>(Vals);
 }
 

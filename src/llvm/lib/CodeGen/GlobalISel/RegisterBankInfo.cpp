@@ -603,8 +603,7 @@ bool RegisterBankInfo::InstructionMapping::verify(
   assert(MI.getParent() && MI.getMF() &&
          "MI must be connected to a MachineFunction");
   const MachineFunction &MF = *MI.getMF();
-  const RegisterBankInfo *RBI = MF.getSubtarget().getRegBankInfo();
-  (void)RBI;
+  [[maybe_unused]] const RegisterBankInfo *RBI = MF.getSubtarget().getRegBankInfo();
 
   for (unsigned Idx = 0; Idx < NumOperands; ++Idx) {
     const MachineOperand &MO = MI.getOperand(Idx);
@@ -618,8 +617,7 @@ bool RegisterBankInfo::InstructionMapping::verify(
       continue;
     assert(getOperandMapping(Idx).isValid() &&
            "We must have a mapping for reg operands");
-    const RegisterBankInfo::ValueMapping &MOMapping = getOperandMapping(Idx);
-    (void)MOMapping;
+    [[maybe_unused]] const RegisterBankInfo::ValueMapping &MOMapping = getOperandMapping(Idx);
     // Register size in bits.
     // This size must match what the mapping expects.
     assert(MOMapping.verify(RBI->getSizeInBits(
@@ -731,8 +729,7 @@ void RegisterBankInfo::OperandsMapper::setVRegs(unsigned OpIdx,
 
 iterator_range<SmallVectorImpl<Register>::const_iterator>
 RegisterBankInfo::OperandsMapper::getVRegs(unsigned OpIdx,
-                                           bool ForDebug) const {
-  (void)ForDebug;
+                                           [[maybe_unused]] bool ForDebug) const {
   assert(OpIdx < getInstrMapping().getNumOperands() && "Out-of-bound access");
   int StartIdx = OpToNewVRegIdx[OpIdx];
 

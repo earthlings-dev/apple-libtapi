@@ -70,9 +70,8 @@ CodeGenHwModes::CodeGenHwModes(RecordKeeper &RK) : Records(RK) {
 
   std::vector<Record*> MSs = Records.getAllDerivedDefinitions("HwModeSelect");
   for (Record *R : MSs) {
-    auto P = ModeSelects.emplace(std::make_pair(R, HwModeSelect(R, *this)));
+    [[maybe_unused]] auto P = ModeSelects.emplace(std::make_pair(R, HwModeSelect(R, *this)));
     assert(P.second);
-    (void)P;
   }
 }
 

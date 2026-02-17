@@ -308,7 +308,7 @@ bool BlockFrequencyInfoImplBase::addToDist(Distribution &Dist,
   BlockNode Resolved = Working[Succ.Index].getResolvedNode();
 
 #ifndef NDEBUG
-  auto debugSuccessor = [&](const char *Type) {
+  [[maybe_unused]] auto debugSuccessor = [&](const char *Type) {
     dbgs() << "  =>"
            << " [" << Type << "] weight = " << Weight;
     if (!isLoopHeader(Resolved))
@@ -317,7 +317,6 @@ bool BlockFrequencyInfoImplBase::addToDist(Distribution &Dist,
       dbgs() << ", resolved = " << getBlockName(Resolved);
     dbgs() << "\n";
   };
-  (void)debugSuccessor;
 #endif
 
   if (isLoopHeader(Resolved)) {

@@ -157,8 +157,7 @@ static ARM::PredBlockMask
 CreateVPTBlock(MachineBasicBlock::instr_iterator &Iter,
                MachineBasicBlock::instr_iterator EndIter,
                SmallVectorImpl<MachineInstr *> &DeadInstructions) {
-  MachineBasicBlock::instr_iterator BlockBeg = Iter;
-  (void)BlockBeg;
+  [[maybe_unused]] MachineBasicBlock::instr_iterator BlockBeg = Iter;
   assert(getVPTInstrPredicate(*Iter) == ARMVCC::Then &&
          "Expected a Predicated Instruction");
 

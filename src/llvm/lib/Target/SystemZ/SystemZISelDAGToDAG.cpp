@@ -1646,7 +1646,7 @@ void SystemZDAGToDAGISel::Select(SDNode *Node) {
     if (Imm.isZero() || Imm.isNegZero())
       break;
     SystemZVectorConstantInfo VCI(Imm);
-    bool Success = VCI.isVectorConstantLegal(*Subtarget); (void)Success;
+    [[maybe_unused]] bool Success = VCI.isVectorConstantLegal(*Subtarget);
     assert(Success && "Expected legal FP immediate");
     loadVectorConstant(VCI, Node);
     return;

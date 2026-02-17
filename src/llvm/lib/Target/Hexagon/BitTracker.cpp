@@ -694,8 +694,7 @@ BT::RegisterCell BT::MachineEvaluator::eXTR(const RegisterCell &A1,
 
 BT::RegisterCell BT::MachineEvaluator::eINS(const RegisterCell &A1,
       const RegisterCell &A2, uint16_t AtN) const {
-  uint16_t W1 = A1.width(), W2 = A2.width();
-  (void)W1;
+  [[maybe_unused]] uint16_t W1 = A1.width(), W2 = A2.width();
   assert(AtN < W1 && AtN+W2 <= W1);
   // Copy bits from A1, insert A2 at position AtN.
   RegisterCell Res = RegisterCell::ref(A1);
@@ -1003,8 +1002,7 @@ void BT::subst(RegisterRef OldRR, RegisterRef NewRR) {
   BitMask OM = ME.mask(OldRR.Reg, OldRR.Sub);
   BitMask NM = ME.mask(NewRR.Reg, NewRR.Sub);
   uint16_t OMB = OM.first(), OME = OM.last();
-  uint16_t NMB = NM.first(), NME = NM.last();
-  (void)NME;
+  [[maybe_unused]] uint16_t NMB = NM.first(), NME = NM.last();
   assert((OME-OMB == NME-NMB) &&
          "Substituting registers of different lengths");
   for (std::pair<const unsigned, RegisterCell> &P : Map) {

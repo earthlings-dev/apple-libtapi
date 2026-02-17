@@ -1722,14 +1722,13 @@ Value *ReassociatePass::OptimizeAdd(Instruction *I,
     // No need for extra uses anymore.
     DummyInst->deleteValue();
 
-    unsigned NumAddedValues = NewMulOps.size();
+    [[maybe_unused]] unsigned NumAddedValues = NewMulOps.size();
     Value *V = EmitAddTreeOfValues(I, NewMulOps);
 
     // Now that we have inserted the add tree, optimize it. This allows us to
     // handle cases that require multiple factoring steps, such as this:
     // A*A*B + A*A*C   -->   A*(A*B+A*C)   -->   A*(A*(B+C))
     assert(NumAddedValues > 1 && "Each occurrence should contribute a value");
-    (void)NumAddedValues;
     if (Instruction *VI = dyn_cast<Instruction>(V))
       RedoInsts.insert(VI);
 

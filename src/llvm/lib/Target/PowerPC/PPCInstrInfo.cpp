@@ -2172,11 +2172,10 @@ bool PPCInstrInfo::optimizeCompareInstr(MachineInstr &CmpInstr, Register SrcReg,
       MachineInstr *UseMI = &*I;
       if (UseMI->getOpcode() == PPC::BCC) {
         PPC::Predicate Pred = (PPC::Predicate) UseMI->getOperand(0).getImm();
-        unsigned PredCond = PPC::getPredicateCondition(Pred);
+        [[maybe_unused]] unsigned PredCond = PPC::getPredicateCondition(Pred);
         assert((!equalityOnly ||
                 PredCond == PPC::PRED_EQ || PredCond == PPC::PRED_NE) &&
                "Invalid predicate for equality-only optimization");
-        (void)PredCond; // To suppress warning in release build.
         PredsToUpdate.push_back(std::make_pair(&(UseMI->getOperand(0)),
                                 PPC::getSwappedPredicate(Pred)));
       } else if (UseMI->getOpcode() == PPC::ISEL ||

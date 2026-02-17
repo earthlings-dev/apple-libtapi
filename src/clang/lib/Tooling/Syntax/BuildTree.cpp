@@ -322,8 +322,7 @@ public:
     assert(To != nullptr);
     assert(!From.isNull());
 
-    bool Added = Nodes.insert({From, To}).second;
-    (void)Added;
+    [[maybe_unused]] bool Added = Nodes.insert({From, To}).second;
     assert(Added && "mapping added twice");
   }
 
@@ -331,8 +330,7 @@ public:
     assert(To != nullptr);
     assert(From.hasQualifier());
 
-    bool Added = NNSNodes.insert({From, To}).second;
-    (void)Added;
+    [[maybe_unused]] bool Added = NNSNodes.insert({From, To}).second;
     assert(Added && "mapping added twice");
   }
 

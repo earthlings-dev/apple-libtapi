@@ -342,7 +342,7 @@ public:
   FnInfoMap &getFnInfos() { return FnInfos; }
 
 private:
-  static const char *WSMP;
+  [[maybe_unused]] static const char *WSMP;
 
   AsmPrinter &AP;
   CallsiteInfoList CSInfos;

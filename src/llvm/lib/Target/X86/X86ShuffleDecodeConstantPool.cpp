@@ -189,8 +189,7 @@ void DecodeVPERMILPMask(const Constant *C, unsigned ElSize, unsigned Width,
 void DecodeVPERMIL2PMask(const Constant *C, unsigned M2Z, unsigned ElSize,
                          unsigned Width, SmallVectorImpl<int> &ShuffleMask) {
   Type *MaskTy = C->getType();
-  unsigned MaskTySize = MaskTy->getPrimitiveSizeInBits();
-  (void)MaskTySize;
+  [[maybe_unused]] unsigned MaskTySize = MaskTy->getPrimitiveSizeInBits();
   assert((MaskTySize == 128 || MaskTySize == 256) && Width >= MaskTySize &&
          "Unexpected vector size.");
 
@@ -244,8 +243,7 @@ void DecodeVPERMIL2PMask(const Constant *C, unsigned M2Z, unsigned ElSize,
 void DecodeVPPERMMask(const Constant *C, unsigned Width,
                       SmallVectorImpl<int> &ShuffleMask) {
   Type *MaskTy = C->getType();
-  unsigned MaskTySize = MaskTy->getPrimitiveSizeInBits();
-  (void)MaskTySize;
+  [[maybe_unused]] unsigned MaskTySize = MaskTy->getPrimitiveSizeInBits();
   assert(Width == 128 && Width >= MaskTySize && "Unexpected vector size.");
 
   // The shuffle mask requires a byte vector.

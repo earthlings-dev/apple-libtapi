@@ -969,10 +969,10 @@ IdentifierInfo *ASTIdentifierLookupTrait::ReadData(const internal_key_type& k,
 
   unsigned ObjCOrBuiltinID = endian::readNext<uint16_t, little, unaligned>(d);
   unsigned Bits = endian::readNext<uint16_t, little, unaligned>(d);
-  bool CPlusPlusOperatorKeyword = readBit(Bits);
+  [[maybe_unused]] bool CPlusPlusOperatorKeyword = readBit(Bits);
   bool HasRevertedTokenIDToIdentifier = readBit(Bits);
   bool Poisoned = readBit(Bits);
-  bool ExtensionToken = readBit(Bits);
+  [[maybe_unused]] bool ExtensionToken = readBit(Bits);
   bool HadMacroDefinition = readBit(Bits);
 
   assert(Bits == 0 && "Extra bits in the identifier?");
@@ -986,12 +986,10 @@ IdentifierInfo *ASTIdentifierLookupTrait::ReadData(const internal_key_type& k,
     II->setObjCOrBuiltinID(ObjCOrBuiltinID);
   assert(II->isExtensionToken() == ExtensionToken &&
          "Incorrect extension token flag");
-  (void)ExtensionToken;
   if (Poisoned)
     II->setIsPoisoned(true);
   assert(II->isCPlusPlusOperatorKeyword() == CPlusPlusOperatorKeyword &&
          "Incorrect C++ operator keyword flag");
-  (void)CPlusPlusOperatorKeyword;
 
   // If this identifier is a macro, deserialize the macro
   // definition.
@@ -11233,7 +11231,7 @@ void ASTReader::diagnoseOdrViolations() {
     FunctionDecl *FirstFunction = Merge.first;
     std::string FirstModule = getOwningModuleNameForDiagnostic(FirstFunction);
 
-    bool Diagnosed = false;
+    [[maybe_unused]] bool Diagnosed = false;
     for (auto &SecondFunction : Merge.second) {
 
       if (FirstFunction == SecondFunction)
@@ -11370,7 +11368,6 @@ void ASTReader::diagnoseOdrViolations() {
       Diagnosed = true;
       break;
     }
-    (void)Diagnosed;
     assert(Diagnosed && "Unable to emit ODR diagnostic.");
   }
 
@@ -11411,7 +11408,7 @@ void ASTReader::diagnoseOdrViolations() {
     };
     DeclHashes FirstHashes;
     PopulateHashes(FirstHashes, FirstEnum);
-    bool Diagnosed = false;
+    [[maybe_unused]] bool Diagnosed = false;
     for (auto &SecondEnum : Merge.second) {
 
       if (FirstEnum == SecondEnum)
@@ -11558,7 +11555,6 @@ void ASTReader::diagnoseOdrViolations() {
       }
     }
 
-    (void)Diagnosed;
     assert(Diagnosed && "Unable to emit ODR diagnostic.");
   }
 }

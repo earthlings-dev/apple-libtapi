@@ -231,8 +231,7 @@ static void appendCodePoint(unsigned Codepoint,
                             llvm::SmallVectorImpl<char> &Str) {
   char ResultBuf[4];
   char *ResultPtr = ResultBuf;
-  bool Res = llvm::ConvertCodePointToUTF8(Codepoint, ResultPtr);
-  (void)Res;
+  [[maybe_unused]] bool Res = llvm::ConvertCodePointToUTF8(Codepoint, ResultPtr);
   assert(Res && "Unexpected conversion failure");
   Str.append(ResultBuf, ResultPtr);
 }
@@ -386,7 +385,7 @@ static void EncodeUCNEscape(const char *ThisTokBegin, const char *&ThisTokBuf,
                             const LangOptions &Features) {
   typedef uint32_t UTF32;
   UTF32 UcnVal = 0;
-  unsigned short UcnLen = 0;
+  [[maybe_unused]] unsigned short UcnLen = 0;
   if (!ProcessUCNEscape(ThisTokBegin, ThisTokBuf, ThisTokEnd, UcnVal, UcnLen,
                         Loc, Diags, Features, true)) {
     HadError = true;
@@ -396,7 +395,6 @@ static void EncodeUCNEscape(const char *ThisTokBegin, const char *&ThisTokBuf,
   assert((CharByteWidth == 1 || CharByteWidth == 2 || CharByteWidth == 4) &&
          "only character widths of 1, 2, or 4 bytes supported");
 
-  (void)UcnLen;
   assert((UcnLen== 4 || UcnLen== 8) && "only ucn length of 4 or 8 supported");
 
   if (CharByteWidth == 4) {

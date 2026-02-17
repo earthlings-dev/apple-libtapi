@@ -1057,8 +1057,7 @@ void CodeGenFunction::EmitNewArrayInitializer(
       // Zero out the rest, if any remain.
       llvm::ConstantInt *ConstNum = dyn_cast<llvm::ConstantInt>(NumElements);
       if (!ConstNum || !ConstNum->equalsInt(InitListElements)) {
-        bool OK = TryMemsetInitialization();
-        (void)OK;
+        [[maybe_unused]] bool OK = TryMemsetInitialization();
         assert(OK && "couldn't memset character type?");
       }
       return;

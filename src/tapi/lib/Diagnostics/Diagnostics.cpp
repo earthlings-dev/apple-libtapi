@@ -63,7 +63,7 @@ static constexpr DiagInfoRec diagInfo[] = {
 #undef DIAG
 };
 
-static constexpr unsigned diagInfoSize = llvm::array_lengthof(diagInfo);
+[[maybe_unused]] static constexpr unsigned diagInfoSize = llvm::array_lengthof(diagInfo);
 
 static clang::DiagnosticOptions *createDiagnosticsEngineOpts() {
   static bool hasColors = llvm::sys::Process::StandardErrHasColors();
@@ -137,7 +137,6 @@ clang::DiagnosticBuilder DiagnosticsEngine::report(clang::SourceLocation loc,
   // lookup the diagnostic descripton from the Tapi DiagInfo.
   auto index = diagID - clang::diag::DIAG_UPPER_LIMIT - 1;
   assert(index < diagInfoSize && "invalid Tapi DiagInfo index");
-  (void)diagInfoSize;
   auto &record = diagInfo[index];
   auto diagIDs = diag->getDiagnosticIDs();
   auto level = getDiagnosticLevel(diagID);

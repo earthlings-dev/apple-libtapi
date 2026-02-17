@@ -285,8 +285,7 @@ MSP430FrameLowering::processFunctionBeforeFrameFinalized(MachineFunction &MF,
                                                          RegScavenger *) const {
   // Create a frame entry for the FP register that must be saved.
   if (hasFP(MF)) {
-    int FrameIdx = MF.getFrameInfo().CreateFixedObject(2, -4, true);
-    (void)FrameIdx;
+    [[maybe_unused]] int FrameIdx = MF.getFrameInfo().CreateFixedObject(2, -4, true);
     assert(FrameIdx == MF.getFrameInfo().getObjectIndexBegin() &&
            "Slot for FP register must be last in order to be found!");
   }

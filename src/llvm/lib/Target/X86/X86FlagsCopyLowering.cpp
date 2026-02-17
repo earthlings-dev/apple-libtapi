@@ -757,9 +757,8 @@ Register X86FlagsCopyLoweringPass::promoteCondToReg(
     MachineBasicBlock &TestMBB, MachineBasicBlock::iterator TestPos,
     DebugLoc TestLoc, X86::CondCode Cond) {
   Register Reg = MRI->createVirtualRegister(PromoteRC);
-  auto SetI = BuildMI(TestMBB, TestPos, TestLoc,
+  [[maybe_unused]] auto SetI = BuildMI(TestMBB, TestPos, TestLoc,
                       TII->get(X86::SETCCr), Reg).addImm(Cond);
-  (void)SetI;
   LLVM_DEBUG(dbgs() << "    save cond: "; SetI->dump());
   ++NumSetCCsInserted;
   return Reg;
@@ -782,9 +781,8 @@ std::pair<unsigned, bool> X86FlagsCopyLoweringPass::getCondOrInverseInReg(
 void X86FlagsCopyLoweringPass::insertTest(MachineBasicBlock &MBB,
                                           MachineBasicBlock::iterator Pos,
                                           DebugLoc Loc, unsigned Reg) {
-  auto TestI =
+  [[maybe_unused]] auto TestI =
       BuildMI(MBB, Pos, Loc, TII->get(X86::TEST8rr)).addReg(Reg).addReg(Reg);
-  (void)TestI;
   LLVM_DEBUG(dbgs() << "    test cond: "; TestI->dump());
   ++NumTestsInserted;
 }
@@ -832,12 +830,11 @@ void X86FlagsCopyLoweringPass::rewriteArithmetic(
 
   // Insert an instruction that will set the flag back to the desired value.
   Register TmpReg = MRI->createVirtualRegister(PromoteRC);
-  auto AddI =
+  [[maybe_unused]] auto AddI =
       BuildMI(MBB, MI.getIterator(), MI.getDebugLoc(), TII->get(X86::ADD8ri))
           .addDef(TmpReg, RegState::Dead)
           .addReg(CondReg)
           .addImm(Addend);
-  (void)AddI;
   LLVM_DEBUG(dbgs() << "    add cond: "; AddI->dump());
   ++NumAddsInserted;
   FlagUse.setIsKill(true);

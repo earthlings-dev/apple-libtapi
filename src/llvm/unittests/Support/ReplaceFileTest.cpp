@@ -60,8 +60,7 @@ bool FDHasContent(int FD, StringRef Content) {
 
 bool FileHasContent(StringRef File, StringRef Content) {
   int FD = 0;
-  auto EC = fs::openFileForRead(File, FD);
-  (void)EC;
+  [[maybe_unused]] auto EC = fs::openFileForRead(File, FD);
   assert(!EC);
   ScopedFD EventuallyCloseIt(FD);
   return FDHasContent(FD, Content);

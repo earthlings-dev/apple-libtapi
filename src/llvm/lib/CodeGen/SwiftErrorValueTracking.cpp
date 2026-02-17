@@ -92,13 +92,12 @@ void SwiftErrorValueTracking::setFunction(MachineFunction &mf) {
   SwiftErrorArg = nullptr;
 
   // Check if function has a swifterror argument.
-  bool HaveSeenSwiftErrorArg = false;
+  [[maybe_unused]] bool HaveSeenSwiftErrorArg = false;
   for (Function::const_arg_iterator AI = Fn->arg_begin(), AE = Fn->arg_end();
        AI != AE; ++AI)
     if (AI->hasSwiftErrorAttr()) {
       assert(!HaveSeenSwiftErrorArg &&
              "Must have only one swifterror parameter");
-      (void)HaveSeenSwiftErrorArg; // silence warning.
       HaveSeenSwiftErrorArg = true;
       SwiftErrorArg = &*AI;
       SwiftErrorVals.push_back(&*AI);

@@ -491,7 +491,7 @@ void testBinarySetOperationExhaustive(Fn1 OpFn, Fn2 InResultFn) {
         APInt Lower3(Bits, 0), Upper3(Bits, 0);
         bool HaveRange1 = false, HaveInterrupt1 = false;
         bool HaveRange2 = false, HaveInterrupt2 = false;
-        bool HaveRange3 = false, HaveInterrupt3 = false;
+        bool HaveRange3 = false; [[maybe_unused]] bool HaveInterrupt3 = false;
 
         APInt Num(Bits, 0);
         for (unsigned I = 0, Limit = 1 << Bits; I < Limit; ++I, ++Num) {
@@ -523,7 +523,6 @@ void testBinarySetOperationExhaustive(Fn1 OpFn, Fn2 InResultFn) {
           }
         }
 
-        (void)HaveInterrupt3;
         assert(!HaveInterrupt3 && "Should have at most three ranges");
 
         ConstantRange SmallestCR = OpFn(CR1, CR2, ConstantRange::Smallest);

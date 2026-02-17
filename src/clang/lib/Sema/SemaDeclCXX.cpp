@@ -2743,10 +2743,9 @@ bool Sema::AttachBaseSpecifiers(CXXRecordDecl *Class,
     if (IndirectBaseTypes.count(CanonicalBase)) {
       CXXBasePaths Paths(/*FindAmbiguities=*/true, /*RecordPaths=*/true,
                          /*DetectVirtual=*/true);
-      bool found
+      [[maybe_unused]] bool found
         = Class->isDerivedFrom(CanonicalBase->getAsCXXRecordDecl(), Paths);
       assert(found);
-      (void)found;
 
       if (Paths.isAmbiguous(CanonicalBase))
         Diag(Bases[idx]->getBeginLoc(), diag::warn_inaccessible_base_class)
@@ -2927,9 +2926,8 @@ Sema::CheckDerivedToBaseConversion(QualType Derived, QualType Base,
     // performance isn't as much of an issue.
     Paths.clear();
     Paths.setRecordingPaths(true);
-    bool StillOkay = IsDerivedFrom(Loc, Derived, Base, Paths);
+    [[maybe_unused]] bool StillOkay = IsDerivedFrom(Loc, Derived, Base, Paths);
     assert(StillOkay && "Can only be used with a derived-to-base conversion");
-    (void)StillOkay;
 
     // Build up a textual representation of the ambiguous paths, e.g.,
     // D -> B -> A, that will be used to illustrate the ambiguous
@@ -3310,9 +3308,8 @@ Sema::ActOnCXXMemberDeclarator(Scope *S, AccessSpecifier AS, Declarator &D,
         D.getMutableDeclSpec().ClearConstexprSpec();
         const char *PrevSpec;
         unsigned DiagID;
-        bool Failed = D.getMutableDeclSpec().SetTypeQual(
+        [[maybe_unused]] bool Failed = D.getMutableDeclSpec().SetTypeQual(
             DeclSpec::TQ_const, ConstexprLoc, PrevSpec, DiagID, getLangOpts());
-        (void)Failed;
         assert(!Failed && "Making a constexpr member const shouldn't fail");
       }
     } else {
@@ -17293,12 +17290,11 @@ bool Sema::DefineUsedVTables() {
     if (KeyFunction && !KeyFunction->hasBody()) {
       // The key function is in another translation unit.
       DefineVTable = false;
-      TemplateSpecializationKind TSK =
+      [[maybe_unused]] TemplateSpecializationKind TSK =
           KeyFunction->getTemplateSpecializationKind();
       assert(TSK != TSK_ExplicitInstantiationDefinition &&
              TSK != TSK_ImplicitInstantiation &&
              "Instantiations don't have key functions");
-      (void)TSK;
     } else if (!KeyFunction) {
       // If we have a class with no key function that is the subject
       // of an explicit instantiation declaration, suppress the

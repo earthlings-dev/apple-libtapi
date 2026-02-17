@@ -990,7 +990,7 @@ static void DiagnoseReinterpretUpDownCast(Sema &Self, const Expr *SrcExpr,
     return;
 
   bool VirtualBase = true;
-  bool NonZeroOffset = false;
+  [[maybe_unused]] bool NonZeroOffset = false;
   for (CXXBasePaths::const_paths_iterator I = BasePaths.begin(),
                                           E = BasePaths.end();
        I != E; ++I) {
@@ -1027,7 +1027,6 @@ static void DiagnoseReinterpretUpDownCast(Sema &Self, const Expr *SrcExpr,
     VirtualBase = VirtualBase && IsVirtual;
   }
 
-  (void) NonZeroOffset; // Silence set but not used warning.
   assert((VirtualBase || NonZeroOffset) &&
          "Should have returned if has non-virtual base with zero offset");
 
@@ -1662,10 +1661,9 @@ TryStaticMemberPointerUpcast(Sema &Self, ExprResult &SrcExpr, QualType SrcType,
   if (Paths.isAmbiguous(Self.Context.getCanonicalType(DestClass))) {
     Paths.clear();
     Paths.setRecordingPaths(true);
-    bool StillOkay =
+    [[maybe_unused]] bool StillOkay =
         Self.IsDerivedFrom(OpRange.getBegin(), SrcClass, DestClass, Paths);
     assert(StillOkay);
-    (void)StillOkay;
     std::string PathDisplayStr = Self.getAmbiguousPathsDisplayString(Paths);
     Self.Diag(OpRange.getBegin(), diag::err_ambiguous_memptr_conv)
       << 1 << SrcClass << DestClass << PathDisplayStr << OpRange;

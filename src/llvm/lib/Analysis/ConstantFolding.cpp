@@ -2241,11 +2241,10 @@ static Constant *ConstantFoldScalarCall1(StringRef Name,
       APFloat Val(APFloat::IEEEhalf(), Op->getValue());
 
       bool lost = false;
-      APFloat::opStatus status = Val.convert(
+      [[maybe_unused]] APFloat::opStatus status = Val.convert(
           Ty->getFltSemantics(), APFloat::rmNearestTiesToEven, &lost);
 
       // Conversion is always precise.
-      (void)status;
       assert(status == APFloat::opOK && !lost &&
              "Precision lost during fp16 constfolding");
 

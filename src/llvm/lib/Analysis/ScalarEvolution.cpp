@@ -2218,9 +2218,8 @@ StrengthenNoWrapFlags(ScalarEvolution *SE, SCEVTypes Type,
 
   using OBO = OverflowingBinaryOperator;
 
-  bool CanAnalyze =
+  [[maybe_unused]] bool CanAnalyze =
       Type == scAddExpr || Type == scAddRecExpr || Type == scMulExpr;
-  (void)CanAnalyze;
   assert(CanAnalyze && "don't call from other places!");
 
   int SignOrUnsignMask = SCEV::FlagNUW | SCEV::FlagNSW;
@@ -5874,9 +5873,8 @@ ScalarEvolution::getRangeRef(const SCEV *S,
         }
         ConservativeResult =
             ConservativeResult.intersectWith(RangeFromOps, RangeType);
-        bool Erased = PendingPhiRanges.erase(Phi);
+        [[maybe_unused]] bool Erased = PendingPhiRanges.erase(Phi);
         assert(Erased && "Failed to erase Phi properly?");
-        (void) Erased;
       }
     }
 
@@ -6953,8 +6951,6 @@ ScalarEvolution::getBackedgeTakenInfo(const Loop *L) {
   BackedgeTakenInfo Result = computeBackedgeTakenCount(L);
 
   // In product build, there are no usage of statistic.
-  (void)NumTripCountsComputed;
-  (void)NumTripCountsNotComputed;
 #if LLVM_ENABLE_STATS || !defined(NDEBUG)
   const SCEV *BEExact = Result.getExact(L, this);
   if (BEExact != getCouldNotCompute()) {
@@ -7477,10 +7473,6 @@ Optional<ScalarEvolution::ExitLimit>
 ScalarEvolution::ExitLimitCache::find(const Loop *L, Value *ExitCond,
                                       bool ExitIfTrue, bool ControlsExit,
                                       bool AllowPredicates) {
-  (void)this->L;
-  (void)this->ExitIfTrue;
-  (void)this->AllowPredicates;
-
   assert(this->L == L && this->ExitIfTrue == ExitIfTrue &&
          this->AllowPredicates == AllowPredicates &&
          "Variance in assumed invariant key components!");
@@ -7491,7 +7483,7 @@ ScalarEvolution::ExitLimitCache::find(const Loop *L, Value *ExitCond,
 }
 
 void ScalarEvolution::ExitLimitCache::insert(const Loop *L, Value *ExitCond,
-                                             bool ExitIfTrue,
+                                             [[maybe_unused]] bool ExitIfTrue,
                                              bool ControlsExit,
                                              bool AllowPredicates,
                                              const ExitLimit &EL) {
@@ -7499,10 +7491,8 @@ void ScalarEvolution::ExitLimitCache::insert(const Loop *L, Value *ExitCond,
          this->AllowPredicates == AllowPredicates &&
          "Variance in assumed invariant key components!");
 
-  auto InsertResult = TripCountMap.insert({{ExitCond, ControlsExit}, EL});
+  [[maybe_unused]] auto InsertResult = TripCountMap.insert({{ExitCond, ControlsExit}, EL});
   assert(InsertResult.second && "Expected successful insertion!");
-  (void)InsertResult;
-  (void)ExitIfTrue;
 }
 
 ScalarEvolution::ExitLimit ScalarEvolution::computeExitLimitFromCondCached(
@@ -10510,14 +10500,12 @@ bool ScalarEvolution::isImpliedViaMerge(ICmpInst::Predicate Pred,
 
   auto ClearOnExit = make_scope_exit([&]() {
     if (LPhi) {
-      bool Erased = PendingMerges.erase(LPhi);
+      [[maybe_unused]] bool Erased = PendingMerges.erase(LPhi);
       assert(Erased && "Failed to erase LPhi!");
-      (void)Erased;
     }
     if (RPhi) {
-      bool Erased = PendingMerges.erase(RPhi);
+      [[maybe_unused]] bool Erased = PendingMerges.erase(RPhi);
       assert(Erased && "Failed to erase RPhi!");
-      (void)Erased;
     }
   });
 

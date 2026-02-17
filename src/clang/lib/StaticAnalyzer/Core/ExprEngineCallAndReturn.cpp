@@ -482,13 +482,12 @@ bool ExprEngine::inlineCall(const CallEvent &Call, const Decl *D,
 }
 
 static ProgramStateRef getInlineFailedState(ProgramStateRef State,
-                                            const Stmt *CallE) {
+                                            [[maybe_unused]] const Stmt *CallE) {
   const void *ReplayState = State->get<ReplayWithoutInlining>();
   if (!ReplayState)
     return nullptr;
 
   assert(ReplayState == CallE && "Backtracked to the wrong call.");
-  (void)CallE;
 
   return State->remove<ReplayWithoutInlining>();
 }
@@ -534,8 +533,7 @@ ProgramStateRef ExprEngine::finishArgumentConstruction(ProgramStateRef State,
     unsigned I = Call.getASTArgumentIndex(CallI);
     if (Optional<SVal> V =
             getObjectUnderConstruction(State, {E, I}, LC)) {
-      SVal VV = *V;
-      (void)VV;
+      [[maybe_unused]] SVal VV = *V;
       assert(cast<VarRegion>(VV.castAs<loc::MemRegionVal>().getRegion())
                  ->getStackFrame()->getParent()
                  ->getStackFrame() == LC->getStackFrame());
@@ -754,9 +752,8 @@ ExprEngine::mayInlineCallKind(const CallEvent &Call, const ExplodedNode *Pred,
       return CIP_DisallowedOnce;
 
     // Inlining constructors requires including initializers in the CFG.
-    const AnalysisDeclContext *ADC = CallerSFC->getAnalysisDeclContext();
+    [[maybe_unused]] const AnalysisDeclContext *ADC = CallerSFC->getAnalysisDeclContext();
     assert(ADC->getCFGBuildOptions().AddInitializers && "No CFG initializers");
-    (void)ADC;
 
     // If the destructor is trivial, it's always safe to inline the constructor.
     if (Ctor.getDecl()->getParent()->hasTrivialDestructor())
@@ -798,9 +795,8 @@ ExprEngine::mayInlineCallKind(const CallEvent &Call, const ExplodedNode *Pred,
       return CIP_DisallowedAlways;
 
     // Inlining destructors requires building the CFG correctly.
-    const AnalysisDeclContext *ADC = CallerSFC->getAnalysisDeclContext();
+    [[maybe_unused]] const AnalysisDeclContext *ADC = CallerSFC->getAnalysisDeclContext();
     assert(ADC->getCFGBuildOptions().AddImplicitDtors && "No CFG destructors");
-    (void)ADC;
 
     // FIXME: We don't handle constructors or destructors for arrays properly.
     if (CallOpts.IsArrayCtorOrDtor)

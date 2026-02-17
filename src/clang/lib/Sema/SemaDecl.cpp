@@ -14540,10 +14540,9 @@ Decl *Sema::ActOnFinishFunctionBody(Decl *dcl, Stmt *Body,
     }
     if (FSI->ObjCWarnForNoDesignatedInitChain) {
       const ObjCMethodDecl *InitMethod = nullptr;
-      bool isDesignated =
+      [[maybe_unused]] bool isDesignated =
           MD->isDesignatedInitializerForTheInterface(&InitMethod);
       assert(isDesignated && InitMethod);
-      (void)isDesignated;
 
       auto superIsNSObject = [&](const ObjCMethodDecl *MD) {
         auto IFace = MD->getClassInterface();
@@ -14776,9 +14775,8 @@ NamedDecl *Sema::ImplicitlyDefineFunction(SourceLocation Loc,
   AttributeFactory attrFactory;
   DeclSpec DS(attrFactory);
   unsigned DiagID;
-  bool Error = DS.SetTypeSpecType(DeclSpec::TST_int, Loc, Dummy, DiagID,
+  [[maybe_unused]] bool Error = DS.SetTypeSpecType(DeclSpec::TST_int, Loc, Dummy, DiagID,
                                   Context.getPrintingPolicy());
-  (void)Error; // Silence warning.
   assert(!Error && "Error setting up implicit decl!");
   SourceLocation NoLoc;
   Declarator D(DS, DeclaratorContext::Block);

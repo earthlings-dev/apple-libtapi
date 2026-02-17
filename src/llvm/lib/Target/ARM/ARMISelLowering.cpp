@@ -1823,8 +1823,7 @@ EVT ARMTargetLowering::getSetCCResultType(const DataLayout &DL, LLVMContext &,
 /// getRegClassFor - Return the register class that should be used for the
 /// specified value type.
 const TargetRegisterClass *
-ARMTargetLowering::getRegClassFor(MVT VT, bool isDivergent) const {
-  (void)isDivergent;
+ARMTargetLowering::getRegClassFor(MVT VT, [[maybe_unused]] bool isDivergent) const {
   // Map v4i64 to QQ registers but do not make the type legal. Similarly map
   // v8i64 to QQQQ registers. v4i64 and v8i64 are only used for REG_SEQUENCE to
   // load / store 4 to 8 consecutive NEON D registers, or 2 to 4 consecutive
@@ -13643,9 +13642,8 @@ static SDValue PerformBFICombine(SDNode *N,
     SDValue From1 = ParseBFI(N, ToMask1, FromMask1);
 
     APInt ToMask2, FromMask2;
-    SDValue From2 = ParseBFI(CombineBFI.getNode(), ToMask2, FromMask2);
+    [[maybe_unused]] SDValue From2 = ParseBFI(CombineBFI.getNode(), ToMask2, FromMask2);
     assert(From1 == From2);
-    (void)From2;
 
     // First, unlink CombineBFI.
     DCI.DAG.ReplaceAllUsesWith(CombineBFI, CombineBFI.getOperand(0));
@@ -17628,8 +17626,7 @@ void ARMTargetLowering::computeKnownBitsForTargetNode(const SDValue Op,
 
     EVT VT = Op.getValueType();
     const unsigned DstSz = VT.getScalarSizeInBits();
-    const unsigned SrcSz = VecVT.getVectorElementType().getSizeInBits();
-    (void)SrcSz;
+    [[maybe_unused]] const unsigned SrcSz = VecVT.getVectorElementType().getSizeInBits();
     assert(SrcSz == Known.getBitWidth());
     assert(DstSz > SrcSz);
     if (Op.getOpcode() == ARMISD::VGETLANEs)
@@ -18373,9 +18370,8 @@ SDValue ARMTargetLowering::LowerFP_ROUND(SDValue Op, SelectionDAG &DAG) const {
   SDValue SrcVal = Op.getOperand(IsStrict ? 1 : 0);
   EVT SrcVT = SrcVal.getValueType();
   EVT DstVT = Op.getValueType();
-  const unsigned DstSz = Op.getValueType().getSizeInBits();
+  [[maybe_unused]] const unsigned DstSz = Op.getValueType().getSizeInBits();
   const unsigned SrcSz = SrcVT.getSizeInBits();
-  (void)DstSz;
   assert(DstSz < SrcSz && SrcSz <= 64 && DstSz >= 16 &&
          "Unexpected type for custom-lowering FP_ROUND");
 

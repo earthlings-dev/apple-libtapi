@@ -155,14 +155,12 @@ bool R600ExpandSpecialInstrsPass::runOnMachineFunction(MachineFunction &MF) {
           unsigned Opcode = BMI->getOpcode();
           // While not strictly necessary from hw point of view, we force
           // all src operands of a dot4 inst to belong to the same slot.
-          Register Src0 =
+          [[maybe_unused]] Register Src0 =
               BMI->getOperand(TII->getOperandIdx(Opcode, R600::OpName::src0))
                   .getReg();
-          Register Src1 =
+          [[maybe_unused]] Register Src1 =
               BMI->getOperand(TII->getOperandIdx(Opcode, R600::OpName::src1))
                   .getReg();
-          (void) Src0;
-          (void) Src1;
           if ((TRI.getEncodingValue(Src0) & 0xff) < 127 &&
               (TRI.getEncodingValue(Src1) & 0xff) < 127)
             assert(TRI.getHWRegChan(Src0) == TRI.getHWRegChan(Src1));

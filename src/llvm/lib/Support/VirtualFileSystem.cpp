@@ -722,9 +722,8 @@ bool InMemoryFileSystem::addFile(const Twine &P, time_t ModificationTime,
   P.toVector(Path);
 
   // Fix up relative paths. This just prepends the current working directory.
-  std::error_code EC = makeAbsolute(Path);
+  [[maybe_unused]] std::error_code EC = makeAbsolute(Path);
   assert(!EC);
-  (void)EC;
 
   if (useNormalizedPaths())
     llvm::sys::path::remove_dots(Path, /*remove_dot_dot=*/true);
@@ -830,9 +829,8 @@ lookupInMemoryNode(const InMemoryFileSystem &FS, detail::InMemoryDirectory *Dir,
   P.toVector(Path);
 
   // Fix up relative paths. This just prepends the current working directory.
-  std::error_code EC = FS.makeAbsolute(Path);
+  [[maybe_unused]] std::error_code EC = FS.makeAbsolute(Path);
   assert(!EC);
-  (void)EC;
 
   if (FS.useNormalizedPaths())
     llvm::sys::path::remove_dots(Path, /*remove_dot_dot=*/true);
@@ -972,9 +970,8 @@ std::error_code InMemoryFileSystem::setCurrentWorkingDirectory(const Twine &P) {
   P.toVector(Path);
 
   // Fix up relative paths. This just prepends the current working directory.
-  std::error_code EC = makeAbsolute(Path);
+  [[maybe_unused]] std::error_code EC = makeAbsolute(Path);
   assert(!EC);
-  (void)EC;
 
   if (useNormalizedPaths())
     llvm::sys::path::remove_dots(Path, /*remove_dot_dot=*/true);
@@ -1777,9 +1774,8 @@ RedirectingFileSystem::create(std::unique_ptr<MemoryBuffer> Buffer,
     //  FS->ExternalContentsPrefixDir => /<absolute_path_to>/dummy.cache/vfs
     //
     SmallString<256> OverlayAbsDir = sys::path::parent_path(YAMLFilePath);
-    std::error_code EC = llvm::sys::fs::make_absolute(OverlayAbsDir);
+    [[maybe_unused]] std::error_code EC = llvm::sys::fs::make_absolute(OverlayAbsDir);
     assert(!EC && "Overlay dir final path must be absolute");
-    (void)EC;
     FS->setExternalContentsPrefixDir(OverlayAbsDir);
   }
 
@@ -1802,8 +1798,7 @@ std::unique_ptr<RedirectingFileSystem> RedirectingFileSystem::create(
     SmallString<128> From = StringRef(Mapping.first);
     SmallString<128> To = StringRef(Mapping.second);
     {
-      auto EC = ExternalFS.makeAbsolute(From);
-      (void)EC;
+      [[maybe_unused]] auto EC = ExternalFS.makeAbsolute(From);
       assert(!EC && "Could not make absolute path");
     }
 
@@ -1824,8 +1819,7 @@ std::unique_ptr<RedirectingFileSystem> RedirectingFileSystem::create(
     }
     assert(Parent && "File without a directory?");
     {
-      auto EC = ExternalFS.makeAbsolute(To);
-      (void)EC;
+      [[maybe_unused]] auto EC = ExternalFS.makeAbsolute(To);
       assert(!EC && "Could not make absolute path");
     }
 

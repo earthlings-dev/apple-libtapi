@@ -1075,9 +1075,8 @@ public:
   void addCallArgsForwardingRegs(const MachineInstr *CallI,
                                  CallSiteInfoImpl &&CallInfo) {
     assert(CallI->isCandidateForCallSiteEntry());
-    bool Inserted =
+    [[maybe_unused]] bool Inserted =
         CallSitesInfo.try_emplace(CallI, std::move(CallInfo)).second;
-    (void)Inserted;
     assert(Inserted && "Call site info not unique");
   }
 

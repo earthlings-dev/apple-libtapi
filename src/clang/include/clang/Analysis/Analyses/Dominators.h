@@ -111,8 +111,8 @@ public:
         bool IsEntryBlock = *I == &(*I)->getParent()->getEntry();
         bool IsExitBlock = *I == &(*I)->getParent()->getExit();
 
-        bool IsDomTreeRoot = !IDom && !IsPostDom && IsEntryBlock;
-        bool IsPostDomTreeRoot =
+        [[maybe_unused]] bool IsDomTreeRoot = !IDom && !IsPostDom && IsEntryBlock;
+        [[maybe_unused]] bool IsPostDomTreeRoot =
             IDom && !IDom->getBlock() && IsPostDom && IsExitBlock;
 
         assert((IsDomTreeRoot || IsPostDomTreeRoot) &&
@@ -122,8 +122,6 @@ public:
                "must be the entry block (since it's the root of the post "
                "dominator tree)");
 
-        (void)IsDomTreeRoot;
-        (void)IsPostDomTreeRoot;
 
         llvm::errs() << "(" << (*I)->getBlockID()
                      << "," << (*I)->getBlockID() << ")\n";

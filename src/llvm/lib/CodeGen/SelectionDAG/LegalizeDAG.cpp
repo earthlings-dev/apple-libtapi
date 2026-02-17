@@ -3940,10 +3940,9 @@ bool SelectionDAGLegalize::ExpandNode(SDNode *Node) {
     Tmp3 = Node->getOperand(3);              // RHS
     Tmp4 = Node->getOperand(1);              // CC
 
-    bool Legalized =
+    [[maybe_unused]] bool Legalized =
         LegalizeSetCCCondCode(getSetCCResultType(Tmp2.getValueType()), Tmp2,
                               Tmp3, Tmp4, NeedInvert, dl, Chain);
-    (void)Legalized;
     assert(Legalized && "Can't legalize BR_CC with legal condition!");
 
     assert(!NeedInvert && "Don't know how to invert BR_CC!");

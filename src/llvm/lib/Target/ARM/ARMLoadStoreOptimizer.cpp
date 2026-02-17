@@ -2910,11 +2910,10 @@ bool ARMPreAllocLoadStoreOpt::DistributeIncrements(Register Base) {
     LLVM_DEBUG(dbgs() << "Changing: "; BaseAccess->dump());
     LLVM_DEBUG(dbgs() << "  And   : "; Increment->dump());
     NewBaseReg = Increment->getOperand(0).getReg();
-    MachineInstr *BaseAccessPost =
+    [[maybe_unused]] MachineInstr *BaseAccessPost =
         createPostIncLoadStore(BaseAccess, IncrementOffset, NewBaseReg, TII, TRI);
     BaseAccess->eraseFromParent();
     Increment->eraseFromParent();
-    (void)BaseAccessPost;
     LLVM_DEBUG(dbgs() << "  To    : "; BaseAccessPost->dump());
   }
 

@@ -260,8 +260,7 @@ void MemorySSAUpdater::insertUse(MemoryUse *MU, bool RenameUses) {
   // added, rename all uses if we are asked.
 
   if (!RenameUses && !InsertedPHIs.empty()) {
-    auto *Defs = MSSA->getBlockDefs(MU->getBlock());
-    (void)Defs;
+    [[maybe_unused]] auto *Defs = MSSA->getBlockDefs(MU->getBlock());
     assert((!Defs || (++Defs->begin() == Defs->end())) &&
            "Block may have only a Phi or no defs");
   }

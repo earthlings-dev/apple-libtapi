@@ -40,8 +40,7 @@ bool llvm::llvm_is_multithreaded() {
     (!defined(_WIN32) && !defined(HAVE_PTHREAD_H))
 // Support for non-Win32, non-pthread implementation.
 void llvm::llvm_execute_on_thread(void (*Fn)(void *), void *UserData,
-                                  llvm::Optional<unsigned> StackSizeInBytes) {
-  (void)StackSizeInBytes;
+                                  [[maybe_unused]] llvm::Optional<unsigned> StackSizeInBytes) {
   Fn(UserData);
 }
 
@@ -62,10 +61,8 @@ unsigned llvm::ThreadPoolStrategy::compute_thread_count() const {
 
 #if LLVM_ENABLE_THREADS == 0
 void llvm::llvm_execute_on_thread_async(
-    llvm::unique_function<void()> Func,
-    llvm::Optional<unsigned> StackSizeInBytes) {
-  (void)Func;
-  (void)StackSizeInBytes;
+    [[maybe_unused]] llvm::unique_function<void()> Func,
+    [[maybe_unused]] llvm::Optional<unsigned> StackSizeInBytes) {
   report_fatal_error("Spawning a detached thread doesn't make sense with no "
                      "threading support");
 }
@@ -73,8 +70,7 @@ void llvm::llvm_execute_on_thread_async(
 // Support for non-Win32, non-pthread implementation.
 void llvm::llvm_execute_on_thread_async(
     llvm::unique_function<void()> Func,
-    llvm::Optional<unsigned> StackSizeInBytes) {
-  (void)StackSizeInBytes;
+    [[maybe_unused]] llvm::Optional<unsigned> StackSizeInBytes) {
   std::thread(std::move(Func)).detach();
 }
 #endif

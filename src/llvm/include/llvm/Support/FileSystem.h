@@ -1218,7 +1218,7 @@ private:
 #ifdef _WIN32
   sys::fs::file_t FileHandle;
 #endif
-  mapmode Mode;
+  [[maybe_unused]] mapmode Mode;
 
   std::error_code init(sys::fs::file_t FD, uint64_t Offset, mapmode Mode);
 

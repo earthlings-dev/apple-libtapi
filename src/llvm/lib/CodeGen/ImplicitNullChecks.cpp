@@ -239,8 +239,7 @@ bool ImplicitNullChecks::canHandle(const MachineInstr *MI) {
   if (MI->isCall() || MI->mayRaiseFPException() ||
       MI->hasUnmodeledSideEffects())
     return false;
-  auto IsRegMask = [](const MachineOperand &MO) { return MO.isRegMask(); };
-  (void)IsRegMask;
+  [[maybe_unused]] auto IsRegMask = [](const MachineOperand &MO) { return MO.isRegMask(); };
 
   assert(!llvm::any_of(MI->operands(), IsRegMask) &&
          "Calls were filtered out above!");
@@ -761,8 +760,7 @@ void ImplicitNullChecks::rewriteNullChecks(
 
   for (auto &NC : NullCheckList) {
     // Remove the conditional branch dependent on the null check.
-    unsigned BranchesRemoved = TII->removeBranch(*NC.getCheckBlock());
-    (void)BranchesRemoved;
+    [[maybe_unused]] unsigned BranchesRemoved = TII->removeBranch(*NC.getCheckBlock());
     assert(BranchesRemoved > 0 && "expected at least one branch!");
 
     if (auto *DepMI = NC.getOnlyDependency()) {

@@ -185,7 +185,7 @@ LLVM_DUMP_METHOD void Type::dump(llvm::raw_ostream &OS,
 
 LLVM_DUMP_METHOD void Decl::dump() const { dump(llvm::errs()); }
 
-LLVM_DUMP_METHOD void Decl::dump(raw_ostream &OS, bool Deserialize,
+LLVM_DUMP_METHOD void Decl::dump(raw_ostream &OS, [[maybe_unused]] bool Deserialize,
                                  ASTDumpOutputFormat Format) const {
   ASTContext &Ctx = getASTContext();
   const SourceManager &SM = Ctx.getSourceManager();
@@ -193,7 +193,7 @@ LLVM_DUMP_METHOD void Decl::dump(raw_ostream &OS, bool Deserialize,
   if (ADOF_JSON == Format) {
     JSONDumper P(OS, SM, Ctx, Ctx.getPrintingPolicy(),
                  &Ctx.getCommentCommandTraits());
-    (void)Deserialize; // FIXME?
+    // FIXME: Deserialize is not used.
     P.Visit(this);
   } else {
     ASTDumper P(OS, Ctx, Ctx.getDiagnostics().getShowColors());

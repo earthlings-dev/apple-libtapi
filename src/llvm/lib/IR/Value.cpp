@@ -404,8 +404,8 @@ void Value::takeName(Value *V) {
 
   // Get V's ST, this should always succed, because V has a name.
   ValueSymbolTable *VST;
-  bool Failure = getSymTab(V, VST);
-  assert(!Failure && "V has a name, so it should have a ST!"); (void)Failure;
+  [[maybe_unused]] bool Failure = getSymTab(V, VST);
+  assert(!Failure && "V has a name, so it should have a ST!");
 
   // If these values are both in the same symtab, we can do this very fast.
   // This works even if both values have no symtab yet.

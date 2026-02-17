@@ -684,9 +684,8 @@ void ExprEngine::VisitLogicalExpr(const BinaryOperator* B, ExplodedNode *Pred,
 
   ExplodedNode *N = Pred;
   while (!N->getLocation().getAs<BlockEntrance>()) {
-    ProgramPoint P = N->getLocation();
+    [[maybe_unused]] ProgramPoint P = N->getLocation();
     assert(P.getAs<PreStmt>()|| P.getAs<PreStmtPurgeDeadSymbols>());
-    (void) P;
     if (N->pred_size() != 1) {
       // We failed to track back where we came from.
       Bldr.generateNode(B, Pred, state);
@@ -711,8 +710,7 @@ void ExprEngine::VisitLogicalExpr(const BinaryOperator* B, ExplodedNode *Pred,
   const CFGBlock *SrcBlock = BE.getSrc();
   // The only terminator (if there is one) that makes sense is a logical op.
   CFGTerminator T = SrcBlock->getTerminator();
-  if (const BinaryOperator *Term = cast_or_null<BinaryOperator>(T.getStmt())) {
-    (void) Term;
+  if ([[maybe_unused]] const BinaryOperator *Term = cast_or_null<BinaryOperator>(T.getStmt())) {
     assert(Term->isLogicalOp());
     assert(SrcBlock->succ_size() == 2);
     // Did we take the true or false branch?

@@ -114,8 +114,7 @@ public:
     case MachO::ARM64_RELOC_GOT_LOAD_PAGEOFF12: {
       // Verify that the relocation points to one of the expected load / store
       // instructions.
-      auto *p = reinterpret_cast<support::aligned_ulittle32_t *>(LocalAddress);
-      (void)p;
+      [[maybe_unused]] auto *p = reinterpret_cast<support::aligned_ulittle32_t *>(LocalAddress);
       assert((*p & 0x3B000000) == 0x39000000 &&
              "Only expected load / store instructions.");
       LLVM_FALLTHROUGH;
@@ -218,10 +217,9 @@ public:
     case MachO::ARM64_RELOC_GOT_LOAD_PAGEOFF12: {
       // Verify that the relocation points to one of the expected load / store
       // instructions.
-      auto *p = reinterpret_cast<support::aligned_ulittle32_t *>(LocalAddress);
+      [[maybe_unused]] auto *p = reinterpret_cast<support::aligned_ulittle32_t *>(LocalAddress);
       assert((*p & 0x3B000000) == 0x39000000 &&
              "Only expected load / store instructions.");
-      (void)p;
       LLVM_FALLTHROUGH;
     }
     case MachO::ARM64_RELOC_PAGEOFF12: {

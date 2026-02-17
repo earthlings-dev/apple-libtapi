@@ -114,8 +114,7 @@ protected:
       SmallPtrSet<BasicBlock *, 4> ExclusionSet;
     };
 
-    static int initialize = IsPotentiallyReachableTestPass::initialize();
-    (void)initialize;
+    [[maybe_unused]] static int initialize = IsPotentiallyReachableTestPass::initialize();
 
     IsPotentiallyReachableTestPass *P =
         new IsPotentiallyReachableTestPass(ExpectedResult, A, B, ExclusionSet);

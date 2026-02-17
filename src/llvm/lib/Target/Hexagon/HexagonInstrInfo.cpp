@@ -1612,8 +1612,7 @@ bool HexagonInstrInfo::PredicateInstruction(
   }
 
   unsigned PredReg, PredRegPos, PredRegFlags;
-  bool GotPredReg = getPredReg(Cond, PredReg, PredRegPos, PredRegFlags);
-  (void)GotPredReg;
+  [[maybe_unused]] bool GotPredReg = getPredReg(Cond, PredReg, PredRegPos, PredRegFlags);
   assert(GotPredReg);
   T.addReg(PredReg, PredRegFlags);
   while (NOp < NumOps)

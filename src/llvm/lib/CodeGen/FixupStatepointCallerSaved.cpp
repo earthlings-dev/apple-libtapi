@@ -181,8 +181,7 @@ public:
   // Record reload of Reg from FI in block MBB
   void recordReload(Register Reg, int FI, const MachineBasicBlock *MBB) {
     RegSlotPair RSP(Reg, FI);
-    auto Res = Reloads[MBB].insert(RSP);
-    (void)Res;
+    [[maybe_unused]] auto Res = Reloads[MBB].insert(RSP);
     assert(Res.second && "reload already exists");
   }
 
@@ -438,8 +437,7 @@ public:
     --It;
     TII.loadRegFromStackSlot(*MBB, It, Reg, FI, RC, &TRI);
     MachineInstr *Reload = It->getPrevNode();
-    int Dummy = 0;
-    (void)Dummy;
+    [[maybe_unused]] int Dummy = 0;
     assert(TII.isLoadFromStackSlot(*Reload, Dummy) == Reg);
     assert(Dummy == FI);
     MBB->remove(Reload);

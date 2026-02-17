@@ -1937,7 +1937,7 @@ static VectorType *isVectorPromotionViable(Partition &P, const DataLayout &DL) {
     // Rank the remaining candidate vector types. This is easy because we know
     // they're all integer vectors. We sort by ascending number of elements.
     auto RankVectorTypes = [&DL](VectorType *RHSTy, VectorType *LHSTy) {
-      (void)DL;
+      [[maybe_unused]] auto &DLRef = DL;
       assert(DL.getTypeSizeInBits(RHSTy).getFixedSize() ==
                  DL.getTypeSizeInBits(LHSTy).getFixedSize() &&
              "Cannot have vector types of different sizes!");
@@ -3120,13 +3120,12 @@ private:
     // for the new alloca slice.
     Type *PointerTy = IRB.getInt8PtrTy(OldPtr->getType()->getPointerAddressSpace());
     Value *Ptr = getNewAllocaSlicePtr(IRB, PointerTy);
-    Value *New;
+    [[maybe_unused]] Value *New;
     if (II.getIntrinsicID() == Intrinsic::lifetime_start)
       New = IRB.CreateLifetimeStart(Ptr, Size);
     else
       New = IRB.CreateLifetimeEnd(Ptr, Size);
 
-    (void)New;
     LLVM_DEBUG(dbgs() << "          to: " << *New << "\n");
 
     return true;
@@ -3331,8 +3330,7 @@ private:
       }
 
       if (ArrayType *ATy = dyn_cast<ArrayType>(Ty)) {
-        unsigned OldSize = Indices.size();
-        (void)OldSize;
+        [[maybe_unused]] unsigned OldSize = Indices.size();
         for (unsigned Idx = 0, Size = ATy->getNumElements(); Idx != Size;
              ++Idx) {
           assert(Indices.size() == OldSize && "Did not return to the old size");
@@ -3346,8 +3344,7 @@ private:
       }
 
       if (StructType *STy = dyn_cast<StructType>(Ty)) {
-        unsigned OldSize = Indices.size();
-        (void)OldSize;
+        [[maybe_unused]] unsigned OldSize = Indices.size();
         for (unsigned Idx = 0, Size = STy->getNumElements(); Idx != Size;
              ++Idx) {
           assert(Indices.size() == OldSize && "Did not return to the old size");

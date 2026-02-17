@@ -814,7 +814,7 @@ bool CodeGenFunction::EmitOMPFirstprivateClause(const OMPExecutableDirective &D,
       if (EmittedAsFirstprivate.insert(OrigVD->getCanonicalDecl()).second) {
         const auto *VDInit =
             cast<VarDecl>(cast<DeclRefExpr>(*InitsRef)->getDecl());
-        bool IsRegistered;
+        [[maybe_unused]] bool IsRegistered;
         DeclRefExpr DRE(getContext(), const_cast<VarDecl *>(OrigVD),
                         /*RefersToEnclosingVariableOrCapture=*/FD != nullptr,
                         (*IRef)->getType(), VK_LValue, (*IRef)->getExprLoc());
@@ -907,8 +907,6 @@ bool CodeGenFunction::EmitOMPFirstprivateClause(const OMPExecutableDirective &D,
         }
         assert(IsRegistered &&
                "firstprivate var already registered as private");
-        // Silence the warning about unused variable.
-        (void)IsRegistered;
       }
       ++IRef;
       ++InitsRef;
@@ -929,14 +927,12 @@ void CodeGenFunction::EmitOMPPrivateClause(
       const auto *OrigVD = cast<VarDecl>(cast<DeclRefExpr>(*IRef)->getDecl());
       if (EmittedAsPrivate.insert(OrigVD->getCanonicalDecl()).second) {
         const auto *VD = cast<VarDecl>(cast<DeclRefExpr>(IInit)->getDecl());
-        bool IsRegistered = PrivateScope.addPrivate(OrigVD, [this, VD]() {
+        [[maybe_unused]] bool IsRegistered = PrivateScope.addPrivate(OrigVD, [this, VD]() {
           // Emit private VarDecl with copy init.
           EmitDecl(*VD);
           return GetAddrOfLocalVar(VD);
         });
         assert(IsRegistered && "private var already registered as private");
-        // Silence the warning about unused variable.
-        (void)IsRegistered;
       }
       ++IRef;
     }
@@ -1054,7 +1050,7 @@ bool CodeGenFunction::EmitOMPLastprivateClauseInit(
         // for 'firstprivate' clause.
         if (IInit && !SIMDLCVs.count(OrigVD->getCanonicalDecl())) {
           const auto *VD = cast<VarDecl>(cast<DeclRefExpr>(IInit)->getDecl());
-          bool IsRegistered = PrivateScope.addPrivate(OrigVD, [this, VD, C,
+          [[maybe_unused]] bool IsRegistered = PrivateScope.addPrivate(OrigVD, [this, VD, C,
                                                                OrigVD]() {
             if (C->getKind() == OMPC_LASTPRIVATE_conditional) {
               Address VDAddr =
@@ -1069,7 +1065,6 @@ bool CodeGenFunction::EmitOMPLastprivateClauseInit(
           });
           assert(IsRegistered &&
                  "lastprivate var already registered as private");
-          (void)IsRegistered;
         }
       }
       ++IRef;
@@ -1220,11 +1215,9 @@ void CodeGenFunction::EmitOMPReductionClauseInit(
     EmitAutoVarCleanups(Emission);
     Address BaseAddr = RedCG.adjustPrivateAddress(
         *this, Count, Emission.getAllocatedAddress());
-    bool IsRegistered = PrivateScope.addPrivate(
+    [[maybe_unused]] bool IsRegistered = PrivateScope.addPrivate(
         RedCG.getBaseDecl(Count), [BaseAddr]() { return BaseAddr; });
     assert(IsRegistered && "private var already registered as private");
-    // Silence the warning about unused variable.
-    (void)IsRegistered;
 
     const auto *LHSVD = cast<VarDecl>(cast<DeclRefExpr>(*ILHS)->getDecl());
     const auto *RHSVD = cast<VarDecl>(cast<DeclRefExpr>(*IRHS)->getDecl());
@@ -2135,14 +2128,12 @@ void CodeGenFunction::EmitOMPLinearClause(
       const auto *PrivateVD =
           cast<VarDecl>(cast<DeclRefExpr>(*CurPrivate)->getDecl());
       if (!SIMDLCVs.count(VD->getCanonicalDecl())) {
-        bool IsRegistered = PrivateScope.addPrivate(VD, [this, PrivateVD]() {
+        [[maybe_unused]] bool IsRegistered = PrivateScope.addPrivate(VD, [this, PrivateVD]() {
           // Emit private VarDecl with copy init.
           EmitVarDecl(*PrivateVD);
           return GetAddrOfLocalVar(PrivateVD);
         });
         assert(IsRegistered && "linear var already registered as private");
-        // Silence the warning about unused variable.
-        (void)IsRegistered;
       } else {
         EmitVarDecl(*PrivateVD);
       }
@@ -6028,7 +6019,7 @@ void CodeGenFunction::EmitOMPUseDevicePtrClause(
     if (InitAddrIt == CaptureDeviceAddrMap.end())
       continue;
 
-    bool IsRegistered = PrivateScope.addPrivate(OrigVD, [this, OrigVD,
+    [[maybe_unused]] bool IsRegistered = PrivateScope.addPrivate(OrigVD, [this, OrigVD,
                                                          InitAddrIt, InitVD,
                                                          PvtVD]() {
       // Initialize the temporary initialization variable with the address we
@@ -6054,8 +6045,6 @@ void CodeGenFunction::EmitOMPUseDevicePtrClause(
       return GetAddrOfLocalVar(PvtVD);
     });
     assert(IsRegistered && "firstprivate var already registered as private");
-    // Silence the warning about unused variable.
-    (void)IsRegistered;
 
     ++OrigVarIt;
     ++InitIt;

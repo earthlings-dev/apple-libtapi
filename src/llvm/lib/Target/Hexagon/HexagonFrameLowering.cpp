@@ -556,11 +556,10 @@ void HexagonFrameLowering::emitPrologue(MachineFunction &MF,
 /// for noreturn nounwind functions.
 bool HexagonFrameLowering::enableCalleeSaveSkip(
     const MachineFunction &MF) const {
-  const auto &F = MF.getFunction();
+  [[maybe_unused]] const auto &F = MF.getFunction();
   assert(F.hasFnAttribute(Attribute::NoReturn) &&
          F.getFunction().hasFnAttribute(Attribute::NoUnwind) &&
          !F.getFunction().hasFnAttribute(Attribute::UWTable));
-  (void)F;
 
   // No need to save callee saved registers if the function does not return.
   return MF.getSubtarget<HexagonSubtarget>().noreturnStackElim();
@@ -1494,8 +1493,7 @@ MachineBasicBlock::iterator HexagonFrameLowering::eliminateCallFramePseudoInstr(
     MachineFunction &MF, MachineBasicBlock &MBB,
     MachineBasicBlock::iterator I) const {
   MachineInstr &MI = *I;
-  unsigned Opc = MI.getOpcode();
-  (void)Opc; // Silence compiler warning.
+  [[maybe_unused]] unsigned Opc = MI.getOpcode();
   assert((Opc == Hexagon::ADJCALLSTACKDOWN || Opc == Hexagon::ADJCALLSTACKUP) &&
          "Cannot handle this call frame pseudo instruction");
   return MBB.erase(I);

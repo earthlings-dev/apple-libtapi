@@ -247,7 +247,7 @@ bool FixupBWInstPass::getSuperRegDestIfDead(MachineInstr *OrigMI,
   //   Predecessors according to CFG: %bb.2 %bb.1
   //   %ax = KILL %ax, implicit killed %eax
   //   RET 0, %ax
-  unsigned Opc = OrigMI->getOpcode(); (void)Opc;
+  [[maybe_unused]] unsigned Opc = OrigMI->getOpcode();
   // These are the opcodes currently known to work with the code below, if
   // something // else will be added we need to ensure that new opcode has the
   // same properties.

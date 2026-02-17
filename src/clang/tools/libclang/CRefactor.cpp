@@ -1224,7 +1224,7 @@ void clang_RefactoringOptionSet_dispose(CXRefactoringOptionSet Set) {
 enum CXErrorCode
 clang_Refactoring_findActionsAt(CXTranslationUnit TU, CXSourceLocation Location,
                                 CXSourceRange SelectionRange,
-                                CXRefactoringOptionSet Options,
+                                [[maybe_unused]] CXRefactoringOptionSet Options,
                                 CXRefactoringActionSet *OutSet) {
   return clang_Refactoring_findActionsWithInitiationFailureDiagnosicsAt(
       TU, Location, SelectionRange, Options, OutSet, /*OutFailureSet=*/nullptr);
@@ -1261,7 +1261,6 @@ enum CXErrorCode clang_Refactoring_findActionsWithInitiationFailureDiagnosicsAt(
     return CXError_InvalidArguments;
 
   ASTUnit::ConcurrencyCheck Check(*CXXUnit);
-  (void)Options; // FIXME: handle options
   ASTContext &Context = CXXUnit->getASTContext();
   RefactoringDiagnosticConsumer DiagConsumer(Context);
   RefactoringActionSet ActionSet = findActionSetAt(
@@ -1377,7 +1376,7 @@ enum CXErrorCode clang_Refactoring_initiateActionAt(
 enum CXErrorCode clang_Refactoring_initiateAction(
     CXTranslationUnit TU, CXSourceLocation Location,
     CXSourceRange SelectionRange, enum CXRefactoringActionType ActionType,
-    CXRefactoringOptionSet Options, CXRefactoringAction *OutAction,
+    [[maybe_unused]] CXRefactoringOptionSet Options, CXRefactoringAction *OutAction,
     CXDiagnosticSet *OutDiagnostics) {
   if (!OutAction)
     return CXError_InvalidArguments;
@@ -1400,7 +1399,6 @@ enum CXErrorCode clang_Refactoring_initiateAction(
 
   ASTUnit::ConcurrencyCheck Check(*CXXUnit);
 
-  (void)Options; // FIXME: handle options
   ASTContext &Context = CXXUnit->getASTContext();
   RefactoringDiagnosticConsumer DiagConsumer(Context);
   auto Operation = initiateRefactoringOperationAt(
@@ -1432,7 +1430,7 @@ enum CXErrorCode clang_Refactoring_initiateAction(
 
 enum CXErrorCode clang_Refactoring_initiateActionOnDecl(
     CXTranslationUnit TU, const char *DeclUSR,
-    enum CXRefactoringActionType ActionType, CXRefactoringOptionSet Options,
+    enum CXRefactoringActionType ActionType, [[maybe_unused]] CXRefactoringOptionSet Options,
     CXRefactoringAction *OutAction, CXString *OutFailureReason) {
   if (!OutAction)
     return CXError_InvalidArguments;
@@ -1451,7 +1449,6 @@ enum CXErrorCode clang_Refactoring_initiateActionOnDecl(
 
   ASTUnit::ConcurrencyCheck Check(*CXXUnit);
 
-  (void)Options; // FIXME: handle options
   auto Operation = initiateRefactoringOperationOnDecl(
       DeclUSR, CXXUnit->getASTContext(),
       translateRefactoringActionType(ActionType));

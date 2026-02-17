@@ -117,9 +117,8 @@ inline void AnalysisManager<IRUnitT, ExtraArgTs...>::invalidate(
     // Note that we cannot reuse 'IMapI' here or pre-insert the ID, as
     // Result.invalidate may insert things into the map, invalidating our
     // iterator.
-    bool Inserted =
+    [[maybe_unused]] bool Inserted =
         IsResultInvalidated.insert({ID, Result.invalidate(IR, PA, Inv)}).second;
-    (void)Inserted;
     assert(Inserted && "Should never have already inserted this ID, likely "
                        "indicates a cycle!");
   }

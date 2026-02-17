@@ -99,8 +99,7 @@ bool GISelCSEInfo::isUniqueMachineInstValid(
 }
 
 void GISelCSEInfo::invalidateUniqueMachineInstr(UniqueMachineInstr *UMI) {
-  bool Removed = CSEMap.RemoveNode(UMI);
-  (void)Removed;
+  [[maybe_unused]] bool Removed = CSEMap.RemoveNode(UMI);
   assert(Removed && "Invalidation called on invalid UMI");
   // FIXME: Should UMI be deallocated/destroyed?
 }

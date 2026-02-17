@@ -1204,9 +1204,8 @@ struct MemorySanitizerVisitor : public InstVisitor<MemorySanitizerVisitor> {
       std::tie(ShadowPtr, OriginPtr) =
           getShadowOriginPtr(Addr, IRB, ShadowTy, Alignment, /*isStore*/ true);
 
-      StoreInst *NewSI = IRB.CreateAlignedStore(Shadow, ShadowPtr, Alignment);
+      [[maybe_unused]] StoreInst *NewSI = IRB.CreateAlignedStore(Shadow, ShadowPtr, Alignment);
       LLVM_DEBUG(dbgs() << "  STORE: " << *NewSI << "\n");
-      (void)NewSI;
 
       if (SI->isAtomic())
         SI->setOrdering(addReleaseOrdering(SI->getOrdering()));
@@ -1652,15 +1651,13 @@ struct MemorySanitizerVisitor : public InstVisitor<MemorySanitizerVisitor> {
       Value *Shadow = ShadowMap[V];
       if (!Shadow) {
         LLVM_DEBUG(dbgs() << "No shadow: " << *V << "\n" << *(I->getParent()));
-        (void)I;
         assert(Shadow && "No shadow for a value");
       }
       return Shadow;
     }
-    if (UndefValue *U = dyn_cast<UndefValue>(V)) {
+    if ([[maybe_unused]] UndefValue *U = dyn_cast<UndefValue>(V)) {
       Value *AllOnes = PoisonUndef ? getPoisonedShadow(V) : getCleanShadow(V);
       LLVM_DEBUG(dbgs() << "Undef: " << *U << " ==> " << *AllOnes << "\n");
-      (void)U;
       return AllOnes;
     }
     if (Argument *A = dyn_cast<Argument>(V)) {
@@ -1711,10 +1708,9 @@ struct MemorySanitizerVisitor : public InstVisitor<MemorySanitizerVisitor> {
                   Size, ArgAlign);
             } else {
               const Align CopyAlign = std::min(ArgAlign, kShadowTLSAlignment);
-              Value *Cpy = EntryIRB.CreateMemCpy(CpShadowPtr, CopyAlign, Base,
+              [[maybe_unused]] Value *Cpy = EntryIRB.CreateMemCpy(CpShadowPtr, CopyAlign, Base,
                                                  CopyAlign, Size);
               LLVM_DEBUG(dbgs() << "  ByValCpy: " << *Cpy << "\n");
-              (void)Cpy;
             }
             *ShadowPtr = getCleanShadow(V);
           } else {
@@ -3652,7 +3648,7 @@ struct MemorySanitizerVisitor : public InstVisitor<MemorySanitizerVisitor> {
         continue;
       }
       unsigned Size = 0;
-      Value *Store = nullptr;
+      [[maybe_unused]] Value *Store = nullptr;
       // Compute the Shadow for arg even if it is ByVal, because
       // in that case getShadow() will copy the actual arg shadow to
       // __msan_param_tls.
@@ -3702,7 +3698,6 @@ struct MemorySanitizerVisitor : public InstVisitor<MemorySanitizerVisitor> {
       if (MS.TrackOrigins && !ArgIsInitialized)
         IRB.CreateStore(getOrigin(A),
                         getOriginPtrForArgument(A, IRB, ArgOffset));
-      (void)Store;
       assert(Size != 0 && Store != nullptr);
       LLVM_DEBUG(dbgs() << "  Param:" << *Store << "\n");
       ArgOffset += alignTo(Size, kShadowTLSAlignment);

@@ -55,13 +55,11 @@ class TempEnvVar {
 #if HAVE_SETENV
     // Assume setenv and unsetenv come together.
     unsetenv(name);
-#else
-    (void)name; // Suppress -Wunused-private-field.
 #endif
   }
 
  private:
-  const char *const name;
+  [[maybe_unused]] const char *const name;
 };
 
 template <typename T, typename Base = cl::opt<T>>

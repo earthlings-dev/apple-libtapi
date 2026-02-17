@@ -325,8 +325,7 @@ llvm::SinkAndHoistLICMFlags::SinkAndHoistLICMFlags(
   unsigned AccessCapCount = 0;
   for (auto *BB : L->getBlocks())
     if (const auto *Accesses = MSSA->getBlockAccesses(BB))
-      for (const auto &MA : *Accesses) {
-        (void)MA;
+      for ([[maybe_unused]] const auto &MA : *Accesses) {
         ++AccessCapCount;
         if (AccessCapCount > LicmMssaNoAccForPromotionCap) {
           NoOfMemAccTooLarge = true;
@@ -1250,7 +1249,6 @@ bool llvm::canSinkOrHoistInst(Instruction &I, AAResults *AA, DominatorTree *DT,
       if (!UniqueI)
         // other memory op, give up
         return false;
-      (void)FI; // suppress unused variable warning
       assert(UniqueI == FI && "AS must contain FI");
       return true;
     } else // MSSAU
@@ -1304,8 +1302,7 @@ bool llvm::canSinkOrHoistInst(Instruction &I, AAResults *AA, DominatorTree *DT,
               if (!Flags->getIsSink() && !MSSA->dominates(SIMD, MU))
                 return false;
             } else if (const auto *MD = dyn_cast<MemoryDef>(&MA)) {
-              if (auto *LI = dyn_cast<LoadInst>(MD->getMemoryInst())) {
-                (void)LI; // Silence warning.
+              if ([[maybe_unused]] auto *LI = dyn_cast<LoadInst>(MD->getMemoryInst())) {
                 assert(!LI->isUnordered() && "Expected unordered load");
                 return false;
               }

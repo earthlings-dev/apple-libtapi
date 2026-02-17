@@ -1308,9 +1308,8 @@ void MachineBlockPlacement::precomputeTriangleChains() {
       Chain.append(PDom);
       TriangleChainMap.insert(std::make_pair(Chain.getKey(), std::move(Chain)));
     } else {
-      auto InsertResult = TriangleChainMap.try_emplace(PDom, &BB, PDom);
+      [[maybe_unused]] auto InsertResult = TriangleChainMap.try_emplace(PDom, &BB, PDom);
       assert(InsertResult.second && "Block seen twice.");
-      (void)InsertResult;
     }
   }
 
@@ -1331,9 +1330,8 @@ void MachineBlockPlacement::precomputeTriangleChains() {
                         << getBlockName(dst)
                         << " as pre-computed based on triangles.\n");
 
-      auto InsertResult = ComputedEdges.insert({src, {dst, true}});
+      [[maybe_unused]] auto InsertResult = ComputedEdges.insert({src, {dst, true}});
       assert(InsertResult.second && "Block seen twice.");
-      (void)InsertResult;
 
       dst = src;
     }

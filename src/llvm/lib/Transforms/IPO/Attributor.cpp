@@ -1110,8 +1110,8 @@ ChangeStatus Attributor::manifestAttributes() {
   TimeTraceScope TimeScope("Attributor::manifestAttributes");
   size_t NumFinalAAs = DG.SyntheticRoot.Deps.size();
 
-  unsigned NumManifested = 0;
-  unsigned NumAtFixpoint = 0;
+  [[maybe_unused]] unsigned NumManifested = 0;
+  [[maybe_unused]] unsigned NumAtFixpoint = 0;
   ChangeStatus ManifestChange = ChangeStatus::UNCHANGED;
   for (auto &DepAA : DG.SyntheticRoot.Deps) {
     AbstractAttribute *AA = cast<AbstractAttribute>(DepAA.getPointer());
@@ -1148,8 +1148,6 @@ ChangeStatus Attributor::manifestAttributes() {
     NumManifested += (LocalChange == ChangeStatus::CHANGED);
   }
 
-  (void)NumManifested;
-  (void)NumAtFixpoint;
   LLVM_DEBUG(dbgs() << "\n[Attributor] Manifested " << NumManifested
                     << " arguments while " << NumAtFixpoint
                     << " were in a valid fixpoint state\n");
@@ -1157,7 +1155,6 @@ ChangeStatus Attributor::manifestAttributes() {
   NumAttributesManifested += NumManifested;
   NumAttributesValidFixpoint += NumAtFixpoint;
 
-  (void)NumFinalAAs;
   if (NumFinalAAs != DG.SyntheticRoot.Deps.size()) {
     for (unsigned u = NumFinalAAs; u < DG.SyntheticRoot.Deps.size(); ++u)
       errs() << "Unexpected abstract attribute: "
@@ -1431,8 +1428,7 @@ ChangeStatus Attributor::updateAA(AbstractAttribute &AA) {
 
   // Verify the stack was used properly, that is we pop the dependence vector we
   // put there earlier.
-  DependenceVector *PoppedDV = DependenceStack.pop_back_val();
-  (void)PoppedDV;
+  [[maybe_unused]] DependenceVector *PoppedDV = DependenceStack.pop_back_val();
   assert(PoppedDV == &DV && "Inconsistent usage of the dependence stack!");
 
   return CS;
@@ -1738,8 +1734,7 @@ ChangeStatus Attributor::rewriteFunctionSignatures(
       SmallVector<Value *, 16> NewArgOperands;
       SmallVector<AttributeSet, 16> NewArgOperandAttributes;
       for (unsigned OldArgNum = 0; OldArgNum < ARIs.size(); ++OldArgNum) {
-        unsigned NewFirstArgNum = NewArgOperands.size();
-        (void)NewFirstArgNum; // only used inside assert.
+        [[maybe_unused]] unsigned NewFirstArgNum = NewArgOperands.size();
         if (const std::unique_ptr<ArgumentReplacementInfo> &ARI =
                 ARIs[OldArgNum]) {
           if (ARI->ACSRepairCB)
@@ -1793,9 +1788,8 @@ ChangeStatus Attributor::rewriteFunctionSignatures(
 
     // Use the CallSiteReplacementCreator to create replacement call sites.
     bool AllCallSitesKnown;
-    bool Success = checkForAllCallSites(CallSiteReplacementCreator, *OldFn,
+    [[maybe_unused]] bool Success = checkForAllCallSites(CallSiteReplacementCreator, *OldFn,
                                         true, nullptr, AllCallSitesKnown);
-    (void)Success;
     assert(Success && "Assumed call site replacement to succeed!");
 
     // Rewire the arguments.
@@ -2144,12 +2138,11 @@ void Attributor::identifyDefaultAbstractAttributes(Function &F) {
   };
 
   auto &OpcodeInstMap = InfoCache.getOpcodeInstMapForFunction(F);
-  bool Success;
+  [[maybe_unused]] bool Success;
   Success = checkForAllInstructionsImpl(
       nullptr, OpcodeInstMap, CallSitePred, nullptr, nullptr,
       {(unsigned)Instruction::Invoke, (unsigned)Instruction::CallBr,
        (unsigned)Instruction::Call});
-  (void)Success;
   assert(Success && "Expected the check call to be successful!");
 
   auto LoadStorePred = [&](Instruction &I) -> bool {
@@ -2164,7 +2157,6 @@ void Attributor::identifyDefaultAbstractAttributes(Function &F) {
   Success = checkForAllInstructionsImpl(
       nullptr, OpcodeInstMap, LoadStorePred, nullptr, nullptr,
       {(unsigned)Instruction::Load, (unsigned)Instruction::Store});
-  (void)Success;
   assert(Success && "Expected the check call to be successful!");
 }
 

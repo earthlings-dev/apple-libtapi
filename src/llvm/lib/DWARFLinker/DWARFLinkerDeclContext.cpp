@@ -162,13 +162,12 @@ DeclContextTree::getChildDeclContext(DeclContext &Context, const DWARFDie &DIE,
 
   if (ContextIter == Contexts.end()) {
     // The context wasn't found.
-    bool Inserted;
+    [[maybe_unused]] bool Inserted;
     DeclContext *NewContext =
         new (Allocator) DeclContext(Hash, Line, ByteSize, Tag, NameRef, FileRef,
                                     Context, DIE, U.getUniqueID());
     std::tie(ContextIter, Inserted) = Contexts.insert(NewContext);
     assert(Inserted && "Failed to insert DeclContext");
-    (void)Inserted;
   } else if (Tag != dwarf::DW_TAG_namespace &&
              !(*ContextIter)->setLastSeenDIE(U, DIE)) {
     // The context was found, but it is ambiguous with another context
@@ -196,10 +195,9 @@ DeclContextTree::getResolvedPath(CompileUnit &CU, unsigned FileNum,
   ResolvedPathsMap::const_iterator It = ResolvedPaths.find(Key);
   if (It == ResolvedPaths.end()) {
     std::string FileName;
-    bool FoundFileName = LineTable.getFileNameByIndex(
+    [[maybe_unused]] bool FoundFileName = LineTable.getFileNameByIndex(
         FileNum, CU.getOrigUnit().getCompilationDir(),
         DILineInfoSpecifier::FileLineInfoKind::AbsoluteFilePath, FileName);
-    (void)FoundFileName;
     assert(FoundFileName && "Must get file name from line table");
 
     // Second level of caching, this time based on the file's parent

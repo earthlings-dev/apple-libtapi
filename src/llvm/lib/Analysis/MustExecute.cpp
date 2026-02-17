@@ -41,8 +41,7 @@ void LoopSafetyInfo::copyColors(BasicBlock *New, BasicBlock *Old) {
   ColorsForNewBlock = ColorsForOldBlock;
 }
 
-bool SimpleLoopSafetyInfo::blockMayThrow(const BasicBlock *BB) const {
-  (void)BB;
+bool SimpleLoopSafetyInfo::blockMayThrow([[maybe_unused]] const BasicBlock *BB) const {
   return anyBlockMayThrow();
 }
 

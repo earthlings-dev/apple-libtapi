@@ -408,9 +408,8 @@ void RegAllocFast::spill(MachineBasicBlock::iterator Before, Register VirtReg,
   // to just reference the stack slot.
   SmallVectorImpl<MachineInstr *> &LRIDbgValues = LiveDbgValueMap[VirtReg];
   for (MachineInstr *DBG : LRIDbgValues) {
-    MachineInstr *NewDV = buildDbgValueForSpill(*MBB, Before, *DBG, FI);
+    [[maybe_unused]] MachineInstr *NewDV = buildDbgValueForSpill(*MBB, Before, *DBG, FI);
     assert(NewDV->getParent() == MBB && "dangling parent pointer");
-    (void)NewDV;
     LLVM_DEBUG(dbgs() << "Inserting debug info due to spill:\n" << *NewDV);
 
     if (LiveOut) {

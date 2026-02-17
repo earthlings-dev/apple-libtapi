@@ -693,9 +693,8 @@ void LiveVariables::removeVirtualRegistersKilled(MachineInstr &MI) {
       MO.setIsKill(false);
       Register Reg = MO.getReg();
       if (Register::isVirtualRegister(Reg)) {
-        bool removed = getVarInfo(Reg).removeKill(MI);
+        [[maybe_unused]] bool removed = getVarInfo(Reg).removeKill(MI);
         assert(removed && "kill not in register's VarInfo?");
-        (void)removed;
       }
     }
   }

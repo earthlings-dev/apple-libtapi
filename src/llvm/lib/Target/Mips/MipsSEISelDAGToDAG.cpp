@@ -855,12 +855,11 @@ bool MipsSEDAGToDAGISel::trySelect(SDNode *Node) {
       SDLoc DL(Node);
       assert(Node->getNumOperands() == 4 && "Unexpected number of operands.");
       const SDValue &Chain = Node->getOperand(0);
-      const SDValue &Intrinsic = Node->getOperand(1);
+      [[maybe_unused]] const SDValue &Intrinsic = Node->getOperand(1);
       const SDValue &Pointer = Node->getOperand(2);
       const SDValue &Constant = Node->getOperand(3);
 
       assert(Chain.getValueType() == MVT::Other);
-      (void)Intrinsic;
       assert(Intrinsic.getOpcode() == ISD::TargetConstant &&
              Constant.getOpcode() == ISD::Constant &&
              "Invalid instruction operand.");
@@ -926,13 +925,12 @@ bool MipsSEDAGToDAGISel::trySelect(SDNode *Node) {
       SDLoc DL(Node);
       assert(Node->getNumOperands() == 5 && "Unexpected number of operands.");
       const SDValue &Chain = Node->getOperand(0);
-      const SDValue &Intrinsic = Node->getOperand(1);
+      [[maybe_unused]] const SDValue &Intrinsic = Node->getOperand(1);
       const SDValue &Vec = Node->getOperand(2);
       const SDValue &Pointer = Node->getOperand(3);
       const SDValue &Constant = Node->getOperand(4);
 
       assert(Chain.getValueType() == MVT::Other);
-      (void)Intrinsic;
       assert(Intrinsic.getOpcode() == ISD::TargetConstant &&
              Constant.getOpcode() == ISD::Constant &&
              "Invalid instruction operand.");

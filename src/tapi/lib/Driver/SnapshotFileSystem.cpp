@@ -218,9 +218,8 @@ SnapshotFileSystem::setCurrentWorkingDirectory(const Twine &path_) {
   path_.toVector(path);
 
   // Fix up relative paths. This just prepends the current working directory.
-  auto ec = makeAbsolute(path);
+  [[maybe_unused]] auto ec = makeAbsolute(path);
   assert(!ec);
-  (void)ec;
 
   llvm::sys::path::remove_dots(path, /*remove_dot_dot=*/true);
 

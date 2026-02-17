@@ -1389,10 +1389,9 @@ MachineInstr *MachineLICMBase::ExtractHoistableLoad(MachineInstr *MI) {
   Register Reg = MRI->createVirtualRegister(RC);
 
   SmallVector<MachineInstr *, 2> NewMIs;
-  bool Success = TII->unfoldMemoryOperand(MF, *MI, Reg,
+  [[maybe_unused]] bool Success = TII->unfoldMemoryOperand(MF, *MI, Reg,
                                           /*UnfoldLoad=*/true,
                                           /*UnfoldStore=*/false, NewMIs);
-  (void)Success;
   assert(Success &&
          "unfoldMemoryOperand failed when getOpcodeAfterMemoryUnfold "
          "succeeded!");

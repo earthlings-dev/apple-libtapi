@@ -922,11 +922,10 @@ struct SemiNCAInfo {
     // Ensure that the edge was in fact deleted from the CFG before informing
     // the DomTree about it.
     // The check is O(N), so run it only in debug configuration.
-    auto IsSuccessor = [BUI](const NodePtr SuccCandidate, const NodePtr Of) {
+    [[maybe_unused]] auto IsSuccessor = [BUI](const NodePtr SuccCandidate, const NodePtr Of) {
       auto Successors = getChildren<IsPostDom>(Of, BUI);
       return llvm::is_contained(Successors, SuccCandidate);
     };
-    (void)IsSuccessor;
     assert(!IsSuccessor(To, From) && "Deleted edge still exists in the CFG!");
 #endif
 

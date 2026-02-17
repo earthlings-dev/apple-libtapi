@@ -522,8 +522,7 @@ TEST(Error, CantFailDeath) {
   EXPECT_DEATH(
       {
         auto IEC = inconvertibleErrorCode();
-        int X = cantFail(Expected<int>(make_error<StringError>("foo", IEC)));
-        (void)X;
+        [[maybe_unused]] int X = cantFail(Expected<int>(make_error<StringError>("foo", IEC)));
       },
       "Failure value returned from cantFail wrapped call")
     << "cantFail(Expected<int>) did not cause an abort for failure value";

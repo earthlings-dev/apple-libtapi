@@ -621,11 +621,10 @@ public:
           if (LastAlu.back()) {
             ToPopAfter.push_back(LastAlu.back());
           } else {
-            MachineInstr *MIb = BuildMI(MBB, MI, MBB.findDebugLoc(MI),
+            [[maybe_unused]] MachineInstr *MIb = BuildMI(MBB, MI, MBB.findDebugLoc(MI),
                 getHWInstrDesc(CF_POP))
                 .addImm(CfCount + 1)
                 .addImm(1);
-            (void)MIb;
             LLVM_DEBUG(dbgs() << CfCount << ":"; MIb->dump(););
             CfCount++;
           }

@@ -306,9 +306,8 @@ void SCFG::computeNormalForm() {
     Block->computeDominator();
 
   // Once dominators have been computed, the final sort may be performed.
-  unsigned NumBlocks = Exit->topologicalFinalSort(Blocks, 0);
+  [[maybe_unused]] unsigned NumBlocks = Exit->topologicalFinalSort(Blocks, 0);
   assert(static_cast<size_t>(NumBlocks) == Blocks.size());
-  (void) NumBlocks;
 
   // Renumber the instructions now that we have a final sort.
   renumberInstrs();

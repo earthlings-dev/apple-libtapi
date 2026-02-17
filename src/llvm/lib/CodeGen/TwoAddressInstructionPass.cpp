@@ -1241,9 +1241,8 @@ tryInstructionTransform(MachineBasicBlock::iterator &mi,
         unsigned NewDstIdx = NewMIs[1]->findRegisterDefOperandIdx(regA);
         unsigned NewSrcIdx = NewMIs[1]->findRegisterUseOperandIdx(regB);
         MachineBasicBlock::iterator NewMI = NewMIs[1];
-        bool TransformResult =
+        [[maybe_unused]] bool TransformResult =
           tryInstructionTransform(NewMI, mi, NewSrcIdx, NewDstIdx, Dist, true);
-        (void)TransformResult;
         assert(!TransformResult &&
                "tryInstructionTransform() should return false.");
         if (NewMIs[1]->getOperand(NewSrcIdx).isKill()) {

@@ -176,13 +176,12 @@ int AnalyzerOptions::getCheckerIntegerOption(StringRef CheckerName,
                                              StringRef OptionName,
                                              bool SearchInParents) const {
   int Ret = 0;
-  bool HasFailed = getCheckerStringOption(CheckerName, OptionName,
+  [[maybe_unused]] bool HasFailed = getCheckerStringOption(CheckerName, OptionName,
                                           SearchInParents)
                      .getAsInteger(0, Ret);
   assert(!HasFailed &&
          "This option should be numeric, and should've been validated by "
          "CheckerRegistry!");
-  (void)HasFailed;
   return Ret;
 }
 

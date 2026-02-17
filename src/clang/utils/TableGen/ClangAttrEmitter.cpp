@@ -2767,8 +2767,8 @@ namespace {
     }
 
     void classifyAttrOnRoot(Record *Attr) {
-      bool result = classifyAttr(Attr);
-      assert(result && "failed to classify on root"); (void) result;
+      [[maybe_unused]] bool result = classifyAttr(Attr);
+      assert(result && "failed to classify on root");
     }
 
     void emitAttrRange(raw_ostream &OS) const {

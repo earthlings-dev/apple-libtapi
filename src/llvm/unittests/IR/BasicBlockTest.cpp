@@ -37,8 +37,7 @@ TEST(BasicBlockTest, PhiRange) {
   BranchInst::Create(BB.get(), BB2.get());
 
   // Make sure this doesn't crash if there are no phis.
-  for (auto &PN : BB->phis()) {
-    (void)PN;
+  for ([[maybe_unused]] auto &PN : BB->phis()) {
     EXPECT_TRUE(false) << "empty block should have no phis";
   }
 

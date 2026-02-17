@@ -967,13 +967,12 @@ void IEEEFloat::zeroSignificand() {
 
 /* Increment an fcNormal floating point number's significand.  */
 void IEEEFloat::incrementSignificand() {
-  integerPart carry;
+  [[maybe_unused]] integerPart carry;
 
   carry = APInt::tcIncrement(significandParts(), partCount());
 
   /* Our callers should never cause us to overflow.  */
   assert(carry == 0);
-  (void)carry;
 }
 
 /* Add the significand of the RHS.  Returns the carry flag.  */
@@ -1058,7 +1057,7 @@ lostFraction IEEEFloat::multiplySignificand(const IEEEFloat &rhs,
     Significand savedSignificand = significand;
     const fltSemantics *savedSemantics = semantics;
     fltSemantics extendedSemantics;
-    opStatus status;
+    [[maybe_unused]] opStatus status;
     unsigned int extendedPrecision;
 
     // Normalize our MSB to one below the top bit to allow for overflow.
@@ -1086,7 +1085,6 @@ lostFraction IEEEFloat::multiplySignificand(const IEEEFloat &rhs,
     IEEEFloat extendedAddend(addend);
     status = extendedAddend.convert(extendedSemantics, rmTowardZero, &ignored);
     assert(status == opOK);
-    (void)status;
 
     // Shift the significand of the addend right by one bit. This guarantees
     // that the high bit of the significand is zero (same as fullSignificand),
@@ -1510,7 +1508,7 @@ IEEEFloat::opStatus IEEEFloat::addOrSubtractSpecials(const IEEEFloat &rhs,
 /* Add or subtract two normal numbers.  */
 lostFraction IEEEFloat::addOrSubtractSignificand(const IEEEFloat &rhs,
                                                  bool subtract) {
-  integerPart carry;
+  [[maybe_unused]] integerPart carry;
   lostFraction lost_fraction;
   int bits;
 
@@ -1556,7 +1554,6 @@ lostFraction IEEEFloat::addOrSubtractSignificand(const IEEEFloat &rhs,
     /* The code above is intended to ensure that no borrow is
        necessary.  */
     assert(!carry);
-    (void)carry;
   } else {
     if (bits > 0) {
       IEEEFloat temp_rhs(rhs);
@@ -1570,7 +1567,6 @@ lostFraction IEEEFloat::addOrSubtractSignificand(const IEEEFloat &rhs,
 
     /* We have a guard bit; generating a carry cannot happen.  */
     assert(!carry);
-    (void)carry;
   }
 
   return lost_fraction;
@@ -3135,7 +3131,7 @@ APInt IEEEFloat::convertPPCDoubleDoubleAPFloatToAPInt() const {
   assert(partCount()==2);
 
   uint64_t words[2];
-  opStatus fs;
+  [[maybe_unused]] opStatus fs;
   bool losesInfo;
 
   // Convert number to double.  To avoid spurious underflows, we re-
@@ -3149,12 +3145,10 @@ APInt IEEEFloat::convertPPCDoubleDoubleAPFloatToAPInt() const {
   IEEEFloat extended(*this);
   fs = extended.convert(extendedSemantics, rmNearestTiesToEven, &losesInfo);
   assert(fs == opOK && !losesInfo);
-  (void)fs;
 
   IEEEFloat u(extended);
   fs = u.convert(semIEEEdouble, rmNearestTiesToEven, &losesInfo);
   assert(fs == opOK || fs == opInexact);
-  (void)fs;
   words[0] = *u.convertDoubleAPFloatToAPInt().getRawData();
 
   // If conversion was exact or resulted in a special case, we're done;
@@ -3164,13 +3158,11 @@ APInt IEEEFloat::convertPPCDoubleDoubleAPFloatToAPInt() const {
   if (u.isFiniteNonZero() && losesInfo) {
     fs = u.convert(extendedSemantics, rmNearestTiesToEven, &losesInfo);
     assert(fs == opOK && !losesInfo);
-    (void)fs;
 
     IEEEFloat v(extended);
     v.subtract(u, rmNearestTiesToEven);
     fs = v.convert(semIEEEdouble, rmNearestTiesToEven, &losesInfo);
     assert(fs == opOK && !losesInfo);
-    (void)fs;
     words[1] = *v.convertDoubleAPFloatToAPInt().getRawData();
   } else {
     words[1] = 0;
@@ -3407,21 +3399,19 @@ void IEEEFloat::initFromPPCDoubleDoubleAPInt(const APInt &api) {
   assert(api.getBitWidth()==128);
   uint64_t i1 = api.getRawData()[0];
   uint64_t i2 = api.getRawData()[1];
-  opStatus fs;
+  [[maybe_unused]] opStatus fs;
   bool losesInfo;
 
   // Get the first double and convert to our format.
   initFromDoubleAPInt(APInt(64, i1));
   fs = convert(semPPCDoubleDoubleLegacy, rmNearestTiesToEven, &losesInfo);
   assert(fs == opOK && !losesInfo);
-  (void)fs;
 
   // Unless we have a special case, add in second double.
   if (isFiniteNonZero()) {
     IEEEFloat v(semIEEEdouble, APInt(64, i2));
     fs = v.convert(semPPCDoubleDoubleLegacy, rmNearestTiesToEven, &losesInfo);
     assert(fs == opOK && !losesInfo);
-    (void)fs;
 
     add(v, rmNearestTiesToEven);
   }

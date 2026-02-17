@@ -249,7 +249,6 @@ void HIPToolChain::addClangTargetOptions(
 
   StringRef GpuArch = getGPUArch(DriverArgs);
   assert(!GpuArch.empty() && "Must have an explicit GPU arch.");
-  (void) GpuArch;
   assert(DeviceOffloadingKind == Action::OFK_HIP &&
          "Only HIP offloading kinds are supported for GPUs.");
   auto Kind = llvm::AMDGPU::parseArchAMDGCN(GpuArch);

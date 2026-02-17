@@ -596,8 +596,7 @@ public:
                                                 E = TemporaryFiles.end();
          I != E; ++I) {
       llvm::StringRef Name = I->second;
-      std::error_code EC = llvm::sys::fs::remove(Name);
-      (void)EC;
+      [[maybe_unused]] std::error_code EC = llvm::sys::fs::remove(Name);
       assert(!EC);
     }
   }
@@ -605,9 +604,8 @@ public:
   FileID createFile(llvm::StringRef Name, llvm::StringRef Content) {
     SmallString<1024> Path;
     int FD;
-    std::error_code EC = llvm::sys::fs::createTemporaryFile(Name, "", FD, Path);
+    [[maybe_unused]] std::error_code EC = llvm::sys::fs::createTemporaryFile(Name, "", FD, Path);
     assert(!EC);
-    (void)EC;
 
     llvm::raw_fd_ostream OutStream(FD, true);
     OutStream << Content;
@@ -615,11 +613,10 @@ public:
     auto File = Context.Files.getOptionalFileRef(Path);
     assert(File);
 
-    StringRef Found =
+    [[maybe_unused]] StringRef Found =
         TemporaryFiles.insert(std::make_pair(Name, std::string(Path.str())))
             .first->second;
     assert(Found == Path);
-    (void)Found;
     return Context.Sources.createFileID(*File, SourceLocation(),
                                         SrcMgr::C_User);
   }

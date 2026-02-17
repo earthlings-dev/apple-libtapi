@@ -237,18 +237,15 @@ static bool selectMergeValues(MachineInstrBuilder &MIB,
 
   // We only support G_MERGE_VALUES as a way to stick together two scalar GPRs
   // into one DPR.
-  Register VReg0 = MIB.getReg(0);
-  (void)VReg0;
+  [[maybe_unused]] Register VReg0 = MIB.getReg(0);
   assert(MRI.getType(VReg0).getSizeInBits() == 64 &&
          RBI.getRegBank(VReg0, MRI, TRI)->getID() == ARM::FPRRegBankID &&
          "Unsupported operand for G_MERGE_VALUES");
-  Register VReg1 = MIB.getReg(1);
-  (void)VReg1;
+  [[maybe_unused]] Register VReg1 = MIB.getReg(1);
   assert(MRI.getType(VReg1).getSizeInBits() == 32 &&
          RBI.getRegBank(VReg1, MRI, TRI)->getID() == ARM::GPRRegBankID &&
          "Unsupported operand for G_MERGE_VALUES");
-  Register VReg2 = MIB.getReg(2);
-  (void)VReg2;
+  [[maybe_unused]] Register VReg2 = MIB.getReg(2);
   assert(MRI.getType(VReg2).getSizeInBits() == 32 &&
          RBI.getRegBank(VReg2, MRI, TRI)->getID() == ARM::GPRRegBankID &&
          "Unsupported operand for G_MERGE_VALUES");
@@ -269,18 +266,15 @@ static bool selectUnmergeValues(MachineInstrBuilder &MIB,
 
   // We only support G_UNMERGE_VALUES as a way to break up one DPR into two
   // GPRs.
-  Register VReg0 = MIB.getReg(0);
-  (void)VReg0;
+  [[maybe_unused]] Register VReg0 = MIB.getReg(0);
   assert(MRI.getType(VReg0).getSizeInBits() == 32 &&
          RBI.getRegBank(VReg0, MRI, TRI)->getID() == ARM::GPRRegBankID &&
          "Unsupported operand for G_UNMERGE_VALUES");
-  Register VReg1 = MIB.getReg(1);
-  (void)VReg1;
+  [[maybe_unused]] Register VReg1 = MIB.getReg(1);
   assert(MRI.getType(VReg1).getSizeInBits() == 32 &&
          RBI.getRegBank(VReg1, MRI, TRI)->getID() == ARM::GPRRegBankID &&
          "Unsupported operand for G_UNMERGE_VALUES");
-  Register VReg2 = MIB.getReg(2);
-  (void)VReg2;
+  [[maybe_unused]] Register VReg2 = MIB.getReg(2);
   assert(MRI.getType(VReg2).getSizeInBits() == 64 &&
          RBI.getRegBank(VReg2, MRI, TRI)->getID() == ARM::FPRRegBankID &&
          "Unsupported operand for G_UNMERGE_VALUES");

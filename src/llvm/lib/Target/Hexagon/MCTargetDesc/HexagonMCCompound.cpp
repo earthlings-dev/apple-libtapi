@@ -200,7 +200,7 @@ static MCInst *getCompoundInsn(MCContext &Context, MCInst const &L,
   unsigned compoundOpcode;
   MCOperand Rs, Rt;
   int64_t Value;
-  bool Success;
+  [[maybe_unused]] bool Success;
 
   switch (L.getOpcode()) {
   default:
@@ -273,7 +273,6 @@ static MCInst *getCompoundInsn(MCContext &Context, MCInst const &L,
   case Hexagon::C2_cmpeqi:
     LLVM_DEBUG(dbgs() << "CX: C2_cmpeqi\n");
     Success = L.getOperand(2).getExpr()->evaluateAsAbsolute(Value);
-    (void)Success;
     assert(Success);
     if (Value == -1)
       compoundOpcode = cmpeqn1BitOpcode[getCompoundOp(R)];
@@ -291,7 +290,6 @@ static MCInst *getCompoundInsn(MCContext &Context, MCInst const &L,
   case Hexagon::C2_cmpgti:
     LLVM_DEBUG(dbgs() << "CX: C2_cmpgti\n");
     Success = L.getOperand(2).getExpr()->evaluateAsAbsolute(Value);
-    (void)Success;
     assert(Success);
     if (Value == -1)
       compoundOpcode = cmpgtn1BitOpcode[getCompoundOp(R)];

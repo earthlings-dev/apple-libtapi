@@ -1382,8 +1382,7 @@ int HexagonAsmParser::processInstruction(MCInst &Inst,
   case Hexagon::C2_cmpgeui: {
     MCOperand &MO = Inst.getOperand(2);
     int64_t Value;
-    bool Success = MO.getExpr()->evaluateAsAbsolute(Value);
-    (void)Success;
+    [[maybe_unused]] bool Success = MO.getExpr()->evaluateAsAbsolute(Value);
     assert(Success && "Assured by matcher");
     if (Value == 0) {
       MCInst TmpInst;

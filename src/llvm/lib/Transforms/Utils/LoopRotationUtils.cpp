@@ -87,9 +87,8 @@ private:
 /// Insert (K, V) pair into the ValueToValueMap, and verify the key did not
 /// previously exist in the map, and the value was inserted.
 static void InsertNewValueIntoMap(ValueToValueMapTy &VM, Value *K, Value *V) {
-  bool Inserted = VM.insert({K, V}).second;
+  [[maybe_unused]] bool Inserted = VM.insert({K, V}).second;
   assert(Inserted);
-  (void)Inserted;
 }
 /// RewriteUsesOfClonedInstructions - We just cloned the instructions from the
 /// old header into the preheader.  If there were uses of the values produced by

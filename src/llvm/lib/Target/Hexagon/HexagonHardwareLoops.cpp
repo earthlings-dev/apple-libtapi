@@ -1967,8 +1967,7 @@ MachineBasicBlock *HexagonHardwareLoops::createPreheaderForLoop(
     MachineBasicBlock *PB = *I;
     if (PB != Latch) {
       Tmp2.clear();
-      bool NotAnalyzed = TII->analyzeBranch(*PB, TB, FB, Tmp2, false);
-      (void)NotAnalyzed; // suppress compiler warning
+      [[maybe_unused]] bool NotAnalyzed = TII->analyzeBranch(*PB, TB, FB, Tmp2, false);
       assert (!NotAnalyzed && "Should be analyzable!");
       if (TB != Header && (Tmp2.empty() || FB != Header))
         TII->insertBranch(*PB, NewPH, nullptr, EmptyCond, DL);
@@ -1979,8 +1978,7 @@ MachineBasicBlock *HexagonHardwareLoops::createPreheaderForLoop(
   // It can happen that the latch block will fall through into the header.
   // Insert an unconditional branch to the header.
   TB = FB = nullptr;
-  bool LatchNotAnalyzed = TII->analyzeBranch(*Latch, TB, FB, Tmp2, false);
-  (void)LatchNotAnalyzed; // suppress compiler warning
+  [[maybe_unused]] bool LatchNotAnalyzed = TII->analyzeBranch(*Latch, TB, FB, Tmp2, false);
   assert (!LatchNotAnalyzed && "Should be analyzable!");
   if (!TB && !FB)
     TII->insertBranch(*Latch, Header, nullptr, EmptyCond, DL);

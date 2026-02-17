@@ -374,8 +374,7 @@ void DwarfExpression::setLocation(const MachineLocation &Loc,
 
 void DwarfExpression::beginEntryValueExpression(
     DIExpressionCursor &ExprCursor) {
-  auto Op = ExprCursor.take();
-  (void)Op;
+  [[maybe_unused]] auto Op = ExprCursor.take();
   assert(Op && Op->getOp() == dwarf::DW_OP_LLVM_entry_value);
   assert(!IsEmittingEntryValue && "Already emitting entry value?");
   assert(Op->getArg(0) == 1 &&

@@ -91,9 +91,8 @@ BlobAllocator::allocateNewArray(const iterator_range<RangeType> &Range) {
 
 size_t BlobAllocator::allocateString(StringRef Str) {
   SmallVector<UTF16, 32> WStr;
-  bool OK = convertUTF8ToUTF16String(Str, WStr);
+  [[maybe_unused]] bool OK = convertUTF8ToUTF16String(Str, WStr);
   assert(OK && "Invalid UTF8 in Str?");
-  (void)OK;
 
   // The utf16 string is null-terminated, but the terminator is not counted in
   // the string size.
@@ -105,12 +104,11 @@ size_t BlobAllocator::allocateString(StringRef Str) {
 }
 
 void BlobAllocator::writeTo(raw_ostream &OS) const {
-  size_t BeginOffset = OS.tell();
+  [[maybe_unused]] size_t BeginOffset = OS.tell();
   for (const auto &Callback : Callbacks)
     Callback(OS);
   assert(OS.tell() == BeginOffset + NextOffset &&
          "Callbacks wrote an unexpected number of bytes.");
-  (void)BeginOffset;
 }
 
 static LocationDescriptor layout(BlobAllocator &File, yaml::BinaryRef Data) {

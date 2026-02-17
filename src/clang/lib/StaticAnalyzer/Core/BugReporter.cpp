@@ -2054,10 +2054,9 @@ PathDiagnosticBuilder::generate(const PathDiagnosticConsumer *PDC) const {
   // Finally, prune the diagnostic path of uninteresting stuff.
   if (!Construct.PD->path.empty()) {
     if (R->shouldPrunePath() && Opts.ShouldPrunePaths) {
-      bool stillHasNotes =
+      [[maybe_unused]] bool stillHasNotes =
           removeUnneededCalls(Construct, Construct.getMutablePieces(), R);
       assert(stillHasNotes);
-      (void)stillHasNotes;
     }
 
     // Remove pop-up notes if needed.

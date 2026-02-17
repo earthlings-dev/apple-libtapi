@@ -1554,8 +1554,7 @@ struct DarwinPlatform {
   DarwinSDKInfo inferSDKInfo() {
     assert(Kind == InferredFromSDK && "can infer SDK info only");
     llvm::VersionTuple Version;
-    bool IsValid = !Version.tryParse(OSVersion);
-    (void)IsValid;
+    [[maybe_unused]] bool IsValid = !Version.tryParse(OSVersion);
     assert(IsValid && "invalid SDK version");
     return DarwinSDKInfo(Version);
   }

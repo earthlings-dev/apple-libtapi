@@ -195,8 +195,7 @@ inline bool tryGetHexFromNibbles(char MSB, char LSB, uint8_t &Hex) {
 /// \p LSB, that make up the nibbles of a hexadecimal digit.
 inline uint8_t hexFromNibbles(char MSB, char LSB) {
   uint8_t Hex = 0;
-  bool GotHex = tryGetHexFromNibbles(MSB, LSB, Hex);
-  (void)GotHex;
+  [[maybe_unused]] bool GotHex = tryGetHexFromNibbles(MSB, LSB, Hex);
   assert(GotHex && "MSB and/or LSB do not correspond to hex digits");
   return Hex;
 }
@@ -235,8 +234,7 @@ inline bool tryGetFromHex(StringRef Input, std::string &Output) {
 /// The return string is half the size of \p Input.
 inline std::string fromHex(StringRef Input) {
   std::string Hex;
-  bool GotHex = tryGetFromHex(Input, Hex);
-  (void)GotHex;
+  [[maybe_unused]] bool GotHex = tryGetFromHex(Input, Hex);
   assert(GotHex && "Input contains non hex digits");
   return Hex;
 }

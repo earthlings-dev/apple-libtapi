@@ -183,7 +183,7 @@ MipsInstructionSelector::selectLoadStoreOpCode(MachineInstr &I,
                                                MachineRegisterInfo &MRI) const {
   const Register ValueReg = I.getOperand(0).getReg();
   const LLT Ty = MRI.getType(ValueReg);
-  const unsigned TySize = Ty.getSizeInBits();
+  [[maybe_unused]] const unsigned TySize = Ty.getSizeInBits();
   const unsigned MemSizeInBytes = (*I.memoperands_begin())->getSize();
   unsigned Opc = I.getOpcode();
   const bool isStore = Opc == TargetOpcode::G_STORE;
@@ -192,7 +192,6 @@ MipsInstructionSelector::selectLoadStoreOpCode(MachineInstr &I,
     assert(((Ty.isScalar() && TySize == 32) ||
             (Ty.isPointer() && TySize == 32 && MemSizeInBytes == 4)) &&
            "Unsupported register bank, LLT, MemSizeInBytes combination");
-    (void)TySize;
     if (isStore)
       switch (MemSizeInBytes) {
       case 4:
@@ -636,8 +635,7 @@ bool MipsInstructionSelector::select(MachineInstr &I) {
   }
   case G_FPTOSI: {
     unsigned FromSize = MRI.getType(I.getOperand(1).getReg()).getSizeInBits();
-    unsigned ToSize = MRI.getType(I.getOperand(0).getReg()).getSizeInBits();
-    (void)ToSize;
+    [[maybe_unused]] unsigned ToSize = MRI.getType(I.getOperand(0).getReg()).getSizeInBits();
     assert((ToSize == 32) && "Unsupported integer size for G_FPTOSI");
     assert((FromSize == 32 || FromSize == 64) &&
            "Unsupported floating point size for G_FPTOSI");

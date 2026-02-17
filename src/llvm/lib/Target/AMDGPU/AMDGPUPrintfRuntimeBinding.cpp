@@ -540,10 +540,9 @@ bool AMDGPUPrintfRuntimeBindingImpl::lowerPrintfForGpu(Module &M) {
           Type *ArgPointer = PointerType::get(TheBtCast->getType(), 1);
           Value *CastedGEP =
               new BitCastInst(BufferIdx, ArgPointer, "PrintBuffPtrCast", Brnch);
-          StoreInst *StBuff = new StoreInst(TheBtCast, CastedGEP, Brnch);
+          [[maybe_unused]] StoreInst *StBuff = new StoreInst(TheBtCast, CastedGEP, Brnch);
           LLVM_DEBUG(dbgs() << "inserting store to printf buffer:\n"
                             << *StBuff << '\n');
-          (void)StBuff;
           if (I + 1 == E && ArgCount + 1 == CI->getNumArgOperands())
             break;
           BufferIdx = GetElementPtrInst::Create(nullptr, BufferIdx, BuffOffset,

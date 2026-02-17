@@ -115,9 +115,8 @@ void SparcMCCodeEmitter::encodeInstruction(const MCInst &MI, raw_ostream &OS,
   }
   if (tlsOpNo != 0) {
     const MCOperand &MO = MI.getOperand(tlsOpNo);
-    uint64_t op = getMachineOpValue(MI, MO, Fixups, STI);
+    [[maybe_unused]] uint64_t op = getMachineOpValue(MI, MO, Fixups, STI);
     assert(op == 0 && "Unexpected operand value!");
-    (void)op; // suppress warning.
   }
 
   ++MCNumEmitted;  // Keep track of the # of mi's emitted.

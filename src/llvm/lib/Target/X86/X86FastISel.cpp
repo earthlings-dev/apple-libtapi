@@ -3358,9 +3358,9 @@ bool X86FastISel::fastLowerCall(CallLoweringInfo &CLI) {
       if (ArgVT == MVT::i1)
         return false;
 
-      bool Emitted = X86FastEmitExtend(ISD::SIGN_EXTEND, VA.getLocVT(), ArgReg,
+      [[maybe_unused]] bool Emitted = X86FastEmitExtend(ISD::SIGN_EXTEND, VA.getLocVT(), ArgReg,
                                        ArgVT, ArgReg);
-      assert(Emitted && "Failed to emit a sext!"); (void)Emitted;
+      assert(Emitted && "Failed to emit a sext!");
       ArgVT = VA.getLocVT();
       break;
     }
@@ -3378,16 +3378,16 @@ bool X86FastISel::fastLowerCall(CallLoweringInfo &CLI) {
           return false;
       }
 
-      bool Emitted = X86FastEmitExtend(ISD::ZERO_EXTEND, VA.getLocVT(), ArgReg,
+      [[maybe_unused]] bool Emitted = X86FastEmitExtend(ISD::ZERO_EXTEND, VA.getLocVT(), ArgReg,
                                        ArgVT, ArgReg);
-      assert(Emitted && "Failed to emit a zext!"); (void)Emitted;
+      assert(Emitted && "Failed to emit a zext!");
       ArgVT = VA.getLocVT();
       break;
     }
     case CCValAssign::AExt: {
       assert(VA.getLocVT().isInteger() && !VA.getLocVT().isVector() &&
              "Unexpected extend");
-      bool Emitted = X86FastEmitExtend(ISD::ANY_EXTEND, VA.getLocVT(), ArgReg,
+      [[maybe_unused]] bool Emitted = X86FastEmitExtend(ISD::ANY_EXTEND, VA.getLocVT(), ArgReg,
                                        ArgVT, ArgReg);
       if (!Emitted)
         Emitted = X86FastEmitExtend(ISD::ZERO_EXTEND, VA.getLocVT(), ArgReg,
@@ -3396,7 +3396,7 @@ bool X86FastISel::fastLowerCall(CallLoweringInfo &CLI) {
         Emitted = X86FastEmitExtend(ISD::SIGN_EXTEND, VA.getLocVT(), ArgReg,
                                     ArgVT, ArgReg);
 
-      assert(Emitted && "Failed to emit a aext!"); (void)Emitted;
+      assert(Emitted && "Failed to emit a aext!");
       ArgVT = VA.getLocVT();
       break;
     }

@@ -1228,11 +1228,10 @@ static void DiagnoseMismatchedSelectors(Sema &S, SourceLocation AtLoc,
   }
 }
 
-static ObjCMethodDecl *LookupDirectMethodInMethodList(Sema &S, Selector Sel,
+static ObjCMethodDecl *LookupDirectMethodInMethodList(Sema &S, [[maybe_unused]] Selector Sel,
                                                       ObjCMethodList &MethList,
                                                       bool &onlyDirect,
                                                       bool &anyDirect) {
-  (void)Sel;
   ObjCMethodList *M = &MethList;
   ObjCMethodDecl *DirectMethod = nullptr;
   for (; M; M = M->getNext()) {
@@ -3195,10 +3194,9 @@ ExprResult Sema::BuildInstanceMessage(Expr *Receiver,
     }
     if (!isDesignatedInitChain) {
       const ObjCMethodDecl *InitMethod = nullptr;
-      bool isDesignated =
+      [[maybe_unused]] bool isDesignated =
         getCurMethodDecl()->isDesignatedInitializerForTheInterface(&InitMethod);
       assert(isDesignated && InitMethod);
-      (void)isDesignated;
       Diag(SelLoc, SuperLoc.isValid() ?
              diag::warn_objc_designated_init_non_designated_init_call :
              diag::warn_objc_designated_init_non_super_designated_init_call);

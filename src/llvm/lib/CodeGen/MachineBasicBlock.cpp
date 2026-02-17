@@ -640,8 +640,7 @@ void MachineBasicBlock::updateTerminator(
   MachineBasicBlock *TBB = nullptr, *FBB = nullptr;
   SmallVector<MachineOperand, 4> Cond;
   DebugLoc DL = findBranchDebugLoc();
-  bool B = TII->analyzeBranch(*this, TBB, FBB, Cond);
-  (void) B;
+  [[maybe_unused]] bool B = TII->analyzeBranch(*this, TBB, FBB, Cond);
   assert(!B && "UpdateTerminators requires analyzable predecessors!");
   if (Cond.empty()) {
     if (TBB) {

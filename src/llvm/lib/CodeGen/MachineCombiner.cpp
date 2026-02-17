@@ -506,8 +506,7 @@ static void insertDeleteInstructions(MachineBasicBlock *MBB, MachineInstr &MI,
 void MachineCombiner::verifyPatternOrder(
     MachineBasicBlock *MBB, MachineInstr &Root,
     SmallVector<MachineCombinerPattern, 16> &Patterns) {
-  long PrevLatencyDiff = std::numeric_limits<long>::max();
-  (void)PrevLatencyDiff; // Variable is used in assert only.
+  [[maybe_unused]] long PrevLatencyDiff = std::numeric_limits<long>::max();
   for (auto P : Patterns) {
     SmallVector<MachineInstr *, 16> InsInstrs;
     SmallVector<MachineInstr *, 16> DelInstrs;

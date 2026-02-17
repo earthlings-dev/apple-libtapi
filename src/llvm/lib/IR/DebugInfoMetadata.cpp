@@ -1385,8 +1385,7 @@ Optional<DIExpression *> DIExpression::createFragmentExpression(
       case dwarf::DW_OP_LLVM_fragment: {
         // Make the new offset point into the existing fragment.
         uint64_t FragmentOffsetInBits = Op.getArg(0);
-        uint64_t FragmentSizeInBits = Op.getArg(1);
-        (void)FragmentSizeInBits;
+        [[maybe_unused]] uint64_t FragmentSizeInBits = Op.getArg(1);
         assert((OffsetInBits + SizeInBits <= FragmentSizeInBits) &&
                "new fragment outside of original fragment");
         OffsetInBits += FragmentOffsetInBits;

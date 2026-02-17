@@ -4716,9 +4716,8 @@ Address PPC32_SVR4_ABIInfo::EmitVAArg(CodeGenFunction &CGF, Address VAList,
   }
 
   const unsigned OverflowLimit = 8;
-  if (const ComplexType *CTy = Ty->getAs<ComplexType>()) {
+  if ([[maybe_unused]] const ComplexType *CTy = Ty->getAs<ComplexType>()) {
     // TODO: Implement this. For now ignore.
-    (void)CTy;
     return Address::invalid(); // FIXME?
   }
 

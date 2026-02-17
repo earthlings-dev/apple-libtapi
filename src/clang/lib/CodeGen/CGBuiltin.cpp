@@ -2703,9 +2703,8 @@ RValue CodeGenFunction::EmitBuiltinExpr(const GlobalDecl GD, unsigned BuiltinID,
     Value *ExpectedValue = EmitScalarExpr(E->getArg(1));
     llvm::APFloat Probability(0.0);
     const Expr *ProbArg = E->getArg(2);
-    bool EvalSucceed = ProbArg->EvaluateAsFloat(Probability, CGM.getContext());
+    [[maybe_unused]] bool EvalSucceed = ProbArg->EvaluateAsFloat(Probability, CGM.getContext());
     assert(EvalSucceed && "probability should be able to evaluate as float");
-    (void)EvalSucceed;
     bool LoseInfo = false;
     Probability.convert(llvm::APFloat::IEEEdouble(),
                         llvm::RoundingMode::Dynamic, &LoseInfo);
@@ -17303,8 +17302,7 @@ getIntrinsicForHexagonNonGCCBuiltin(unsigned BuiltinID) {
   };
 
   auto CmpInfo = [] (Info A, Info B) { return A.BuiltinID < B.BuiltinID; };
-  static const bool SortOnce = (llvm::sort(Infos, CmpInfo), true);
-  (void)SortOnce;
+  [[maybe_unused]] static const bool SortOnce = (llvm::sort(Infos, CmpInfo), true);
 
   const Info *F = std::lower_bound(std::begin(Infos), std::end(Infos),
                                    Info{BuiltinID, 0, 0}, CmpInfo);

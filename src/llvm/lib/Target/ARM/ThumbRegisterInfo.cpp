@@ -441,9 +441,8 @@ void ThumbRegisterInfo::resolveFrameIndex(MachineInstr &MI, Register BaseReg,
     ++i;
     assert(i < MI.getNumOperands() && "Instr doesn't have FrameIndex operand!");
   }
-  bool Done = rewriteFrameIndex(MI, i, BaseReg, Off, TII);
+  [[maybe_unused]] bool Done = rewriteFrameIndex(MI, i, BaseReg, Off, TII);
   assert (Done && "Unable to resolve frame index!");
-  (void)Done;
 }
 
 void ThumbRegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator II,

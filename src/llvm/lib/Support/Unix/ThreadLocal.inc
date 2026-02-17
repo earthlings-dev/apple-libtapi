@@ -29,23 +29,20 @@ using namespace sys;
 ThreadLocalImpl::ThreadLocalImpl() : data() {
   static_assert(sizeof(pthread_key_t) <= sizeof(data), "size too big");
   pthread_key_t* key = reinterpret_cast<pthread_key_t*>(&data);
-  int errorcode = pthread_key_create(key, nullptr);
+  [[maybe_unused]] int errorcode = pthread_key_create(key, nullptr);
   assert(errorcode == 0);
-  (void) errorcode;
 }
 
 ThreadLocalImpl::~ThreadLocalImpl() {
   pthread_key_t* key = reinterpret_cast<pthread_key_t*>(&data);
-  int errorcode = pthread_key_delete(*key);
+  [[maybe_unused]] int errorcode = pthread_key_delete(*key);
   assert(errorcode == 0);
-  (void) errorcode;
 }
 
 void ThreadLocalImpl::setInstance(const void* d) {
   pthread_key_t* key = reinterpret_cast<pthread_key_t*>(&data);
-  int errorcode = pthread_setspecific(*key, d);
+  [[maybe_unused]] int errorcode = pthread_setspecific(*key, d);
   assert(errorcode == 0);
-  (void) errorcode;
 }
 
 void *ThreadLocalImpl::getInstance() {

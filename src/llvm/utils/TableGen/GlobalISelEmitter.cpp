@@ -914,9 +914,8 @@ public:
     return make_range(mutatable_insns_begin(), mutatable_insns_end());
   }
   void reserveInsnMatcherForMutation(InstructionMatcher *InsnMatcher) {
-    bool R = MutatableInsns.erase(InsnMatcher);
+    [[maybe_unused]] bool R = MutatableInsns.erase(InsnMatcher);
     assert(R && "Reserving a mutatable insn that isn't available");
-    (void)R;
   }
 
   action_iterator actions_begin() { return Actions.begin(); }
@@ -5132,8 +5131,7 @@ Expected<RuleMatcher> GlobalISelEmitter::runOnPattern(const PatternToMatch &P) {
   // The root of the match also has constraints on the register bank so that it
   // matches the result instruction.
   unsigned OpIdx = 0;
-  for (const TypeSetByHwMode &VTy : Src->getExtTypes()) {
-    (void)VTy;
+  for ([[maybe_unused]] const TypeSetByHwMode &VTy : Src->getExtTypes()) {
 
     const auto &DstIOperand = DstI.Operands[OpIdx];
     Record *DstIOpRec = DstIOperand.Rec;
@@ -5418,7 +5416,7 @@ std::vector<Matcher *> GlobalISelEmitter::optimizeRules(
   std::vector<Matcher *> OptRules;
   std::unique_ptr<GroupT> CurrentGroup = std::make_unique<GroupT>();
   assert(CurrentGroup->empty() && "Newly created group isn't empty!");
-  unsigned NumGroups = 0;
+  [[maybe_unused]] unsigned NumGroups = 0;
 
   auto ProcessCurrentGroup = [&]() {
     if (CurrentGroup->empty())

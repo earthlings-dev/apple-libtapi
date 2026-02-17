@@ -102,8 +102,7 @@ bool AVRAsmPrinter::PrintAsmOperand(const MachineInstr *MI, unsigned OpNum,
       unsigned ByteNumber = ExtraCode[0] - 'A';
 
       unsigned OpFlags = MI->getOperand(OpNum - 1).getImm();
-      unsigned NumOpRegs = InlineAsm::getNumOperandRegisters(OpFlags);
-      (void)NumOpRegs;
+      [[maybe_unused]] unsigned NumOpRegs = InlineAsm::getNumOperandRegisters(OpFlags);
 
       const AVRSubtarget &STI = MF->getSubtarget<AVRSubtarget>();
       const TargetRegisterInfo &TRI = *STI.getRegisterInfo();
@@ -140,8 +139,7 @@ bool AVRAsmPrinter::PrintAsmMemoryOperand(const MachineInstr *MI,
     llvm_unreachable("This branch is not implemented yet");
   }
 
-  const MachineOperand &MO = MI->getOperand(OpNum);
-  (void)MO;
+  [[maybe_unused]] const MachineOperand &MO = MI->getOperand(OpNum);
   assert(MO.isReg() && "Unexpected inline asm memory operand");
 
   // TODO: We should be able to look up the alternative name for

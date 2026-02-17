@@ -515,10 +515,8 @@ static void writeFragment(raw_ostream &OS, const MCAssembler &Asm,
   if (const MCEncodedFragment *EF = dyn_cast<MCEncodedFragment>(&F))
     Asm.writeFragmentPadding(OS, *EF, FragmentSize);
 
-  // This variable (and its dummy usage) is to participate in the assert at
-  // the end of the function.
-  uint64_t Start = OS.tell();
-  (void) Start;
+  // This variable is to participate in the assert at the end of the function.
+  [[maybe_unused]] uint64_t Start = OS.tell();
 
   ++stats::EmittedFragments;
 
@@ -769,8 +767,7 @@ void MCAssembler::writeSectionData(raw_ostream &OS, const MCSection *Sec,
     return;
   }
 
-  uint64_t Start = OS.tell();
-  (void)Start;
+  [[maybe_unused]] uint64_t Start = OS.tell();
 
   for (const MCFragment &F : *Sec)
     writeFragment(OS, *this, Layout, F);
@@ -1103,9 +1100,8 @@ bool MCAssembler::relaxDwarfLineAddr(MCAsmLayout &Layout,
   MCContext &Context = Layout.getAssembler().getContext();
   uint64_t OldSize = DF.getContents().size();
   int64_t AddrDelta;
-  bool Abs = DF.getAddrDelta().evaluateKnownAbsolute(AddrDelta, Layout);
+  [[maybe_unused]] bool Abs = DF.getAddrDelta().evaluateKnownAbsolute(AddrDelta, Layout);
   assert(Abs && "We created a line delta with an invalid expression");
-  (void)Abs;
   int64_t LineDelta;
   LineDelta = DF.getLineDelta();
   SmallVectorImpl<char> &Data = DF.getContents();
@@ -1144,9 +1140,8 @@ bool MCAssembler::relaxDwarfCallFrameFragment(MCAsmLayout &Layout,
   MCContext &Context = Layout.getAssembler().getContext();
   uint64_t OldSize = DF.getContents().size();
   int64_t AddrDelta;
-  bool Abs = DF.getAddrDelta().evaluateKnownAbsolute(AddrDelta, Layout);
+  [[maybe_unused]] bool Abs = DF.getAddrDelta().evaluateKnownAbsolute(AddrDelta, Layout);
   assert(Abs && "We created call frame with an invalid expression");
-  (void) Abs;
   SmallVectorImpl<char> &Data = DF.getContents();
   Data.clear();
   raw_svector_ostream OSE(Data);
@@ -1187,9 +1182,8 @@ bool MCAssembler::relaxPseudoProbeAddr(MCAsmLayout &Layout,
                                        MCPseudoProbeAddrFragment &PF) {
   uint64_t OldSize = PF.getContents().size();
   int64_t AddrDelta;
-  bool Abs = PF.getAddrDelta().evaluateKnownAbsolute(AddrDelta, Layout);
+  [[maybe_unused]] bool Abs = PF.getAddrDelta().evaluateKnownAbsolute(AddrDelta, Layout);
   assert(Abs && "We created a pseudo probe with an invalid expression");
-  (void)Abs;
   SmallVectorImpl<char> &Data = PF.getContents();
   Data.clear();
   raw_svector_ostream OSE(Data);

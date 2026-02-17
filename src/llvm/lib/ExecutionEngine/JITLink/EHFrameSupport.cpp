@@ -112,8 +112,7 @@ Error EHFrameSplitter::processBlock(LinkGraph &G, Block &B,
     }
 
     uint64_t BlockSize = BlockReader.getOffset() - RecordStartOffset;
-    auto &NewBlock = G.splitBlock(B, BlockSize);
-    (void)NewBlock;
+    [[maybe_unused]] auto &NewBlock = G.splitBlock(B, BlockSize);
     LLVM_DEBUG(dbgs() << "      Extracted " << NewBlock << "\n");
   }
 }

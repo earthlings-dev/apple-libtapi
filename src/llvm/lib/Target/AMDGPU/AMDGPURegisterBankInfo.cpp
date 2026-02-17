@@ -1116,9 +1116,8 @@ void AMDGPURegisterBankInfo::constrainOpWithReadfirstlane(
 
   MRI.setType(SGPR, Ty);
 
-  const TargetRegisterClass *Constrained =
+  [[maybe_unused]] const TargetRegisterClass *Constrained =
       constrainGenericRegister(Reg, AMDGPU::VGPR_32RegClass, MRI);
-  (void)Constrained;
   assert(Constrained && "Failed to constrain readfirstlane src reg");
 
   MI.getOperand(OpIdx).setReg(SGPR);
@@ -2833,8 +2832,7 @@ void AMDGPURegisterBankInfo::applyMappingImpl(
 
     Register SrcReg = MI.getOperand(1).getReg();
     Register InsReg = MI.getOperand(2).getReg();
-    LLT InsTy = MRI.getType(InsReg);
-    (void)InsTy;
+    [[maybe_unused]] LLT InsTy = MRI.getType(InsReg);
 
     Register BaseIdxReg;
     unsigned ConstOffset;

@@ -32,9 +32,8 @@ std::string llvm::getModeName(unsigned Mode) {
 ValueTypeByHwMode::ValueTypeByHwMode(Record *R, const CodeGenHwModes &CGH) {
   const HwModeSelect &MS = CGH.getHwModeSelect(R);
   for (const HwModeSelect::PairType &P : MS.Items) {
-    auto I = Map.insert({P.first, MVT(llvm::getValueType(P.second))});
+    [[maybe_unused]] auto I = Map.insert({P.first, MVT(llvm::getValueType(P.second))});
     assert(I.second && "Duplicate entry?");
-    (void)I;
   }
 }
 
@@ -145,9 +144,8 @@ RegSizeInfoByHwMode::RegSizeInfoByHwMode(Record *R,
       const CodeGenHwModes &CGH) {
   const HwModeSelect &MS = CGH.getHwModeSelect(R);
   for (const HwModeSelect::PairType &P : MS.Items) {
-    auto I = Map.insert({P.first, RegSizeInfo(P.second, CGH)});
+    [[maybe_unused]] auto I = Map.insert({P.first, RegSizeInfo(P.second, CGH)});
     assert(I.second && "Duplicate entry?");
-    (void)I;
   }
 }
 
@@ -197,9 +195,8 @@ EncodingInfoByHwMode::EncodingInfoByHwMode(Record *R, const CodeGenHwModes &CGH)
   for (const HwModeSelect::PairType &P : MS.Items) {
     assert(P.second && P.second->isSubClassOf("InstructionEncoding") &&
            "Encoding must subclass InstructionEncoding");
-    auto I = Map.insert({P.first, P.second});
+    [[maybe_unused]] auto I = Map.insert({P.first, P.second});
     assert(I.second && "Duplicate entry?");
-    (void)I;
   }
 }
 

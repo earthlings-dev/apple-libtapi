@@ -142,8 +142,7 @@ void MachObjectWriter::writeHeader(MachO::HeaderFileType Type,
   // struct mach_header (28 bytes) or
   // struct mach_header_64 (32 bytes)
 
-  uint64_t Start = W.OS.tell();
-  (void) Start;
+  [[maybe_unused]] uint64_t Start = W.OS.tell();
 
   W.write<uint32_t>(is64Bit() ? MachO::MH_MAGIC_64 : MachO::MH_MAGIC);
 
@@ -178,8 +177,7 @@ void MachObjectWriter::writeSegmentLoadCommand(
   // struct segment_command (56 bytes) or
   // struct segment_command_64 (72 bytes)
 
-  uint64_t Start = W.OS.tell();
-  (void) Start;
+  [[maybe_unused]] uint64_t Start = W.OS.tell();
 
   unsigned SegmentLoadCommandSize =
     is64Bit() ? sizeof(MachO::segment_command_64):
@@ -228,8 +226,7 @@ void MachObjectWriter::writeSection(const MCAsmLayout &Layout,
   // struct section (68 bytes) or
   // struct section_64 (80 bytes)
 
-  uint64_t Start = W.OS.tell();
-  (void) Start;
+  [[maybe_unused]] uint64_t Start = W.OS.tell();
 
   writeWithPadding(Section.getName(), 16);
   writeWithPadding(Section.getSegmentName(), 16);
@@ -262,8 +259,7 @@ void MachObjectWriter::writeSymtabLoadCommand(uint32_t SymbolOffset,
                                               uint32_t StringTableSize) {
   // struct symtab_command (24 bytes)
 
-  uint64_t Start = W.OS.tell();
-  (void) Start;
+  [[maybe_unused]] uint64_t Start = W.OS.tell();
 
   W.write<uint32_t>(MachO::LC_SYMTAB);
   W.write<uint32_t>(sizeof(MachO::symtab_command));
@@ -285,8 +281,7 @@ void MachObjectWriter::writeDysymtabLoadCommand(uint32_t FirstLocalSymbol,
                                                 uint32_t NumIndirectSymbols) {
   // struct dysymtab_command (80 bytes)
 
-  uint64_t Start = W.OS.tell();
-  (void) Start;
+  [[maybe_unused]] uint64_t Start = W.OS.tell();
 
   W.write<uint32_t>(MachO::LC_DYSYMTAB);
   W.write<uint32_t>(sizeof(MachO::dysymtab_command));
@@ -407,8 +402,7 @@ void MachObjectWriter::writeNlist(MachSymbolData &MSD,
 void MachObjectWriter::writeLinkeditLoadCommand(uint32_t Type,
                                                 uint32_t DataOffset,
                                                 uint32_t DataSize) {
-  uint64_t Start = W.OS.tell();
-  (void) Start;
+  [[maybe_unused]] uint64_t Start = W.OS.tell();
 
   W.write<uint32_t>(Type);
   W.write<uint32_t>(sizeof(MachO::linkedit_data_command));
@@ -431,8 +425,7 @@ void MachObjectWriter::writeLinkerOptionsLoadCommand(
   const std::vector<std::string> &Options)
 {
   unsigned Size = ComputeLinkerOptionsLoadCommandSize(Options, is64Bit());
-  uint64_t Start = W.OS.tell();
-  (void) Start;
+  [[maybe_unused]] uint64_t Start = W.OS.tell();
 
   W.write<uint32_t>(MachO::LC_LINKER_OPTION);
   W.write<uint32_t>(Size);

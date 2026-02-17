@@ -1973,12 +1973,11 @@ unsigned RAGreedy::doRegionSplit(LiveInterval &VirtReg, unsigned BestCand,
   // Assign bundles for the best candidate region.
   if (BestCand != NoCand) {
     GlobalSplitCandidate &Cand = GlobalCand[BestCand];
-    if (unsigned B = Cand.getBundles(BundleCand, BestCand)) {
+    if ([[maybe_unused]] unsigned B = Cand.getBundles(BundleCand, BestCand)) {
       UsedCands.push_back(BestCand);
       Cand.IntvIdx = SE->openIntv();
       LLVM_DEBUG(dbgs() << "Split for " << printReg(Cand.PhysReg, TRI) << " in "
                         << B << " bundles, intv " << Cand.IntvIdx << ".\n");
-      (void)B;
     }
   }
 
@@ -1986,12 +1985,11 @@ unsigned RAGreedy::doRegionSplit(LiveInterval &VirtReg, unsigned BestCand,
   if (HasCompact) {
     GlobalSplitCandidate &Cand = GlobalCand.front();
     assert(!Cand.PhysReg && "Compact region has no physreg");
-    if (unsigned B = Cand.getBundles(BundleCand, 0)) {
+    if ([[maybe_unused]] unsigned B = Cand.getBundles(BundleCand, 0)) {
       UsedCands.push_back(0);
       Cand.IntvIdx = SE->openIntv();
       LLVM_DEBUG(dbgs() << "Split for compact region in " << B
                         << " bundles, intv " << Cand.IntvIdx << ".\n");
-      (void)B;
     }
   }
 

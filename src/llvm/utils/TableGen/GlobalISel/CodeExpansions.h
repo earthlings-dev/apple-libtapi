@@ -24,9 +24,8 @@ protected:
 
 public:
   void declare(StringRef Name, StringRef Expansion) {
-    bool Inserted = Expansions.try_emplace(Name, Expansion).second;
+    [[maybe_unused]] bool Inserted = Expansions.try_emplace(Name, Expansion).second;
     assert(Inserted && "Declared variable twice");
-    (void)Inserted;
   }
 
   std::string lookup(StringRef Variable) const {

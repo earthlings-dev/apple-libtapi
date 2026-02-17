@@ -560,7 +560,7 @@ void ScheduleDAGRRList::ReleasePredecessors(SUnit *SU) {
       // expensive to copy the register. Make sure nothing that can
       // clobber the register is scheduled between the predecessor and
       // this node.
-      SUnit *RegDef = LiveRegDefs[Pred.getReg()]; (void)RegDef;
+      [[maybe_unused]] SUnit *RegDef = LiveRegDefs[Pred.getReg()];
       assert((!RegDef || RegDef == SU || RegDef == Pred.getSUnit()) &&
              "interference on register dependence");
       LiveRegDefs[Pred.getReg()] = Pred.getSUnit();
@@ -1853,14 +1853,13 @@ static SUnit *popFromQueueImpl(std::vector<SUnit *> &Q, SF &Picker) {
 }
 
 template<class SF>
-SUnit *popFromQueue(std::vector<SUnit *> &Q, SF &Picker, ScheduleDAG *DAG) {
+SUnit *popFromQueue(std::vector<SUnit *> &Q, SF &Picker, [[maybe_unused]] ScheduleDAG *DAG) {
 #ifndef NDEBUG
   if (DAG->StressSched) {
     reverse_sort<SF> RPicker(Picker);
     return popFromQueueImpl(Q, RPicker);
   }
 #endif
-  (void)DAG;
   return popFromQueueImpl(Q, Picker);
 }
 

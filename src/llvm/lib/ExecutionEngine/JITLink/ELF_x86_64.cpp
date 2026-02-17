@@ -315,7 +315,7 @@ private:
       }
       uint64_t Address = SecRef.sh_addr;
       uint64_t Size = SecRef.sh_size;
-      uint64_t Flags = SecRef.sh_flags;
+      [[maybe_unused]] uint64_t Flags = SecRef.sh_flags;
       uint64_t Alignment = SecRef.sh_addralign;
       const char *Data = nullptr;
       // for now we just use this to skip the "undefined" section, probably need
@@ -324,7 +324,6 @@ private:
         continue;
 
       // FIXME: Use flags.
-      (void)Flags;
 
       LLVM_DEBUG({
         dbgs() << "  " << *Name << ": " << formatv("{0:x16}", Address) << " -- "

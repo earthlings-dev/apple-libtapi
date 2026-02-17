@@ -652,13 +652,11 @@ MachineInstrBuilder MachineIRBuilder::buildShuffleVector(const DstOp &Res,
                                                          const SrcOp &Src2,
                                                          ArrayRef<int> Mask) {
   LLT DstTy = Res.getLLTTy(*getMRI());
-  LLT Src1Ty = Src1.getLLTTy(*getMRI());
-  LLT Src2Ty = Src2.getLLTTy(*getMRI());
+  [[maybe_unused]] LLT Src1Ty = Src1.getLLTTy(*getMRI());
+  [[maybe_unused]] LLT Src2Ty = Src2.getLLTTy(*getMRI());
   assert(Src1Ty.getNumElements() + Src2Ty.getNumElements() >= Mask.size());
   assert(DstTy.getElementType() == Src1Ty.getElementType() &&
          DstTy.getElementType() == Src2Ty.getElementType());
-  (void)Src1Ty;
-  (void)Src2Ty;
   ArrayRef<int> MaskAlloc = getMF().allocateShuffleMask(Mask);
   return buildInstr(TargetOpcode::G_SHUFFLE_VECTOR, {DstTy}, {Src1, Src2})
       .addShuffleMask(MaskAlloc);

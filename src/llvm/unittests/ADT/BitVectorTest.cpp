@@ -1142,8 +1142,7 @@ TYPED_TEST(BitVectorTest, Iterators) {
 
   TypeParam Empty;
   EXPECT_EQ(Empty.set_bits_begin(), Empty.set_bits_end());
-  for (unsigned Bit : Empty.set_bits()) {
-    (void)Bit;
+  for ([[maybe_unused]] unsigned Bit : Empty.set_bits()) {
     EXPECT_TRUE(false);
   }
 

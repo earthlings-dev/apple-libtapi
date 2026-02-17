@@ -3139,11 +3139,10 @@ bool Sema::CheckMemberPointerConversion(Expr *From, QualType ToType,
 
   CXXBasePaths Paths(/*FindAmbiguities=*/true, /*RecordPaths=*/true,
                      /*DetectVirtual=*/true);
-  bool DerivationOkay =
+  [[maybe_unused]] bool DerivationOkay =
       IsDerivedFrom(From->getBeginLoc(), ToClass, FromClass, Paths);
   assert(DerivationOkay &&
          "Should not have been called if derivation isn't OK.");
-  (void)DerivationOkay;
 
   if (Paths.isAmbiguous(Context.getCanonicalType(FromClass).
                                   getUnqualifiedType())) {
@@ -6594,8 +6593,7 @@ static bool convertArgsForAvailabilityChecks(
       return false;
     ConvertedThis = R.get();
   } else {
-    if (auto *MD = dyn_cast<CXXMethodDecl>(Function)) {
-      (void)MD;
+    if ([[maybe_unused]] auto *MD = dyn_cast<CXXMethodDecl>(Function)) {
       assert((MissingImplicitThis || MD->isStatic() ||
               isa<CXXConstructorDecl>(MD)) &&
              "Expected `this` for non-ctor instance methods");
@@ -11220,8 +11218,7 @@ static void NoteFunctionCandidate(Sema &S, OverloadCandidate *Cand,
     return;
 
   case ovl_fail_addr_not_available: {
-    bool Available = checkAddressOfCandidateIsAvailable(S, Cand->Function);
-    (void)Available;
+    [[maybe_unused]] bool Available = checkAddressOfCandidateIsAvailable(S, Cand->Function);
     assert(!Available);
     break;
   }

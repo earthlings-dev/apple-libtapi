@@ -377,11 +377,10 @@ bool SoftPointerAuth::transformRelocations() {
       if (result.second) rootUsers.push_back(user);
 
       // Fill out the path down to the use.
-      UseSite *site = &result.first->second;
+      [[maybe_unused]] UseSite *site = &result.first->second;
       for (; path; path = path->Next) {
         site = &site->Children[path->OperandIndex];
       }
-      (void) site;
     });
   }
 

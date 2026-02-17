@@ -96,9 +96,8 @@ MachineBasicBlock *fixBrTableDefault(MachineInstr &MI, MachineBasicBlock *MBB,
   MachineBasicBlock *TBB = nullptr, *FBB = nullptr;
   SmallVector<MachineOperand, 2> Cond;
   const auto &TII = *MF.getSubtarget<WebAssemblySubtarget>().getInstrInfo();
-  bool Analyzed = !TII.analyzeBranch(*HeaderMBB, TBB, FBB, Cond);
+  [[maybe_unused]] bool Analyzed = !TII.analyzeBranch(*HeaderMBB, TBB, FBB, Cond);
   assert(Analyzed && "Could not analyze jump header branches");
-  (void)Analyzed;
 
   // Here are the possible outcomes. '_' is nullptr, `J` is the jump table block
   // aka MBB, 'D' is the default block.

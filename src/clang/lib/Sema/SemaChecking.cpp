@@ -3240,13 +3240,12 @@ bool Sema::CheckHexagonBuiltinArgument(unsigned BuiltinID, CallExpr *TheCall) {
 
   // Use a dynamically initialized static to sort the table exactly once on
   // first run.
-  static const bool SortOnce =
+  [[maybe_unused]] static const bool SortOnce =
       (llvm::sort(Infos,
                  [](const BuiltinInfo &LHS, const BuiltinInfo &RHS) {
                    return LHS.BuiltinID < RHS.BuiltinID;
                  }),
        true);
-  (void)SortOnce;
 
   const BuiltinInfo *F = llvm::partition_point(
       Infos, [=](const BuiltinInfo &BI) { return BI.BuiltinID < BuiltinID; });
@@ -15652,8 +15651,7 @@ static bool isLayoutCompatibleUnion(ASTContext &C, RecordDecl *RD1,
 
     for ( ; I != E; ++I) {
       if (isLayoutCompatible(C, Field1, *I)) {
-        bool Result = UnmatchedFields.erase(*I);
-        (void) Result;
+        [[maybe_unused]] bool Result = UnmatchedFields.erase(*I);
         assert(Result);
         break;
       }

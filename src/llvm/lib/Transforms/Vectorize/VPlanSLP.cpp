@@ -67,10 +67,9 @@ void VPlanSlp::addCombined(ArrayRef<VPValue *> Operands, VPInstruction *New) {
     WidestBundleBits = std::max(WidestBundleBits, BundleSize);
   }
 
-  auto Res = BundleToCombined.try_emplace(to_vector<4>(Operands), New);
+  [[maybe_unused]] auto Res = BundleToCombined.try_emplace(to_vector<4>(Operands), New);
   assert(Res.second &&
          "Already created a combined instruction for the operand bundle");
-  (void)Res;
 }
 
 bool VPlanSlp::areVectorizable(ArrayRef<VPValue *> Operands) const {

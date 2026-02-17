@@ -118,8 +118,7 @@ MachineBasicBlock *llvm::PeelSingleBlockLoop(LoopPeelDirection Direction,
 
     MachineBasicBlock *TBB = nullptr, *FBB = nullptr;
     SmallVector<MachineOperand, 4> Cond;
-    bool CanAnalyzeBr = !TII->analyzeBranch(*Loop, TBB, FBB, Cond);
-    (void)CanAnalyzeBr;
+    [[maybe_unused]] bool CanAnalyzeBr = !TII->analyzeBranch(*Loop, TBB, FBB, Cond);
     assert(CanAnalyzeBr && "Must be able to analyze the loop branch!");
     TII->removeBranch(*Loop);
     TII->insertBranch(*Loop, TBB == Exit ? NewBB : TBB,

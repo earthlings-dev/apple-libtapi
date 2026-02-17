@@ -459,8 +459,7 @@ static unsigned GetPseudoRandomNumber() {
   // Arrange to call srand once when this function is first used, and
   // otherwise (if GetRandomNumber always succeeds in using
   // CryptGenRandom) don't bother at all.
-  static int x = (static_cast<void>(::srand(GetRandomNumberSeed())), 0);
-  (void)x;
+  [[maybe_unused]] static int x = (static_cast<void>(::srand(GetRandomNumberSeed())), 0);
   return ::rand();
 }
 

@@ -846,7 +846,6 @@ std::error_code mapped_file_region::init(int FD, uint64_t Offset,
 mapped_file_region::mapped_file_region(int fd, mapmode mode, size_t length,
                                        uint64_t offset, std::error_code &ec)
     : Size(length), Mapping(), Mode(mode) {
-  (void)Mode;
   ec = init(fd, offset, mode);
   if (ec)
     Mapping = nullptr;
@@ -998,8 +997,7 @@ std::error_code openFile(const Twine &Name, int &ResultFD,
     return std::error_code(errno, std::generic_category());
 #ifndef O_CLOEXEC
   if (!(Flags & OF_ChildInherit)) {
-    int r = fcntl(ResultFD, F_SETFD, FD_CLOEXEC);
-    (void)r;
+    [[maybe_unused]] int r = fcntl(ResultFD, F_SETFD, FD_CLOEXEC);
     assert(r == 0 && "fcntl(F_SETFD, FD_CLOEXEC) failed");
   }
 #endif

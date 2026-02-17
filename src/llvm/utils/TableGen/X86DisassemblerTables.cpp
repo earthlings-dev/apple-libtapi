@@ -663,8 +663,7 @@ void DisassemblerTables::emitModRMDecision(raw_ostream &o1, raw_ostream &o2,
                                            unsigned &i1, unsigned &i2,
                                            unsigned &ModRMTableNum,
                                            ModRMDecision &decision) const {
-  static uint32_t sTableNumber = 0;
-  static uint32_t sEntryNumber = 1;
+  [[maybe_unused]] static uint32_t sEntryNumber = 1;
   ModRMDecisionType dt = getDecisionType(decision);
 
   if (dt == MODRM_ONEENTRY && decision.instructionIDs[0] == 0) {

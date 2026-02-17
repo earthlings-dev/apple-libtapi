@@ -144,8 +144,7 @@ public:
     n = 0;
     waitFor = 0;
 
-    int result = pthread_cond_init( &condition, nullptr );
-    (void)result;
+    [[maybe_unused]] int result = pthread_cond_init( &condition, nullptr );
     assert( result == 0 );
 
     result = pthread_mutex_init( &mutex, nullptr );
@@ -154,8 +153,7 @@ public:
 
   ~WaitForThreads()
   {
-    int result = pthread_cond_destroy( &condition );
-    (void)result;
+    [[maybe_unused]] int result = pthread_cond_destroy( &condition );
     assert( result == 0 );
 
     result = pthread_mutex_destroy( &mutex );
@@ -165,8 +163,7 @@ public:
   // All threads will stop here until another thread calls releaseThreads
   void block()
   {
-    int result = pthread_mutex_lock( &mutex );
-    (void)result;
+    [[maybe_unused]] int result = pthread_mutex_lock( &mutex );
     assert( result == 0 );
     n ++;
     //~ std::cout << "block() n " << n << " waitFor " << waitFor << std::endl;
@@ -195,8 +192,7 @@ public:
   // blocked
   void releaseThreads( size_t num )
   {
-    int result = pthread_mutex_lock( &mutex );
-    (void)result;
+    [[maybe_unused]] int result = pthread_mutex_lock( &mutex );
     assert( result == 0 );
 
     if ( n >= num ) {
@@ -227,8 +223,7 @@ private:
     // triggering a new release of threads
     waitFor = 0;
 
-    int result = pthread_cond_broadcast( &condition );
-    (void)result;
+    [[maybe_unused]] int result = pthread_cond_broadcast( &condition );
     assert(result == 0);
   }
 

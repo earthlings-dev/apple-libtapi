@@ -1899,7 +1899,7 @@ VETargetLowering::emitEHSjLjSetJmp(MachineInstr &MI,
   DebugLoc DL = MI.getDebugLoc();
   MachineFunction *MF = MBB->getParent();
   const TargetInstrInfo *TII = Subtarget->getInstrInfo();
-  const TargetRegisterInfo *TRI = Subtarget->getRegisterInfo();
+  [[maybe_unused]] const TargetRegisterInfo *TRI = Subtarget->getRegisterInfo();
   MachineRegisterInfo &MRI = MF->getRegInfo();
 
   const BasicBlock *BB = MBB->getBasicBlock();
@@ -1915,7 +1915,6 @@ VETargetLowering::emitEHSjLjSetJmp(MachineInstr &MI,
   DstReg = MI.getOperand(0).getReg();
   const TargetRegisterClass *RC = MRI.getRegClass(DstReg);
   assert(TRI->isTypeLegalForClass(*RC, MVT::i32) && "Invalid destination!");
-  (void)TRI;
   Register MainDestReg = MRI.createVirtualRegister(RC);
   Register RestoreDestReg = MRI.createVirtualRegister(RC);
 

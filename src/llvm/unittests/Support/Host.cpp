@@ -285,7 +285,7 @@ CPU revision    : 0
 }
 
 #if defined(__APPLE__) || defined(_AIX)
-static bool runAndGetCommandOutput(
+[[maybe_unused]] static bool runAndGetCommandOutput(
     const char *ExePath, ArrayRef<llvm::StringRef> argv,
     std::unique_ptr<char[]> &Buffer, off_t &Size) {
   bool Success = false;
@@ -321,8 +321,7 @@ static bool runAndGetCommandOutput(
 
 TEST_F(HostTest, DummyRunAndGetCommandOutputUse) {
   // Suppress defined-but-not-used warnings when the tests using the helper are
-  // disabled.
-  (void) runAndGetCommandOutput;
+  // disabled. The function is now annotated [[maybe_unused]].
 }
 #endif
 

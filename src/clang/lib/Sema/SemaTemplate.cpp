@@ -1983,10 +1983,9 @@ DeclResult Sema::CheckClassTemplate(
     NewTemplate->setModulePrivate();
 
   // Build the type for the class template declaration now.
-  QualType T = NewTemplate->getInjectedClassNameSpecialization();
+  [[maybe_unused]] QualType T = NewTemplate->getInjectedClassNameSpecialization();
   T = Context.getInjectedClassNameType(NewClass, T);
   assert(T->isDependentType() && "Class template type is not dependent?");
-  (void)T;
 
   // If we are providing an explicit specialization of a member that is a
   // class template, make a note of that.
@@ -4520,14 +4519,13 @@ Sema::CheckVarTemplateId(VarTemplateDecl *Template, SourceLocation TemplateLoc,
     VarTemplatePartialSpecializationDecl *Partial = PartialSpecs[I];
     TemplateDeductionInfo Info(FailedCandidates.getLocation());
 
-    if (TemplateDeductionResult Result =
+    if ([[maybe_unused]] TemplateDeductionResult Result =
             DeduceTemplateArguments(Partial, TemplateArgList, Info)) {
       // Store the failed-deduction information for use in diagnostics, later.
       // TODO: Actually use the failed-deduction info?
       FailedCandidates.addCandidate().set(
           DeclAccessPair::make(Template, AS_public), Partial,
           MakeDeductionFailureInfo(Context, Result, Info));
-      (void)Result;
     } else {
       Matched.push_back(PartialSpecMatchResult());
       Matched.back().Partial = Partial;
@@ -8980,7 +8978,7 @@ bool Sema::CheckFunctionTemplateSpecialization(
       // FIXME: It is somewhat wasteful to build
       TemplateDeductionInfo Info(FailedCandidates.getLocation());
       FunctionDecl *Specialization = nullptr;
-      if (TemplateDeductionResult TDK = DeduceTemplateArguments(
+      if ([[maybe_unused]] TemplateDeductionResult TDK = DeduceTemplateArguments(
               cast<FunctionTemplateDecl>(FunTmpl->getFirstDecl()),
               ExplicitTemplateArgs ? &Args : nullptr, FT, Specialization,
               Info)) {
@@ -8989,7 +8987,6 @@ bool Sema::CheckFunctionTemplateSpecialization(
         FailedCandidates.addCandidate().set(
             I.getPair(), FunTmpl->getTemplatedDecl(),
             MakeDeductionFailureInfo(Context, TDK, Info));
-        (void)TDK;
         continue;
       }
 
@@ -10152,7 +10149,7 @@ DeclResult Sema::ActOnExplicitInstantiation(Scope *S,
 
     TemplateDeductionInfo Info(FailedCandidates.getLocation());
     FunctionDecl *Specialization = nullptr;
-    if (TemplateDeductionResult TDK
+    if ([[maybe_unused]] TemplateDeductionResult TDK
           = DeduceTemplateArguments(FunTmpl,
                                (HasExplicitTemplateArgs ? &TemplateArgs
                                                         : nullptr),
@@ -10161,7 +10158,6 @@ DeclResult Sema::ActOnExplicitInstantiation(Scope *S,
       FailedCandidates.addCandidate()
           .set(P.getPair(), FunTmpl->getTemplatedDecl(),
                MakeDeductionFailureInfo(Context, TDK, Info));
-      (void)TDK;
       continue;
     }
 

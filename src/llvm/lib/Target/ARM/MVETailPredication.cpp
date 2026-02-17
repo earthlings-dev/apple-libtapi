@@ -206,7 +206,7 @@ bool MVETailPredication::IsSafeActiveMask(IntrinsicInst *ActiveLaneMask,
 
   Value *ElemCount = ActiveLaneMask->getOperand(1);
   auto *EC= SE->getSCEV(ElemCount);
-  auto *TC = SE->getSCEV(TripCount);
+  [[maybe_unused]] auto *TC = SE->getSCEV(TripCount);
   int VectorWidth =
       cast<FixedVectorType>(ActiveLaneMask->getType())->getNumElements();
   if (VectorWidth != 4 && VectorWidth != 8 && VectorWidth != 16)
@@ -269,8 +269,6 @@ bool MVETailPredication::IsSafeActiveMask(IntrinsicInst *ActiveLaneMask,
     // Ceil = ElementCount + (VW-1) / VW
     auto *Ceil = SE->getUDivExpr(ECPlusVWMinus1, VW);
 
-    // Prevent unused variable warnings with TC
-    (void)TC;
     LLVM_DEBUG(
       dbgs() << "ARM TP: Analysing overflow behaviour for:\n";
       dbgs() << "ARM TP: - TripCount = "; TC->dump();

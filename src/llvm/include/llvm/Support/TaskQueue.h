@@ -66,7 +66,7 @@ class TaskQueue {
 
 public:
   /// Construct a task queue with no work.
-  TaskQueue(ThreadPool &Scheduler) : Scheduler(Scheduler) { (void)Scheduler; }
+  TaskQueue([[maybe_unused]] ThreadPool &Scheduler) : Scheduler(Scheduler) { }
 
   /// Blocking destructor: the queue will wait for all work to complete.
   ~TaskQueue() {

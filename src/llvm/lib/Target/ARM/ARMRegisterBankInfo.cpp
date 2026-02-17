@@ -139,8 +139,7 @@ ARMRegisterBankInfo::ARMRegisterBankInfo(const TargetRegisterInfo &TRI)
   static llvm::once_flag InitializeRegisterBankFlag;
 
   static auto InitializeRegisterBankOnce = [&]() {
-    const RegisterBank &RBGPR = getRegBank(ARM::GPRRegBankID);
-    (void)RBGPR;
+    [[maybe_unused]] const RegisterBank &RBGPR = getRegBank(ARM::GPRRegBankID);
     assert(&ARM::GPRRegBank == &RBGPR && "The order in RegBanks is messed up");
 
     // Initialize the GPR bank.
@@ -375,10 +374,8 @@ ARMRegisterBankInfo::getInstrMapping(const MachineInstr &MI) const {
         getOperandsMapping({&ARM::ValueMappings[ARM::GPR3OpsIdx], nullptr});
     break;
   case G_SELECT: {
-    LLT Ty = MRI.getType(MI.getOperand(0).getReg());
-    (void)Ty;
-    LLT Ty2 = MRI.getType(MI.getOperand(1).getReg());
-    (void)Ty2;
+    [[maybe_unused]] LLT Ty = MRI.getType(MI.getOperand(0).getReg());
+    [[maybe_unused]] LLT Ty2 = MRI.getType(MI.getOperand(1).getReg());
     assert(Ty.getSizeInBits() == 32 && "Unsupported size for G_SELECT");
     assert(Ty2.getSizeInBits() == 1 && "Unsupported size for G_SELECT");
     OperandsMapping =
@@ -389,8 +386,7 @@ ARMRegisterBankInfo::getInstrMapping(const MachineInstr &MI) const {
     break;
   }
   case G_ICMP: {
-    LLT Ty2 = MRI.getType(MI.getOperand(2).getReg());
-    (void)Ty2;
+    [[maybe_unused]] LLT Ty2 = MRI.getType(MI.getOperand(2).getReg());
     assert(Ty2.getSizeInBits() == 32 && "Unsupported size for G_ICMP");
     OperandsMapping =
         getOperandsMapping({&ARM::ValueMappings[ARM::GPR3OpsIdx], nullptr,
@@ -399,11 +395,9 @@ ARMRegisterBankInfo::getInstrMapping(const MachineInstr &MI) const {
     break;
   }
   case G_FCMP: {
-    LLT Ty = MRI.getType(MI.getOperand(0).getReg());
-    (void)Ty;
+    [[maybe_unused]] LLT Ty = MRI.getType(MI.getOperand(0).getReg());
     LLT Ty1 = MRI.getType(MI.getOperand(2).getReg());
-    LLT Ty2 = MRI.getType(MI.getOperand(3).getReg());
-    (void)Ty2;
+    [[maybe_unused]] LLT Ty2 = MRI.getType(MI.getOperand(3).getReg());
     assert(Ty.getSizeInBits() == 1 && "Unsupported size for G_FCMP");
     assert(Ty1.getSizeInBits() == Ty2.getSizeInBits() &&
            "Mismatched operand sizes for G_FCMP");

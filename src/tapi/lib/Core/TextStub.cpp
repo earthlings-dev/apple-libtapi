@@ -123,7 +123,7 @@ template <> struct ScalarBitSetTraits<Flags> {
 
 template <> struct ScalarTraits<PlatformSet> {
   static void output(const PlatformSet &value, void *io, raw_ostream &out) {
-    const auto *ctx = reinterpret_cast<TAPI_INTERNAL::YAMLContext *>(io);
+    [[maybe_unused]] const auto *ctx = reinterpret_cast<TAPI_INTERNAL::YAMLContext *>(io);
     assert((!ctx || ctx && ctx->fileType != TAPI_INTERNAL::FileType::Invalid) &&
            "File type is not set in context");
 
@@ -153,7 +153,7 @@ template <> struct ScalarTraits<PlatformSet> {
   }
 
   static StringRef input(StringRef scalar, void *io, PlatformSet &value) {
-    const auto *ctx = reinterpret_cast<TAPI_INTERNAL::YAMLContext *>(io);
+    [[maybe_unused]] const auto *ctx = reinterpret_cast<TAPI_INTERNAL::YAMLContext *>(io);
     assert((!ctx || ctx && ctx->fileType != TAPI_INTERNAL::FileType::Invalid) &&
            "File type is not set in context");
 

@@ -7598,9 +7598,8 @@ llvm::Value *CGObjCNonFragileABIMac::EmitMetaClassRef(CodeGenFunction &CGF,
 llvm::Value *CGObjCNonFragileABIMac::GetClass(CodeGenFunction &CGF,
                                               const ObjCInterfaceDecl *ID) {
   if (ID->isWeakImported()) {
-    llvm::Constant *ClassGV = GetClassGlobal(ID, /*metaclass*/ false,
+    [[maybe_unused]] llvm::Constant *ClassGV = GetClassGlobal(ID, /*metaclass*/ false,
                                              NotForDefinition);
-    (void)ClassGV;
     assert(!isa<llvm::GlobalVariable>(ClassGV) ||
            cast<llvm::GlobalVariable>(ClassGV)->hasExternalWeakLinkage());
   }

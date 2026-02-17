@@ -801,11 +801,10 @@ static void collectCallSiteParameters(const MachineInstr *CallMI,
 
   // Add all the forwarding registers into the ForwardedRegWorklist.
   for (auto ArgReg : CallFwdRegsInfo->second) {
-    bool InsertedReg =
+    [[maybe_unused]] bool InsertedReg =
         ForwardedRegWorklist.insert({ArgReg.Reg, {{ArgReg.Reg, EmptyExpr}}})
             .second;
     assert(InsertedReg && "Single register used to forward two arguments?");
-    (void)InsertedReg;
   }
 
   // Do not emit CSInfo for undef forwarding registers.
@@ -827,8 +826,7 @@ static void collectCallSiteParameters(const MachineInstr *CallMI,
   if (CallMI->hasDelaySlot()) {
     auto Suc = std::next(CallMI->getIterator());
     // Only one-instruction delay slot is supported.
-    auto BundleEnd = llvm::getBundleEnd(CallMI->getIterator());
-    (void)BundleEnd;
+    [[maybe_unused]] auto BundleEnd = llvm::getBundleEnd(CallMI->getIterator());
     assert(std::next(Suc) == BundleEnd &&
            "More than one instruction in call delay slot");
     // Try to interpret value loaded by instruction.
@@ -877,10 +875,8 @@ void DwarfDebug::constructCallSiteEntryDIEs(const DISubprogram &SP,
     if (!MI.isBundledWithSucc())
       return false;
     auto Suc = std::next(MI.getIterator());
-    auto CallInstrBundle = getBundleStart(MI.getIterator());
-    (void)CallInstrBundle;
-    auto DelaySlotBundle = getBundleStart(Suc);
-    (void)DelaySlotBundle;
+    [[maybe_unused]] auto CallInstrBundle = getBundleStart(MI.getIterator());
+    [[maybe_unused]] auto DelaySlotBundle = getBundleStart(Suc);
     // Ensure that label after call is following delay slot instruction.
     // Ex. CALL_INSTRUCTION {
     //       DELAY_SLOT_INSTRUCTION }
@@ -1895,8 +1891,7 @@ void DwarfDebug::beginInstruction(const MachineInstr *MI) {
   auto delaySlotSupported = [](const MachineInstr &MI) {
     if (!MI.isBundledWithSucc())
       return false;
-    auto Suc = std::next(MI.getIterator());
-    (void)Suc;
+    [[maybe_unused]] auto Suc = std::next(MI.getIterator());
     // Ensure that delay slot instruction is successor of the call instruction.
     // Ex. CALL_INSTRUCTION {
     //        DELAY_SLOT_INSTRUCTION }

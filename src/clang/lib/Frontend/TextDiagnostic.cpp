@@ -125,9 +125,8 @@ printableTextForNextCharacter(StringRef SourceLine, size_t *i,
     unsigned char const *cp_end =
         begin + llvm::getNumBytesForUTF8(SourceLine[*i]);
 
-    llvm::ConversionResult res = llvm::ConvertUTF8toUTF32(
+    [[maybe_unused]] llvm::ConversionResult res = llvm::ConvertUTF8toUTF32(
         &begin, cp_end, &cptr, cptr + 1, llvm::strictConversion);
-    (void)res;
     assert(llvm::conversionOK == res);
     assert(0 < begin-original_begin
            && "we must be further along in the string now");

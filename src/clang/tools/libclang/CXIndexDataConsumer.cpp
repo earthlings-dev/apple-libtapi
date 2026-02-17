@@ -497,8 +497,7 @@ void CXIndexDataConsumer::importedModule(const ImportDecl *ImportD) {
   CXIdxImportedASTFileInfo Info = {static_cast<CXFile>(FE), Mod,
                                    getIndexLoc(ImportD->getLocation()),
                                    ImportD->isImplicit()};
-  CXIdxClientASTFile astFile = CB.importedASTFile(ClientData, &Info);
-  (void)astFile;
+  [[maybe_unused]] CXIdxClientASTFile astFile = CB.importedASTFile(ClientData, &Info);
 }
 
 void CXIndexDataConsumer::importedPCH(const FileEntry *File) {
@@ -512,8 +511,7 @@ void CXIndexDataConsumer::importedPCH(const FileEntry *File) {
                                     getIndexLoc(SourceLocation()),
                                     /*isImplicit=*/false
                                   };
-  CXIdxClientASTFile astFile = CB.importedASTFile(ClientData, &Info);
-  (void)astFile;
+  [[maybe_unused]] CXIdxClientASTFile astFile = CB.importedASTFile(ClientData, &Info);
 }
 
 void CXIndexDataConsumer::startedTranslationUnit() {

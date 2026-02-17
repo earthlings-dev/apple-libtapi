@@ -223,8 +223,7 @@ SuspendCrossingInfo::SuspendCrossingInfo(Function &F, coro::Shape &Shape)
   }
 
   // Iterate propagating consumes and kills until they stop changing.
-  int Iteration = 0;
-  (void)Iteration;
+  [[maybe_unused]] int Iteration = 0;
 
   bool Changed;
   do {

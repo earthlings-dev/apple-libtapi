@@ -660,7 +660,7 @@ public:
     Res.setOpcode(Hexagon::BUNDLE);
     Res.addOperand(MCOperand::createImm(Inst.getOperand(0).getImm()));
     // Copy the results into the bundle.
-    bool Update = false;
+    [[maybe_unused]] bool Update = false;
     for (auto &I : HexagonMCInstrInfo::bundleInstructions(Inst)) {
       MCInst &CrntHMI = const_cast<MCInst &>(*I.getInst());
 
@@ -682,7 +682,6 @@ public:
     }
 
     Inst = std::move(Res);
-    (void)Update;
     assert(Update && "Didn't find relaxation target");
   }
 
@@ -748,10 +747,9 @@ public:
                   Size = 0;
                 }
               }
-              bool Error = HexagonMCShuffle(Context, true, *MCII,
+              [[maybe_unused]] bool Error = HexagonMCShuffle(Context, true, *MCII,
                                             *RF.getSubtargetInfo(), Inst);
               //assert(!Error);
-              (void)Error;
               ReplaceInstruction(Asm.getEmitter(), RF, Inst);
               Layout.invalidateFragmentsFrom(&RF);
               Size = 0; // Only look back one instruction

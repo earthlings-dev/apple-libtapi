@@ -50,9 +50,8 @@ uint32_t RCToken::intValue() const {
   // We assume that the token already is a correct integer (checked by
   // rcGetAsInteger).
   uint32_t Result;
-  bool IsSuccess = rcGetAsInteger(TokenValue, Result);
+  [[maybe_unused]] bool IsSuccess = rcGetAsInteger(TokenValue, Result);
   assert(IsSuccess);
-  (void)IsSuccess;  // Silence the compiler warning when -DNDEBUG flag is on.
   return Result;
 }
 

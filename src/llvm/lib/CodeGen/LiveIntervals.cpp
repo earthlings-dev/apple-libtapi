@@ -346,8 +346,7 @@ void LiveIntervals::computeLiveInRegUnits() {
           LR = RegUnitRanges[Unit] = new LiveRange(UseSegmentSetForPhysRegs);
           NewRanges.push_back(Unit);
         }
-        VNInfo *VNI = LR->createDeadDef(Begin, getVNInfoAllocator());
-        (void)VNI;
+        [[maybe_unused]] VNInfo *VNI = LR->createDeadDef(Begin, getVNInfoAllocator());
         LLVM_DEBUG(dbgs() << ' ' << printRegUnit(Unit, TRI) << '#' << VNI->id);
       }
     }
@@ -403,9 +402,8 @@ void LiveIntervals::extendSegmentsToUses(LiveRange &Segments,
     SlotIndex BlockStart = Indexes->getMBBStartIdx(MBB);
 
     // Extend the live range for VNI to be live at Idx.
-    if (VNInfo *ExtVNI = Segments.extendInBlock(BlockStart, Idx)) {
+    if ([[maybe_unused]] VNInfo *ExtVNI = Segments.extendInBlock(BlockStart, Idx)) {
       assert(ExtVNI == VNI && "Unexpected existing value number");
-      (void)ExtVNI;
       // Is this a PHIDef we haven't seen before?
       if (!VNI->isPHIDef() || VNI->def != BlockStart ||
           !UsedPHIs.insert(VNI).second)
@@ -431,9 +429,8 @@ void LiveIntervals::extendSegmentsToUses(LiveRange &Segments,
       if (!LiveOut.insert(Pred).second)
         continue;
       SlotIndex Stop = Indexes->getMBBEndIdx(Pred);
-      if (VNInfo *OldVNI = OldRange.getVNInfoBefore(Stop)) {
+      if ([[maybe_unused]] VNInfo *OldVNI = OldRange.getVNInfoBefore(Stop)) {
         assert(OldVNI == VNI && "Wrong value out of predecessor");
-        (void)OldVNI;
         WorkList.push_back(std::make_pair(Stop, VNI));
       } else {
 #ifndef NDEBUG

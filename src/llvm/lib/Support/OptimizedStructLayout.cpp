@@ -436,9 +436,8 @@ llvm::performOptimizedStructLayout(MutableArrayRef<Field> Fields) {
   // Phase 2: repeatedly add the best flexible-offset field until
   // they're all gone.
   while (!FlexibleFieldsByAlignment.empty()) {
-    bool Success = tryAddBestField(None);
+    [[maybe_unused]] bool Success = tryAddBestField(None);
     assert(Success && "didn't find a field with no fixed limit?");
-    (void) Success;
   }
 
   // Copy the layout back into place.

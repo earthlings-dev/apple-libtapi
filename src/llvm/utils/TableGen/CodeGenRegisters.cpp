@@ -1790,7 +1790,7 @@ void CodeGenRegBank::computeRegUnitWeights() {
 
   // Iterate over each Register, normalizing the unit weights until reaching
   // a fix point.
-  unsigned NumIters = 0;
+  [[maybe_unused]] unsigned NumIters = 0;
   for (bool Changed = true; Changed; ++NumIters) {
     assert(NumIters <= NumNativeRegUnits && "Runaway register unit weights");
     Changed = false;
@@ -2087,7 +2087,6 @@ void CodeGenRegBank::computeRegUnitLaneMasks() {
           }
           ++u;
         }
-        (void)Found;
         assert(Found);
       }
     }

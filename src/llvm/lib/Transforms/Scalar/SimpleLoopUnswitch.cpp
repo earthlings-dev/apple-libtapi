@@ -813,10 +813,9 @@ static bool unswitchTrivialSwitch(Loop &L, SwitchInst &SI, DominatorTree &DT,
     // them as predecessors. We skip the first one, either the default or the
     // actual first case.
     bool SkippedFirst = DefaultExitBB == nullptr;
-    for (auto Case : SI.cases()) {
+    for ([[maybe_unused]] auto Case : SI.cases()) {
       assert(Case.getCaseSuccessor() == CommonSuccBB &&
              "Non-common successor!");
-      (void)Case;
       if (!SkippedFirst) {
         SkippedFirst = true;
         continue;
@@ -1452,8 +1451,7 @@ static void buildClonedLoops(Loop &OrigL, ArrayRef<BasicBlock *> ExitBlocks,
         // We just insert into the loop set here. We'll add these blocks to the
         // exit loop after we build up the set in an order that doesn't rely on
         // predecessor order (which in turn relies on use list order).
-        bool Inserted = ExitLoopMap.insert({PredBB, ExitL}).second;
-        (void)Inserted;
+        [[maybe_unused]] bool Inserted = ExitLoopMap.insert({PredBB, ExitL}).second;
         assert(Inserted && "Should only visit an unlooped block once!");
 
         // And recurse through to its predecessors.
@@ -1856,8 +1854,7 @@ static bool rebuildLoopAfterUnswitch(Loop &L, ArrayRef<BasicBlock *> ExitBlocks,
         // We just insert into the loop set here. We'll add these blocks to the
         // exit loop after we build up the set in a deterministic order rather
         // than the predecessor-influenced visit order.
-        bool Inserted = NewExitLoopBlocks.insert(PredBB).second;
-        (void)Inserted;
+        [[maybe_unused]] bool Inserted = NewExitLoopBlocks.insert(PredBB).second;
         assert(Inserted && "Should only visit an unlooped block once!");
 
         // And recurse through to its predecessors.
@@ -2422,8 +2419,7 @@ computeDomSubtreeCost(DomTreeNode &N,
       N.begin(), N.end(), BBCostIt->second, [&](int Sum, DomTreeNode *ChildN) {
         return Sum + computeDomSubtreeCost(*ChildN, BBCostMap, DTCostMap);
       });
-  bool Inserted = DTCostMap.insert({&N, Cost}).second;
-  (void)Inserted;
+  [[maybe_unused]] bool Inserted = DTCostMap.insert({&N, Cost}).second;
   assert(Inserted && "Should not insert a node while visiting children!");
   return Cost;
 }
@@ -2924,8 +2920,7 @@ static bool unswitchLoop(Loop &L, DominatorTree &DT, LoopInfo &LI,
 PreservedAnalyses SimpleLoopUnswitchPass::run(Loop &L, LoopAnalysisManager &AM,
                                               LoopStandardAnalysisResults &AR,
                                               LPMUpdater &U) {
-  Function &F = *L.getHeader()->getParent();
-  (void)F;
+  [[maybe_unused]] Function &F = *L.getHeader()->getParent();
 
   LLVM_DEBUG(dbgs() << "Unswitching loop in " << F.getName() << ": " << L
                     << "\n");

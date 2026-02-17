@@ -670,10 +670,9 @@ TEST(DominatorTree, IDFDeterminismTest) {
 
         BasicBlock *A = &*FI++;
         BasicBlock *B = &*FI++;
-        BasicBlock *C = &*FI++;
+        [[maybe_unused]] BasicBlock *C = &*FI++;
         BasicBlock *D = &*FI++;
         BasicBlock *E = &*FI++;
-        (void)C;
 
         DT->updateDFSNumbers();
         ForwardIDFCalculator IDF(*DT);

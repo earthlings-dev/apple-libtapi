@@ -905,7 +905,7 @@ static void verifyLoop(Loop *L) {
 
   // Indirectbr can interfere with preheader and unique backedge insertion.
   if (!L->getLoopPreheader() || !L->getLoopLatch()) {
-    bool HasIndBrPred = false;
+    [[maybe_unused]] bool HasIndBrPred = false;
     for (pred_iterator PI = pred_begin(L->getHeader()),
          PE = pred_end(L->getHeader()); PI != PE; ++PI)
       if (isa<IndirectBrInst>((*PI)->getTerminator())) {
@@ -914,12 +914,11 @@ static void verifyLoop(Loop *L) {
       }
     assert(HasIndBrPred &&
            "LoopSimplify has no excuse for missing loop header info!");
-    (void)HasIndBrPred;
   }
 
   // Indirectbr can interfere with exit block canonicalization.
   if (!L->hasDedicatedExits()) {
-    bool HasIndBrExiting = false;
+    [[maybe_unused]] bool HasIndBrExiting = false;
     SmallVector<BasicBlock*, 8> ExitingBlocks;
     L->getExitingBlocks(ExitingBlocks);
     for (unsigned i = 0, e = ExitingBlocks.size(); i != e; ++i) {
@@ -931,7 +930,6 @@ static void verifyLoop(Loop *L) {
 
     assert(HasIndBrExiting &&
            "LoopSimplify has no excuse for missing exit block info!");
-    (void)HasIndBrExiting;
   }
 }
 #endif

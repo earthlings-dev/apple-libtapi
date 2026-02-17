@@ -4820,8 +4820,8 @@ Error BitcodeReader::parseFunctionBody(Function *F) {
       LandingPadInst *LP = LandingPadInst::Create(Ty, NumClauses);
       LP->setCleanup(IsCleanup);
       for (unsigned J = 0; J != NumClauses; ++J) {
-        LandingPadInst::ClauseType CT =
-          LandingPadInst::ClauseType(Record[Idx++]); (void)CT;
+        [[maybe_unused]] LandingPadInst::ClauseType CT =
+          LandingPadInst::ClauseType(Record[Idx++]);
         Value *Val;
 
         if (getValueTypePair(Record, Idx, NextValueNo, Val)) {

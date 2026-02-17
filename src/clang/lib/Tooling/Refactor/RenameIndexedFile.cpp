@@ -38,8 +38,7 @@ IndexedFileOccurrenceProducer::IndexedFileOccurrenceProducer(
     }
   }
   if (IsMultiPiece) {
-    for (const auto &Symbol : Symbols) {
-      (void)Symbol;
+    for ([[maybe_unused]] const auto &Symbol : Symbols) {
       assert(Symbol.Name.size() > 1 &&
              "Mixed multi-piece and single piece symbols "
              "are unsupported");
@@ -583,8 +582,7 @@ static void
 findObjCMultiPieceSelectorOccurrences(CompilerInstance &CI,
                                       ArrayRef<IndexedSymbol> Symbols,
                                       IndexedFileOccurrenceConsumer &Consumer) {
-  for (const auto &Symbol : Symbols) {
-    (void)Symbol;
+  for ([[maybe_unused]] const auto &Symbol : Symbols) {
     assert(Symbol.Name.size() > 1 && "Not a multi-piece symbol!");
   }
 

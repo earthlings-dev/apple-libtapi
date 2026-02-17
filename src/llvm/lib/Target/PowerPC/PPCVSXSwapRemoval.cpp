@@ -993,8 +993,8 @@ LLVM_DUMP_METHOD void PPCVSXSwapRemoval::dumpSwapVector() {
 
   for (unsigned EntryIdx = 0; EntryIdx < SwapVector.size(); ++EntryIdx) {
 
-    MachineInstr *MI = SwapVector[EntryIdx].VSEMI;
-    int ID = SwapVector[EntryIdx].VSEId;
+    [[maybe_unused]] MachineInstr *MI = SwapVector[EntryIdx].VSEMI;
+    [[maybe_unused]] int ID = SwapVector[EntryIdx].VSEId;
 
     dbgs() << format("%6d", ID);
     dbgs() << format("%6d", EC->getLeaderValue(ID));
@@ -1052,8 +1052,6 @@ LLVM_DUMP_METHOD void PPCVSXSwapRemoval::dumpSwapVector() {
     dbgs() << "\n";
 
     // For no-asserts builds.
-    (void)MI;
-    (void)ID;
   }
 
   dbgs() << "\n";

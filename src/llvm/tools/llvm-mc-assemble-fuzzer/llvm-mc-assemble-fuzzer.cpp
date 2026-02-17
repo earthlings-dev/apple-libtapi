@@ -236,10 +236,8 @@ int AssembleOneInput(const uint8_t *Data, size_t Size) {
         MCOptions.MCRelaxAll, MCOptions.MCIncrementalLinkerCompatible,
         /*DWARFMustBeAtTheEnd*/ false));
   }
-  const int Res = AssembleInput(ProgName, TheTarget, SrcMgr, Ctx, *Str, *MAI, *STI,
+  [[maybe_unused]] const int Res = AssembleInput(ProgName, TheTarget, SrcMgr, Ctx, *Str, *MAI, *STI,
       *MCII, MCOptions);
-
-  (void) Res;
 
   return 0;
 }

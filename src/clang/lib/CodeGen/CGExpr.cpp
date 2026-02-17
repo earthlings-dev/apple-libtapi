@@ -4899,8 +4899,8 @@ static CGCallee EmitDirectCallee(CodeGenFunction &CGF, GlobalDecl GD) {
 static unsigned getPointerAuthKeyValue(const ASTContext &Context,
                                        const Expr *key) {
   Expr::EvalResult result;
-  bool success = key->EvaluateAsInt(result, Context);
-  assert(success && "pointer auth key wasn't a constant?"); (void) success;
+  [[maybe_unused]] bool success = key->EvaluateAsInt(result, Context);
+  assert(success && "pointer auth key wasn't a constant?");
   return result.Val.getInt().getZExtValue();
 }
 

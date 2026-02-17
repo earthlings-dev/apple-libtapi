@@ -2589,8 +2589,7 @@ Constant *ConstantExpr::getExtractValue(Constant *Agg, ArrayRef<unsigned> Idxs,
   assert(Agg->getType()->isFirstClassType() &&
          "Tried to create extractelement operation on non-first-class type!");
 
-  Type *ReqTy = ExtractValueInst::getIndexedType(Agg->getType(), Idxs);
-  (void)ReqTy;
+  [[maybe_unused]] Type *ReqTy = ExtractValueInst::getIndexedType(Agg->getType(), Idxs);
   assert(ReqTy && "extractvalue indices invalid!");
 
   assert(Agg->getType()->isFirstClassType() &&

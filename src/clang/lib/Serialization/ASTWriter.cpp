@@ -1694,7 +1694,7 @@ namespace {
       using namespace llvm::support;
 
       endian::Writer LE(Out, little);
-      uint64_t Start = Out.tell(); (void)Start;
+      [[maybe_unused]] uint64_t Start = Out.tell();
 
       unsigned char Flags = (Data.HFI.isImport << 5)
                           | (Data.HFI.isPragmaOnce << 4)
@@ -3044,7 +3044,7 @@ public:
     using namespace llvm::support;
 
     endian::Writer LE(Out, little);
-    uint64_t Start = Out.tell(); (void)Start;
+    [[maybe_unused]] uint64_t Start = Out.tell();
     LE.write<uint32_t>(Methods.ID);
     unsigned NumInstanceMethods = 0;
     for (const ObjCMethodList *Method = &Methods.Instance; Method;
@@ -3635,7 +3635,7 @@ public:
     using namespace llvm::support;
 
     endian::Writer LE(Out, little);
-    uint64_t Start = Out.tell(); (void)Start;
+    [[maybe_unused]] uint64_t Start = Out.tell();
     for (unsigned I = Lookup.first, N = Lookup.second; I != N; ++I)
       LE.write<uint32_t>(DeclIDs[I]);
     assert(Out.tell() - Start == DataLen && "Data length is wrong");

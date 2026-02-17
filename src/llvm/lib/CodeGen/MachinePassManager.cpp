@@ -30,7 +30,6 @@ Error MachineFunctionPassManager::run(Module &M,
   // result of MachineModuleAnalysis. MMI should not be recomputed.
   auto &MMI = MFAM.getResult<MachineModuleAnalysis>(M);
 
-  (void)RequireCodeGenSCCOrder;
   assert(!RequireCodeGenSCCOrder && "not implemented");
 
   // Add a PIC to verify machine functions.

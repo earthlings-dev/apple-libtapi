@@ -237,8 +237,7 @@ PPCMCCodeEmitter::getMemRI34PCRelEncoding(const MCInst &MI, unsigned OpNo,
     llvm_unreachable("Unsupported MCExpr for getMemRI34PCRelEncoding.");
   case MCExpr::SymbolRef: {
     // Relocation alone.
-    const MCSymbolRefExpr *SRE = cast<MCSymbolRefExpr>(Expr);
-    (void)SRE;
+    [[maybe_unused]] const MCSymbolRefExpr *SRE = cast<MCSymbolRefExpr>(Expr);
     // Currently these are the only valid PCRelative Relocations.
     assert((SRE->getKind() == MCSymbolRefExpr::VK_PCREL ||
             SRE->getKind() == MCSymbolRefExpr::VK_PPC_GOT_PCREL ||
@@ -273,8 +272,7 @@ PPCMCCodeEmitter::getMemRI34PCRelEncoding(const MCInst &MI, unsigned OpNo,
         RHS->getKind() != MCExpr::Constant)
       llvm_unreachable("Expecting to have one constant and one relocation.");
 
-    const MCSymbolRefExpr *SRE = cast<MCSymbolRefExpr>(LHS);
-    (void)SRE;
+    [[maybe_unused]] const MCSymbolRefExpr *SRE = cast<MCSymbolRefExpr>(LHS);
     assert(isInt<34>(cast<MCConstantExpr>(RHS)->getValue()) &&
            "Value must fit in 34 bits.");
 

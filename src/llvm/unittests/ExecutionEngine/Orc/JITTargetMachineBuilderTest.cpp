@@ -30,12 +30,9 @@ TEST(ExecutionUtilsTest, JITTargetMachineBuilder) {
   JTMB.setCodeModel(None);
   JTMB.setCodeGenOptLevel(CodeGenOpt::None);
   JTMB.addFeatures(std::vector<std::string>());
-  SubtargetFeatures &STF = JTMB.getFeatures();
-  (void)STF;
-  TargetOptions &TO = JTMB.getOptions();
-  (void)TO;
-  Triple &TT = JTMB.getTargetTriple();
-  (void)TT;
+  [[maybe_unused]] SubtargetFeatures &STF = JTMB.getFeatures();
+  [[maybe_unused]] TargetOptions &TO = JTMB.getOptions();
+  [[maybe_unused]] Triple &TT = JTMB.getTargetTriple();
 
   auto TM = JTMB.createTargetMachine();
 

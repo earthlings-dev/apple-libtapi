@@ -43,64 +43,53 @@ LLVMContext::LLVMContext() : pImpl(new LLVMContextImpl(*this)) {
   };
 
   for (auto &MDKind : MDKinds) {
-    unsigned ID = getMDKindID(MDKind.second);
+    [[maybe_unused]] unsigned ID = getMDKindID(MDKind.second);
     assert(ID == MDKind.first && "metadata kind id drifted");
-    (void)ID;
   }
 
-  auto *DeoptEntry = pImpl->getOrInsertBundleTag("deopt");
+  [[maybe_unused]] auto *DeoptEntry = pImpl->getOrInsertBundleTag("deopt");
   assert(DeoptEntry->second == LLVMContext::OB_deopt &&
          "deopt operand bundle id drifted!");
-  (void)DeoptEntry;
 
-  auto *FuncletEntry = pImpl->getOrInsertBundleTag("funclet");
+  [[maybe_unused]] auto *FuncletEntry = pImpl->getOrInsertBundleTag("funclet");
   assert(FuncletEntry->second == LLVMContext::OB_funclet &&
          "funclet operand bundle id drifted!");
-  (void)FuncletEntry;
 
-  auto *GCTransitionEntry = pImpl->getOrInsertBundleTag("gc-transition");
+  [[maybe_unused]] auto *GCTransitionEntry = pImpl->getOrInsertBundleTag("gc-transition");
   assert(GCTransitionEntry->second == LLVMContext::OB_gc_transition &&
          "gc-transition operand bundle id drifted!");
-  (void)GCTransitionEntry;
 
-  auto *CFGuardTargetEntry = pImpl->getOrInsertBundleTag("cfguardtarget");
+  [[maybe_unused]] auto *CFGuardTargetEntry = pImpl->getOrInsertBundleTag("cfguardtarget");
   assert(CFGuardTargetEntry->second == LLVMContext::OB_cfguardtarget &&
          "cfguardtarget operand bundle id drifted!");
-  (void)CFGuardTargetEntry;
 
 
-  auto *PreallocatedEntry = pImpl->getOrInsertBundleTag("preallocated");
+  [[maybe_unused]] auto *PreallocatedEntry = pImpl->getOrInsertBundleTag("preallocated");
   assert(PreallocatedEntry->second == LLVMContext::OB_preallocated &&
          "preallocated operand bundle id drifted!");
-  (void)PreallocatedEntry;
 
-  auto *GCLiveEntry = pImpl->getOrInsertBundleTag("gc-live");
+  [[maybe_unused]] auto *GCLiveEntry = pImpl->getOrInsertBundleTag("gc-live");
   assert(GCLiveEntry->second == LLVMContext::OB_gc_live &&
          "gc-transition operand bundle id drifted!");
-  (void)GCLiveEntry;
 
-  auto *PtrauthEntry = pImpl->getOrInsertBundleTag("ptrauth");
+  [[maybe_unused]] auto *PtrauthEntry = pImpl->getOrInsertBundleTag("ptrauth");
   assert(PtrauthEntry->second == LLVMContext::OB_ptrauth &&
          "ptrauth operand bundle id drifted!");
-  (void)PtrauthEntry;
 
-  auto *ClangAttachedCall =
+  [[maybe_unused]] auto *ClangAttachedCall =
       pImpl->getOrInsertBundleTag("clang.arc.attachedcall");
   assert(ClangAttachedCall->second == LLVMContext::OB_clang_arc_attachedcall &&
          "clang.arc.attachedcall operand bundle id drifted!");
-  (void)ClangAttachedCall;
 
-  SyncScope::ID SingleThreadSSID =
+  [[maybe_unused]] SyncScope::ID SingleThreadSSID =
       pImpl->getOrInsertSyncScopeID("singlethread");
   assert(SingleThreadSSID == SyncScope::SingleThread &&
          "singlethread synchronization scope ID drifted!");
-  (void)SingleThreadSSID;
 
-  SyncScope::ID SystemSSID =
+  [[maybe_unused]] SyncScope::ID SystemSSID =
       pImpl->getOrInsertSyncScopeID("");
   assert(SystemSSID == SyncScope::System &&
          "system synchronization scope ID drifted!");
-  (void)SystemSSID;
 }
 
 LLVMContext::~LLVMContext() { delete pImpl; }

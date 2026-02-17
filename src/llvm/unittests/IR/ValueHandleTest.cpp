@@ -120,8 +120,7 @@ TEST_F(ValueHandle, WeakTrackingVH_NullOnDeletion) {
 
 TEST_F(ValueHandle, AssertingVH_BasicOperation) {
   AssertingVH<CastInst> AVH(BitcastV.get());
-  CastInst *implicit_to_exact_type = AVH;
-  (void)implicit_to_exact_type;  // Avoid warning.
+  [[maybe_unused]] CastInst *implicit_to_exact_type = AVH;
 
   AssertingVH<Value> GenericAVH(BitcastV.get());
   EXPECT_EQ(BitcastV.get(), GenericAVH);
@@ -137,8 +136,7 @@ TEST_F(ValueHandle, AssertingVH_BasicOperation) {
 TEST_F(ValueHandle, AssertingVH_Const) {
   const CastInst *ConstBitcast = BitcastV.get();
   AssertingVH<const CastInst> AVH(ConstBitcast);
-  const CastInst *implicit_to_exact_type = AVH;
-  (void)implicit_to_exact_type;  // Avoid warning.
+  [[maybe_unused]] const CastInst *implicit_to_exact_type = AVH;
 }
 
 TEST_F(ValueHandle, AssertingVH_Comparisons) {
@@ -431,8 +429,7 @@ TEST_F(ValueHandle, AssertingVHCheckedLast) {
 
 TEST_F(ValueHandle, PoisoningVH_BasicOperation) {
   PoisoningVH<CastInst> VH(BitcastV.get());
-  CastInst *implicit_to_exact_type = VH;
-  (void)implicit_to_exact_type; // Avoid warning.
+  [[maybe_unused]] CastInst *implicit_to_exact_type = VH;
 
   PoisoningVH<Value> GenericVH(BitcastV.get());
   EXPECT_EQ(BitcastV.get(), GenericVH);
@@ -448,8 +445,7 @@ TEST_F(ValueHandle, PoisoningVH_BasicOperation) {
 TEST_F(ValueHandle, PoisoningVH_Const) {
   const CastInst *ConstBitcast = BitcastV.get();
   PoisoningVH<const CastInst> VH(ConstBitcast);
-  const CastInst *implicit_to_exact_type = VH;
-  (void)implicit_to_exact_type; // Avoid warning.
+  [[maybe_unused]] const CastInst *implicit_to_exact_type = VH;
 }
 
 TEST_F(ValueHandle, PoisoningVH_Comparisons) {

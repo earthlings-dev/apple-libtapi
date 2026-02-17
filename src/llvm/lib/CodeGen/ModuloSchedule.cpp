@@ -1872,8 +1872,7 @@ MachineBasicBlock *PeelingModuloScheduleExpander::CreateLCSSAExitingBlock() {
 
   MachineBasicBlock *TBB = nullptr, *FBB = nullptr;
   SmallVector<MachineOperand, 4> Cond;
-  bool CanAnalyzeBr = !TII->analyzeBranch(*BB, TBB, FBB, Cond);
-  (void)CanAnalyzeBr;
+  [[maybe_unused]] bool CanAnalyzeBr = !TII->analyzeBranch(*BB, TBB, FBB, Cond);
   assert(CanAnalyzeBr && "Must be able to analyze the loop branch!");
   TII->removeBranch(*BB);
   TII->insertBranch(*BB, TBB == Exit ? NewBB : TBB, FBB == Exit ? NewBB : FBB,

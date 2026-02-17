@@ -508,7 +508,7 @@ void ExprEngine::handleConstructor(const Expr *E,
   case CXXConstructExpr::CK_VirtualBase: {
     // Make sure we are not calling virtual base class initializers twice.
     // Only the most-derived object should initialize virtual base classes.
-    const auto *OuterCtor = dyn_cast_or_null<CXXConstructExpr>(
+    [[maybe_unused]] const auto *OuterCtor = dyn_cast_or_null<CXXConstructExpr>(
         LCtx->getStackFrame()->getCallSite());
     assert(
         (!OuterCtor ||
@@ -516,7 +516,6 @@ void ExprEngine::handleConstructor(const Expr *E,
          OuterCtor->getConstructionKind() == CXXConstructExpr::CK_Delegating) &&
         ("This virtual base should have already been initialized by "
          "the most derived class!"));
-    (void)OuterCtor;
     LLVM_FALLTHROUGH;
   }
   case CXXConstructExpr::CK_NonVirtualBase:

@@ -825,8 +825,7 @@ llvm::StructType *CodeGenTypes::ConvertRecordDeclType(const RecordDecl *RD) {
   }
 
   // Okay, this is a definition of a type.  Compile the implementation now.
-  bool InsertResult = RecordsBeingLaidOut.insert(Key).second;
-  (void)InsertResult;
+  [[maybe_unused]] bool InsertResult = RecordsBeingLaidOut.insert(Key).second;
   assert(InsertResult && "Recursively compiling a struct?");
 
   // Force conversion of non-virtual base classes recursively.
@@ -842,7 +841,7 @@ llvm::StructType *CodeGenTypes::ConvertRecordDeclType(const RecordDecl *RD) {
   CGRecordLayouts[Key] = std::move(Layout);
 
   // We're done laying out this struct.
-  bool EraseResult = RecordsBeingLaidOut.erase(Key); (void)EraseResult;
+  [[maybe_unused]] bool EraseResult = RecordsBeingLaidOut.erase(Key);
   assert(EraseResult && "struct not in RecordsBeingLaidOut set?");
 
   // If this struct blocked a FunctionType conversion, then recompute whatever

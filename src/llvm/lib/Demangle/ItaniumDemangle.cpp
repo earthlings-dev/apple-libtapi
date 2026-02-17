@@ -206,8 +206,7 @@ struct DumpVisitor {
       if (Visitor.anyWantNewline(V, Vs...))
         Visitor.newLine();
       Visitor.printWithPendingNewline(V);
-      int PrintInOrder[] = { (Visitor.printWithComma(Vs), 0)..., 0 };
-      (void)PrintInOrder;
+      [[maybe_unused]] int PrintInOrder[] = { (Visitor.printWithComma(Vs), 0)..., 0 };
     }
   };
 

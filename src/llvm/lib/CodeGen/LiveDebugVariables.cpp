@@ -1229,11 +1229,10 @@ void UserValue::rewriteLocations(VirtRegMap &VRM, const MachineFunction &MF,
         unsigned SpillSize;
         const MachineRegisterInfo &MRI = MF.getRegInfo();
         const TargetRegisterClass *TRC = MRI.getRegClass(VirtReg);
-        bool Success = TII.getStackSlotRange(TRC, Loc.getSubReg(), SpillSize,
+        [[maybe_unused]] bool Success = TII.getStackSlotRange(TRC, Loc.getSubReg(), SpillSize,
                                              SpillOffset, MF);
 
         // FIXME: Invalidate the location if the offset couldn't be calculated.
-        (void)Success;
 
         Loc = MachineOperand::CreateFI(VRM.getStackSlot(VirtReg));
         Spilled = true;

@@ -1719,8 +1719,7 @@ void ARMFrameLowering::determineCalleeSaves(MachineFunction &MF,
   ARMFunctionInfo *AFI = MF.getInfo<ARMFunctionInfo>();
   MachineFrameInfo &MFI = MF.getFrameInfo();
   MachineRegisterInfo &MRI = MF.getRegInfo();
-  const TargetRegisterInfo *TRI = MF.getSubtarget().getRegisterInfo();
-  (void)TRI;  // Silence unused warning in non-assert builds.
+  [[maybe_unused]] const TargetRegisterInfo *TRI = MF.getSubtarget().getRegisterInfo();
   Register FramePtr = RegInfo->getFrameRegister(MF);
 
   // Spill R4 if Thumb2 function requires stack realignment - it will be used as

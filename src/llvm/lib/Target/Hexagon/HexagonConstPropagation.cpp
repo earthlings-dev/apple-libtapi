@@ -1592,8 +1592,7 @@ bool MachineConstEvaluator::evaluateZEXTr(const RegisterSubReg &R1, unsigned Wid
 
 bool MachineConstEvaluator::evaluateZEXTi(const APInt &A1, unsigned Width,
       unsigned Bits, APInt &Result) {
-  unsigned BW = A1.getBitWidth();
-  (void)BW;
+  [[maybe_unused]] unsigned BW = A1.getBitWidth();
   assert(Width >= Bits && BW >= Bits);
   APInt Mask = APInt::getLowBitsSet(Width, Bits);
   Result = A1.zextOrTrunc(Width) & Mask;
@@ -2890,8 +2889,7 @@ bool HexagonConstEvaluator::rewriteHexConstDefs(MachineInstr &MI,
         &HII.get(Hexagon::PS_false) :
         &HII.get(Hexagon::PS_true);
       Register NewR = MRI->createVirtualRegister(PredRC);
-      const MachineInstrBuilder &MIB = BuildMI(B, At, DL, *NewD, NewR);
-      (void)MIB;
+      [[maybe_unused]] const MachineInstrBuilder &MIB = BuildMI(B, At, DL, *NewD, NewR);
 #ifndef NDEBUG
       NewInstrs.push_back(&*MIB);
 #endif
@@ -2912,7 +2910,7 @@ bool HexagonConstEvaluator::rewriteHexConstDefs(MachineInstr &MI,
       else
         NewRC = &Hexagon::DoubleRegsRegClass;
       Register NewR = MRI->createVirtualRegister(NewRC);
-      const MachineInstr *NewMI;
+      [[maybe_unused]] const MachineInstr *NewMI;
 
       if (W == 32) {
         NewD = &HII.get(Hexagon::A2_tfrsi);
@@ -2940,7 +2938,6 @@ bool HexagonConstEvaluator::rewriteHexConstDefs(MachineInstr &MI,
             return false;
         }
       }
-      (void)NewMI;
 #ifndef NDEBUG
       NewInstrs.push_back(NewMI);
 #endif

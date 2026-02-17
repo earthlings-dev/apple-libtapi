@@ -216,7 +216,7 @@ MachineInstr *R600VectorRegMerger::RebuildVector(
     unsigned Swizzle = (*It).second;
     unsigned Chan = getReassignedChan(RemapChan, Swizzle);
 
-    MachineInstr *Tmp = BuildMI(MBB, Pos, DL, TII->get(R600::INSERT_SUBREG),
+    [[maybe_unused]] MachineInstr *Tmp = BuildMI(MBB, Pos, DL, TII->get(R600::INSERT_SUBREG),
         DstReg)
         .addReg(SrcVec)
         .addReg(SubReg)
@@ -228,7 +228,6 @@ MachineInstr *R600VectorRegMerger::RebuildVector(
     assert(!is_contained(UpdatedUndef, Chan) &&
            "UpdatedUndef shouldn't contain Chan more than once!");
     LLVM_DEBUG(dbgs() << "    ->"; Tmp->dump(););
-    (void)Tmp;
     SrcVec = DstReg;
   }
   MachineInstr *NewMI =

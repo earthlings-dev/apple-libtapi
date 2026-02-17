@@ -1434,7 +1434,8 @@ static bool optimizeLogicalImm(SDValue Op, unsigned Size, uint64_t Imm,
                                const APInt &Demanded,
                                TargetLowering::TargetLoweringOpt &TLO,
                                unsigned NewOpc) {
-  uint64_t OldImm = Imm, NewImm, Enc;
+  [[maybe_unused]] uint64_t OldImm = Imm;
+  uint64_t NewImm, Enc;
   uint64_t Mask = ((uint64_t)(-1LL) >> (64 - Size)), OrigMask = Mask;
 
   // Return if the immediate is already all zeros, all ones, a bimm32 or a
@@ -1498,7 +1499,6 @@ static bool optimizeLogicalImm(SDValue Op, unsigned Size, uint64_t Imm,
     EltSize *= 2;
   }
 
-  (void)OldImm;
   assert(((OldImm ^ NewImm) & Demanded.getZExtValue()) == 0 &&
          "demanded bits should never be altered");
   assert(OldImm != NewImm && "the new imm shouldn't be equal to the old imm");
@@ -2530,16 +2530,14 @@ static SDValue emitConjunctionRec(SelectionDAG &DAG, SDValue Val,
   SDValue LHS = Val->getOperand(0);
   bool CanNegateL;
   bool MustBeFirstL;
-  bool ValidL = canEmitConjunction(LHS, CanNegateL, MustBeFirstL, IsOR);
+  [[maybe_unused]] bool ValidL = canEmitConjunction(LHS, CanNegateL, MustBeFirstL, IsOR);
   assert(ValidL && "Valid conjunction/disjunction tree");
-  (void)ValidL;
 
   SDValue RHS = Val->getOperand(1);
   bool CanNegateR;
   bool MustBeFirstR;
-  bool ValidR = canEmitConjunction(RHS, CanNegateR, MustBeFirstR, IsOR);
+  [[maybe_unused]] bool ValidR = canEmitConjunction(RHS, CanNegateR, MustBeFirstR, IsOR);
   assert(ValidR && "Valid conjunction/disjunction tree");
-  (void)ValidR;
 
   // Swap sub-tree that must come first to the right side.
   if (MustBeFirstL) {
@@ -4561,10 +4559,9 @@ SDValue AArch64TargetLowering::LowerFormalArguments(
         ValVT = MVT::i16;
     }
     CCAssignFn *AssignFn = CCAssignFnForCall(CallConv, /*IsVarArg=*/false);
-    bool Res =
+    [[maybe_unused]] bool Res =
         AssignFn(i, ValVT, ValVT, CCValAssign::Full, Ins[i].Flags, CCInfo);
     assert(!Res && "Call operand has unhandled type");
-    (void)Res;
   }
   SmallVector<SDValue, 16> ArgValues;
   unsigned ExtraArgLocs = 0;
@@ -5251,9 +5248,8 @@ AArch64TargetLowering::LowerCall(CallLoweringInfo &CLI,
       ISD::ArgFlagsTy ArgFlags = Outs[i].Flags;
       CCAssignFn *AssignFn = CCAssignFnForCall(CallConv,
                                                /*IsVarArg=*/ !Outs[i].IsFixed);
-      bool Res = AssignFn(i, ArgVT, ArgVT, CCValAssign::Full, ArgFlags, CCInfo);
+      [[maybe_unused]] bool Res = AssignFn(i, ArgVT, ArgVT, CCValAssign::Full, ArgFlags, CCInfo);
       assert(!Res && "Call operand has unhandled type");
-      (void)Res;
     }
   } else {
     // At this point, Outs[].VT may already be promoted to i32. To correctly
@@ -5278,9 +5274,8 @@ AArch64TargetLowering::LowerCall(CallLoweringInfo &CLI,
         ValVT = MVT::i16;
 
       CCAssignFn *AssignFn = CCAssignFnForCall(CallConv, /*IsVarArg=*/false);
-      bool Res = AssignFn(i, ValVT, ValVT, CCValAssign::Full, ArgFlags, CCInfo);
+      [[maybe_unused]] bool Res = AssignFn(i, ValVT, ValVT, CCValAssign::Full, ArgFlags, CCInfo);
       assert(!Res && "Call operand has unhandled type");
-      (void)Res;
     }
   }
 
@@ -15529,8 +15524,7 @@ performSignExtendInRegCombine(SDNode *N, TargetLowering::DAGCombinerInfo &DCI,
     // 4i32 sunpklo(8i16 sunpklo(16i8 opnd))
     SDValue ExtOp = Src->getOperand(0);
     auto VT = cast<VTSDNode>(N->getOperand(1))->getVT();
-    EVT EltTy = VT.getVectorElementType();
-    (void)EltTy;
+    [[maybe_unused]] EVT EltTy = VT.getVectorElementType();
 
     assert((EltTy == MVT::i8 || EltTy == MVT::i16 || EltTy == MVT::i32) &&
            "Sign extending from an invalid type");

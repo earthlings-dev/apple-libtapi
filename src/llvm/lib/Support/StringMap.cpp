@@ -174,8 +174,7 @@ int StringMapImpl::FindKey(StringRef Key) const {
 /// delete it.  This aborts if the value isn't in the table.
 void StringMapImpl::RemoveKey(StringMapEntryBase *V) {
   const char *VStr = (char *)V + ItemSize;
-  StringMapEntryBase *V2 = RemoveKey(StringRef(VStr, V->getKeyLength()));
-  (void)V2;
+  [[maybe_unused]] StringMapEntryBase *V2 = RemoveKey(StringRef(VStr, V->getKeyLength()));
   assert(V == V2 && "Didn't find key?");
 }
 

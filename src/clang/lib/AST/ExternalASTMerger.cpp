@@ -515,10 +515,9 @@ bool ExternalASTMerger::FindExternalVisibleDeclsByName(const DeclContext *DC,
     // If we don't import specialization, they are not available via lookup
     // because the lookup result is imported TemplateDecl and it does not
     // reference its specializations until they are imported explicitly.
-    bool IsSpecImportFailed =
+    [[maybe_unused]] bool IsSpecImportFailed =
         importSpecializationsIfNeeded(LookupRes, Importer);
     assert(!IsSpecImportFailed);
-    (void)IsSpecImportFailed;
     Decls.push_back(ND);
   }
   SetExternalVisibleDeclsForName(DC, Name, Decls);

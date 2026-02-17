@@ -170,8 +170,7 @@ public:
 #endif
     {
       FS->seek(ByteNo);
-      ssize_t BytesRead = FS->read(Bytes, BytesFromDisk);
-      (void)BytesRead; // silence warning
+      [[maybe_unused]] ssize_t BytesRead = FS->read(Bytes, BytesFromDisk);
       assert(BytesRead >= 0 && static_cast<size_t>(BytesRead) == BytesFromDisk);
       for (size_t i = 0; i < BytesFromBuffer; ++i)
         Bytes[BytesFromDisk + i] = Out[i];

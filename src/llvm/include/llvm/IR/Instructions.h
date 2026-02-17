@@ -2771,13 +2771,12 @@ public:
   /// Set every incoming value(s) for block \p BB to \p V.
   void setIncomingValueForBlock(const BasicBlock *BB, Value *V) {
     assert(BB && "PHI node got a null basic block!");
-    bool Found = false;
+    [[maybe_unused]] bool Found = false;
     for (unsigned Op = 0, NumOps = getNumOperands(); Op != NumOps; ++Op)
       if (getIncomingBlock(Op) == BB) {
         Found = true;
         setIncomingValue(Op, V);
       }
-    (void)Found;
     assert(Found && "Invalid basic block argument to set!");
   }
 

@@ -433,8 +433,7 @@ template <> struct MappingTraits<const InterfaceFile *> {
   };
 
   static void mappingTBDv4(IO &io, const InterfaceFile *&file) {
-    const auto *ctx = reinterpret_cast<YAMLContext *>(io.getContext());
-    (void)ctx;
+    [[maybe_unused]] const auto *ctx = reinterpret_cast<YAMLContext *>(io.getContext());
     assert((!ctx || ctx && ctx->fileType != FileType::Invalid) &&
            "File type is not set in YAML context");
     assert(ctx->fileType >= TBDv4 && "unexpectd file type");

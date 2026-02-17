@@ -225,8 +225,7 @@ CFLSteensAAResult::FunctionInfo CFLSteensAAResult::buildSetsFrom(Function *Fn) {
 }
 
 void CFLSteensAAResult::scan(Function *Fn) {
-  auto InsertPair = Cache.insert(std::make_pair(Fn, Optional<FunctionInfo>()));
-  (void)InsertPair;
+  [[maybe_unused]] auto InsertPair = Cache.insert(std::make_pair(Fn, Optional<FunctionInfo>()));
   assert(InsertPair.second &&
          "Trying to scan a function that has already been cached");
 

@@ -1134,8 +1134,7 @@ LambdaExpr::LambdaExpr(QualType T, SourceRange IntroducerRange,
   LambdaExprBits.ExplicitParams = ExplicitParams;
   LambdaExprBits.ExplicitResultType = ExplicitResultType;
 
-  CXXRecordDecl *Class = getLambdaClass();
-  (void)Class;
+  [[maybe_unused]] CXXRecordDecl *Class = getLambdaClass();
   assert(capture_size() == Class->capture_size() && "Wrong number of captures");
   assert(getCaptureDefault() == Class->getLambdaCaptureDefault());
 

@@ -226,7 +226,7 @@ static Error split(StringRef Str, char Separator,
 
 /// Get an unsigned integer, including error checks.
 template <typename IntTy> static Error getInt(StringRef R, IntTy &Result) {
-  bool error = R.getAsInteger(10, Result); (void)error;
+  [[maybe_unused]] bool error = R.getAsInteger(10, Result);
   if (error)
     return reportError("not a number, or does not fit in an unsigned int");
   return Error::success();

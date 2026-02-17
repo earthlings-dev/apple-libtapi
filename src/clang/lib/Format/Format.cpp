@@ -2608,10 +2608,9 @@ fixCppIncludeInsertions(StringRef Code, const tooling::Replacements &Replaces,
   llvm::SmallVector<StringRef, 4> Matches;
   for (const auto &R : HeaderInsertions) {
     auto IncludeDirective = R.getReplacementText();
-    bool Matched = IncludeRegex.match(IncludeDirective, &Matches);
+    [[maybe_unused]] bool Matched = IncludeRegex.match(IncludeDirective, &Matches);
     assert(Matched && "Header insertion replacement must have replacement text "
                       "'#include ...'");
-    (void)Matched;
     auto IncludeName = Matches[2];
     auto Replace =
         Includes.insert(IncludeName.trim("\"<>"), IncludeName.startswith("<"));

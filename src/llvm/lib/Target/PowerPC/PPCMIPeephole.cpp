@@ -1631,14 +1631,13 @@ bool PPCMIPeephole::combineSEXTAndSHL(MachineInstr &MI,
   LLVM_DEBUG(SrcMI->dump());
   LLVM_DEBUG(MI.dump());
 
-  MachineInstr *NewInstr =
+  [[maybe_unused]] MachineInstr *NewInstr =
       BuildMI(*MI.getParent(), &MI, MI.getDebugLoc(),
               SrcMI->getOpcode() == PPC::EXTSW ? TII->get(PPC::EXTSWSLI)
                                                : TII->get(PPC::EXTSWSLI_32_64),
               MI.getOperand(0).getReg())
           .add(SrcMI->getOperand(1))
           .add(MOpSHMI);
-  (void)NewInstr;
 
   LLVM_DEBUG(dbgs() << "TO: ");
   LLVM_DEBUG(NewInstr->dump());

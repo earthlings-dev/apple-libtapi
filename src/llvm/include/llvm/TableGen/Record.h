@@ -1769,22 +1769,19 @@ public:
   }
 
   void addClass(std::unique_ptr<Record> R) {
-    bool Ins = Classes.insert(std::make_pair(std::string(R->getName()),
+    [[maybe_unused]] bool Ins = Classes.insert(std::make_pair(std::string(R->getName()),
                                              std::move(R))).second;
-    (void)Ins;
     assert(Ins && "Class already exists");
   }
 
   void addDef(std::unique_ptr<Record> R) {
-    bool Ins = Defs.insert(std::make_pair(std::string(R->getName()),
+    [[maybe_unused]] bool Ins = Defs.insert(std::make_pair(std::string(R->getName()),
                                           std::move(R))).second;
-    (void)Ins;
     assert(Ins && "Record already exists");
   }
 
   void addExtraGlobal(StringRef Name, Init *I) {
-    bool Ins = ExtraGlobals.insert(std::make_pair(std::string(Name), I)).second;
-    (void)Ins;
+    [[maybe_unused]] bool Ins = ExtraGlobals.insert(std::make_pair(std::string(Name), I)).second;
     assert(!getDef(Name));
     assert(Ins && "Global already exists");
   }
@@ -1922,9 +1919,9 @@ struct LessRecordRegister {
 
       unsigned LHSVal, RHSVal;
 
-      bool LHSFailed = LHSPart.second.getAsInteger(10, LHSVal); (void)LHSFailed;
+      [[maybe_unused]] bool LHSFailed = LHSPart.second.getAsInteger(10, LHSVal);
       assert(!LHSFailed && "Unable to convert LHS to integer.");
-      bool RHSFailed = RHSPart.second.getAsInteger(10, RHSVal); (void)RHSFailed;
+      [[maybe_unused]] bool RHSFailed = RHSPart.second.getAsInteger(10, RHSVal);
       assert(!RHSFailed && "Unable to convert RHS to integer.");
 
       if (LHSVal != RHSVal)

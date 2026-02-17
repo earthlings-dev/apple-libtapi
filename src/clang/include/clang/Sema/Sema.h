@@ -1947,8 +1947,7 @@ public:
     void emit(const SemaDiagnosticBuilder &DB,
               std::index_sequence<Is...>) const {
       // Apply all tuple elements to the builder in order.
-      bool Dummy[] = {false, (DB << getPrintable(std::get<Is>(Args)))...};
-      (void)Dummy;
+      [[maybe_unused]] bool Dummy[] = {false, (DB << getPrintable(std::get<Is>(Args)))...};
     }
 
   public:

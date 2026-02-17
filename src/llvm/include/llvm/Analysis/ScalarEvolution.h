@@ -1645,9 +1645,9 @@ private:
     // initial values of the other values to assert our assumption.
     SmallDenseMap<PointerIntPair<Value *, 1>, ExitLimit> TripCountMap;
 
-    const Loop *L;
-    bool ExitIfTrue;
-    bool AllowPredicates;
+    [[maybe_unused]] const Loop *L;
+    [[maybe_unused]] bool ExitIfTrue;
+    [[maybe_unused]] bool AllowPredicates;
 
   public:
     ExitLimitCache(const Loop *L, bool ExitIfTrue, bool AllowPredicates)

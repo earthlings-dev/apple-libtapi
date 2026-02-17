@@ -492,7 +492,6 @@ void TextNodeDumper::Visit(const APValue &Value, QualType Ty) {
     }
     return;
   case APValue::LValue:
-    (void)Context;
     OS << "LValue <todo>";
     return;
   case APValue::Array: {

@@ -145,9 +145,8 @@ public:
   const_iterator findEntry(const Twine &Path) const {
     SmallString<128> P;
     Path.toVector(P);
-    std::error_code EC = makeAbsolute(P);
+    [[maybe_unused]] std::error_code EC = makeAbsolute(P);
     assert(!EC);
-    (void)EC;
     return FilesAndDirs.find(std::string(P.str()));
   }
 

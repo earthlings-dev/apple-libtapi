@@ -696,8 +696,7 @@ void RegAllocPBQP::spillVReg(Register VReg,
                     nullptr, &DeadRemats);
   VRegSpiller.spill(LRE);
 
-  const TargetRegisterInfo &TRI = *MF.getSubtarget().getRegisterInfo();
-  (void)TRI;
+  [[maybe_unused]] const TargetRegisterInfo &TRI = *MF.getSubtarget().getRegisterInfo();
   LLVM_DEBUG(dbgs() << "VREG " << printReg(VReg, &TRI) << " -> SPILLED (Cost: "
                     << LRE.getParent().weight() << ", New vregs: ");
 
@@ -720,8 +719,7 @@ bool RegAllocPBQP::mapPBQPToRegAlloc(const PBQPRAGraph &G,
                                      Spiller &VRegSpiller) {
   MachineFunction &MF = G.getMetadata().MF;
   LiveIntervals &LIS = G.getMetadata().LIS;
-  const TargetRegisterInfo &TRI = *MF.getSubtarget().getRegisterInfo();
-  (void)TRI;
+  [[maybe_unused]] const TargetRegisterInfo &TRI = *MF.getSubtarget().getRegisterInfo();
 
   // Set to true if we have any spills
   bool AnotherRoundNeeded = false;

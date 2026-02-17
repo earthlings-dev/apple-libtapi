@@ -105,8 +105,7 @@ public:
   Result run(Function &F, FunctionAnalysisManager &AM) {
     ++Runs;
     int Count = 0;
-    for (Instruction &I : instructions(F)) {
-      (void)I;
+    for ([[maybe_unused]] Instruction &I : instructions(F)) {
       ++Count;
     }
     return Result(Count);

@@ -18301,8 +18301,7 @@ static SDValue lowerVECTOR_SHUFFLE(SDValue Op, const X86Subtarget &Subtarget,
   }
 
   // Check for illegal shuffle mask element index values.
-  int MaskUpperLimit = OrigMask.size() * (V2IsUndef ? 1 : 2);
-  (void)MaskUpperLimit;
+  [[maybe_unused]] int MaskUpperLimit = OrigMask.size() * (V2IsUndef ? 1 : 2);
   assert(llvm::all_of(OrigMask,
                       [&](int M) { return -1 <= M && M < MaskUpperLimit; }) &&
          "Out of bounds shuffle index");
@@ -22788,8 +22787,7 @@ static SDValue LowerVSETCC(SDValue Op, const X86Subtarget &Subtarget,
 
   assert(!IsStrict && "Strict SETCC only handles FP operands.");
 
-  MVT VTOp0 = Op0.getSimpleValueType();
-  (void)VTOp0;
+  [[maybe_unused]] MVT VTOp0 = Op0.getSimpleValueType();
   assert(VTOp0 == Op1.getSimpleValueType() &&
          "Expected operands with same type!");
   assert(VT.getVectorNumElements() == VTOp0.getVectorNumElements() &&
@@ -24144,10 +24142,9 @@ SDValue X86TargetLowering::LowerBRCOND(SDValue Op, SelectionDAG &DAG) const {
         // to implement FCMP_OEQ.
         if (User->getOpcode() == ISD::BR) {
           SDValue FalseBB = User->getOperand(1);
-          SDNode *NewBR =
+          [[maybe_unused]] SDNode *NewBR =
             DAG.UpdateNodeOperands(User, User->getOperand(0), Dest);
           assert(NewBR == User);
-          (void)NewBR;
           Dest = FalseBB;
 
           SDValue Cmp =
@@ -28931,9 +28928,8 @@ static SDValue LowerVectorCTPOPInRegLUT(SDValue Op, const SDLoc &DL,
                                         const X86Subtarget &Subtarget,
                                         SelectionDAG &DAG) {
   MVT VT = Op.getSimpleValueType();
-  MVT EltVT = VT.getVectorElementType();
+  [[maybe_unused]] MVT EltVT = VT.getVectorElementType();
   int NumElts = VT.getVectorNumElements();
-  (void)EltVT;
   assert(EltVT == MVT::i8 && "Only vXi8 vector CTPOP lowering supported.");
 
   // Implement a lookup table in register by using an algorithm based on:
@@ -32926,7 +32922,7 @@ X86TargetLowering::emitEHSjLjSetJmp(MachineInstr &MI,
   const DebugLoc &DL = MI.getDebugLoc();
   MachineFunction *MF = MBB->getParent();
   const TargetInstrInfo *TII = Subtarget.getInstrInfo();
-  const TargetRegisterInfo *TRI = Subtarget.getRegisterInfo();
+  [[maybe_unused]] const TargetRegisterInfo *TRI = Subtarget.getRegisterInfo();
   MachineRegisterInfo &MRI = MF->getRegInfo();
 
   const BasicBlock *BB = MBB->getBasicBlock();
@@ -32944,7 +32940,6 @@ X86TargetLowering::emitEHSjLjSetJmp(MachineInstr &MI,
   DstReg = MI.getOperand(CurOp++).getReg();
   const TargetRegisterClass *RC = MRI.getRegClass(DstReg);
   assert(TRI->isTypeLegalForClass(*RC, MVT::i32) && "Invalid destination!");
-  (void)TRI;
   Register mainDstReg = MRI.createVirtualRegister(RC);
   Register restoreDstReg = MRI.createVirtualRegister(RC);
 
@@ -36484,9 +36479,8 @@ static SmallVector<int, 4> getPSHUFShuffleMask(SDValue N) {
   SmallVector<int, 4> Mask;
   SmallVector<SDValue, 2> Ops;
   bool IsUnary;
-  bool HaveMask =
+  [[maybe_unused]] bool HaveMask =
       getTargetShuffleMask(N.getNode(), VT, false, Ops, Mask, IsUnary);
-  (void)HaveMask;
   assert(HaveMask);
 
   // If we have more than 128-bits, only the low 128-bits of shuffle mask

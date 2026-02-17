@@ -39,9 +39,8 @@ void *sys::ThreadLocalImpl::getInstance() {
 
 void sys::ThreadLocalImpl::setInstance(const void* d){
   DWORD* tls = reinterpret_cast<DWORD*>(&data);
-  int errorcode = TlsSetValue(*tls, const_cast<void*>(d));
+  [[maybe_unused]] int errorcode = TlsSetValue(*tls, const_cast<void*>(d));
   assert(errorcode != 0);
-  (void)errorcode;
 }
 
 void sys::ThreadLocalImpl::removeInstance() {

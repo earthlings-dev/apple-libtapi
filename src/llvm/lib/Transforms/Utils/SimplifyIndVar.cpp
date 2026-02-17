@@ -599,9 +599,8 @@ bool SimplifyIndvar::eliminateTrunc(TruncInst *TI) {
       Ext = new SExtInst(Op1, IVTy, "sext", ICI);
       assert(Pred == ICmpInst::getSignedPredicate(Pred) && "Must be signed!");
     }
-    bool Changed;
+    [[maybe_unused]] bool Changed;
     L->makeLoopInvariant(Ext, Changed);
-    (void)Changed;
     ICmpInst *NewICI = new ICmpInst(ICI, Pred, IV, Ext);
     ICI->replaceAllUsesWith(NewICI);
     DeadInsts.emplace_back(ICI);

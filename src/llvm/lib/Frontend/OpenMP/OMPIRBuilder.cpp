@@ -646,8 +646,7 @@ IRBuilder<>::InsertPoint OpenMPIRBuilder::createParallel(
   // Adjust the finalization stack, verify the adjustment, and call the
   // finalize function a last time to finalize values between the pre-fini
   // block and the exit block if we left the parallel "the normal way".
-  auto FiniInfo = FinalizationStack.pop_back_val();
-  (void)FiniInfo;
+  [[maybe_unused]] auto FiniInfo = FinalizationStack.pop_back_val();
   assert(FiniInfo.DK == OMPD_parallel &&
          "Unexpected finalization stack state!");
 

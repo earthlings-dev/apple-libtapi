@@ -1848,10 +1848,9 @@ static void findReturnsToZap(Function &F,
       "We can only zap functions where all live users have a concrete value");
 
   for (BasicBlock &BB : F) {
-    if (CallInst *CI = BB.getTerminatingMustTailCall()) {
+    if ([[maybe_unused]] CallInst *CI = BB.getTerminatingMustTailCall()) {
       LLVM_DEBUG(dbgs() << "Can't zap return of the block due to present "
                         << "musttail call : " << *CI << "\n");
-      (void)CI;
       return;
     }
 

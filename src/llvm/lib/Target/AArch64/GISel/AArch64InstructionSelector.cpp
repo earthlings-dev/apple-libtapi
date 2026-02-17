@@ -2394,8 +2394,7 @@ bool AArch64InstructionSelector::select(MachineInstr &I) {
     Register DstReg = I.getOperand(0).getReg();
     Register SrcReg = I.getOperand(1).getReg();
     LLT SrcTy = MRI.getType(SrcReg);
-    LLT DstTy = MRI.getType(DstReg);
-    (void)DstTy;
+    [[maybe_unused]] LLT DstTy = MRI.getType(DstReg);
     unsigned SrcSize = SrcTy.getSizeInBits();
 
     if (SrcTy.getSizeInBits() > 64) {
@@ -2406,13 +2405,12 @@ bool AArch64InstructionSelector::select(MachineInstr &I) {
       if (DstTy.getSizeInBits() != 64)
         return false;
 
-      const RegisterBank &SrcRB = *RBI.getRegBank(SrcReg, MRI, TRI);
+      [[maybe_unused]] const RegisterBank &SrcRB = *RBI.getRegBank(SrcReg, MRI, TRI);
       const RegisterBank &DstRB = *RBI.getRegBank(DstReg, MRI, TRI);
       // Check we have the right regbank always.
       assert(SrcRB.getID() == AArch64::FPRRegBankID &&
              DstRB.getID() == AArch64::FPRRegBankID &&
              "Wrong extract regbank!");
-      (void)SrcRB;
 
       // Emit the same code as a vector extract.
       // Offset must be a multiple of 64.
@@ -3733,8 +3731,7 @@ bool AArch64InstructionSelector::selectExtractElt(
   Register DstReg = I.getOperand(0).getReg();
   const LLT NarrowTy = MRI.getType(DstReg);
   const Register SrcReg = I.getOperand(1).getReg();
-  const LLT WideTy = MRI.getType(SrcReg);
-  (void)WideTy;
+  [[maybe_unused]] const LLT WideTy = MRI.getType(SrcReg);
   assert(WideTy.getSizeInBits() >= NarrowTy.getSizeInBits() &&
          "source register size too small!");
   assert(!NarrowTy.isVector() && "cannot extract vector into vector!");
@@ -3816,8 +3813,7 @@ bool AArch64InstructionSelector::selectUnmergeValues(
   unsigned NumElts = I.getNumOperands() - 1;
   Register SrcReg = I.getOperand(NumElts).getReg();
   const LLT NarrowTy = MRI.getType(I.getOperand(0).getReg());
-  const LLT WideTy = MRI.getType(SrcReg);
-  (void)WideTy;
+  [[maybe_unused]] const LLT WideTy = MRI.getType(SrcReg);
   assert((WideTy.isVector() || WideTy.getSizeInBits() == 128) &&
          "can only unmerge from vector or s128 types!");
   assert(WideTy.getSizeInBits() > NarrowTy.getSizeInBits() &&
@@ -4142,8 +4138,7 @@ MachineInstr *AArch64InstructionSelector::emitIntegerCompare(
   MachineRegisterInfo &MRI = MIRBuilder.getMF().getRegInfo();
   LLT CmpTy = MRI.getType(LHS.getReg());
   assert(!CmpTy.isVector() && "Expected scalar or pointer");
-  unsigned Size = CmpTy.getSizeInBits();
-  (void)Size;
+  [[maybe_unused]] unsigned Size = CmpTy.getSizeInBits();
   assert((Size == 32 || Size == 64) && "Expected a 32-bit or 64-bit LHS/RHS?");
   // Fold the compare into a cmn or tst if possible.
   if (auto FoldCmp = tryFoldIntegerCompare(LHS, RHS, Predicate, MIRBuilder))

@@ -52,8 +52,7 @@ static void targetOptionsTest(bool EnableIPRA) {
   legacy::PassManager PM;
   LLVMTargetMachine *LLVMTM = static_cast<LLVMTargetMachine *>(TM.get());
 
-  TargetPassConfig *TPC = LLVMTM->createPassConfig(PM);
-  (void)TPC;
+  [[maybe_unused]] TargetPassConfig *TPC = LLVMTM->createPassConfig(PM);
 
   ASSERT_TRUE(TM->Options.EnableIPRA == EnableIPRA);
 

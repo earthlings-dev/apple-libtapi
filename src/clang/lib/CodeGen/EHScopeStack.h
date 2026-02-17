@@ -271,8 +271,7 @@ public:
     static_assert(alignof(T) <= ScopeStackAlignment,
                   "Cleanup's alignment is too large.");
     void *Buffer = pushCleanup(Kind, sizeof(T));
-    Cleanup *Obj = new (Buffer) T(A...);
-    (void) Obj;
+    [[maybe_unused]] Cleanup *Obj = new (Buffer) T(A...);
   }
 
   /// Push a lazily-created cleanup on the stack. Tuple version.
@@ -281,8 +280,7 @@ public:
     static_assert(alignof(T) <= ScopeStackAlignment,
                   "Cleanup's alignment is too large.");
     void *Buffer = pushCleanup(Kind, sizeof(T));
-    Cleanup *Obj = new (Buffer) T(std::move(A));
-    (void) Obj;
+    [[maybe_unused]] Cleanup *Obj = new (Buffer) T(std::move(A));
   }
 
   // Feel free to add more variants of the following:

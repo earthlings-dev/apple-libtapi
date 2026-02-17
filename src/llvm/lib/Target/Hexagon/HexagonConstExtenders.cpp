@@ -1533,7 +1533,7 @@ HCE::Register HCE::insertInitializer(Loc DefL, const ExtenderInit &ExtI) {
   MachineOperand ExtOp(EV);
 
   const ExtExpr &Ex = ExtI.second;
-  const MachineInstr *InitI = nullptr;
+  [[maybe_unused]] const MachineInstr *InitI = nullptr;
 
   if (Ex.Rs.isSlot()) {
     assert(Ex.S == 0 && "Cannot have a shift of a stack slot");
@@ -1590,7 +1590,6 @@ HCE::Register HCE::insertInitializer(Loc DefL, const ExtenderInit &ExtI) {
   }
 
   assert(InitI);
-  (void)InitI;
   LLVM_DEBUG(dbgs() << "Inserted def in bb#" << MBB.getNumber()
                     << " for initializer: " << PrintInit(ExtI, *HRI) << "\n  "
                     << *InitI);
@@ -1765,8 +1764,8 @@ bool HCE::replaceInstrExpr(const ExtDesc &ED, const ExtenderInit &ExtI,
     return true;
   }
 
-  const ExtValue &EV = ExtI.first; (void)EV;
-  const ExtExpr &Ex = ExtI.second; (void)Ex;
+  [[maybe_unused]] const ExtValue &EV = ExtI.first;
+  [[maybe_unused]] const ExtExpr &Ex = ExtI.second;
 
   if (ExtOpc == Hexagon::A2_addi || ExtOpc == Hexagon::A2_subri) {
     // If addi/subri are replaced with the exactly matching initializer,

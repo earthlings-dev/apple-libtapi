@@ -116,9 +116,8 @@ public:
     VisitDeclContext(D->getDeclContext());
     Out << "@UD@";
 
-    bool EmittedDeclName = !EmitDeclName(D);
+    [[maybe_unused]] bool EmittedDeclName = !EmitDeclName(D);
     assert(EmittedDeclName && "EmitDeclName can not fail for UsingDecls");
-    (void)EmittedDeclName;
   }
 
   bool ShouldGenerateLocation(const NamedDecl *D);

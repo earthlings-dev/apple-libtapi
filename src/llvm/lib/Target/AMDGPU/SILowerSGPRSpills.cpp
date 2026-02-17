@@ -374,8 +374,7 @@ bool SILowerSGPRSpills::runOnMachineFunction(MachineFunction &MF) {
         assert(MFI.getStackID(FI) == TargetStackID::SGPRSpill);
         if (FuncInfo->allocateSGPRSpillToVGPR(MF, FI)) {
           NewReservedRegs = true;
-          bool Spilled = TRI->eliminateSGPRToVGPRSpillFrameIndex(MI, FI, nullptr);
-          (void)Spilled;
+          [[maybe_unused]] bool Spilled = TRI->eliminateSGPRToVGPRSpillFrameIndex(MI, FI, nullptr);
           assert(Spilled && "failed to spill SGPR to VGPR when allocated");
         }
       }

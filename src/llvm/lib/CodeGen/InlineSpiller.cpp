@@ -619,7 +619,7 @@ bool InlineSpiller::reMaterializeFor(LiveInterval &VirtReg, MachineInstr &MI) {
   Register NewVReg = Edit->createFrom(Original);
 
   // Finally we can rematerialize OrigMI before MI.
-  SlotIndex DefIdx =
+  [[maybe_unused]] SlotIndex DefIdx =
       Edit->rematerializeAt(*MI.getParent(), MI, NewVReg, RM, TRI);
 
   // We take the DebugLoc from MI, since OrigMI may be attributed to a
@@ -627,7 +627,6 @@ bool InlineSpiller::reMaterializeFor(LiveInterval &VirtReg, MachineInstr &MI) {
   auto *NewMI = LIS.getInstructionFromIndex(DefIdx);
   NewMI->setDebugLoc(MI.getDebugLoc());
 
-  (void)DefIdx;
   LLVM_DEBUG(dbgs() << "\tremat:  " << DefIdx << '\t'
                     << *LIS.getInstructionFromIndex(DefIdx));
 

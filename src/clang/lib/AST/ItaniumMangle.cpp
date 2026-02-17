@@ -3295,9 +3295,8 @@ static StringRef mangleAArch64VectorBase(const BuiltinType *EltType) {
 void CXXNameMangler::mangleAArch64NeonVectorType(const VectorType *T) {
   QualType EltType = T->getElementType();
   assert(EltType->isBuiltinType() && "Neon vector element not a BuiltinType");
-  unsigned BitSize =
+  [[maybe_unused]] unsigned BitSize =
       (T->getNumElements() * getASTContext().getTypeSize(EltType));
-  (void)BitSize; // Silence warning.
 
   assert((BitSize == 64 || BitSize == 128) &&
          "Neon vector type not 64 or 128 bits");
@@ -5557,9 +5556,8 @@ void CXXNameMangler::mangleSeqID(unsigned SeqID) {
 }
 
 void CXXNameMangler::mangleExistingSubstitution(TemplateName tname) {
-  bool result = mangleSubstitution(tname);
+  [[maybe_unused]] bool result = mangleSubstitution(tname);
   assert(result && "no existing substitution for template name");
-  (void) result;
 }
 
 // <substitution> ::= S <seq-id> _

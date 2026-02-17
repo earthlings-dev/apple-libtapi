@@ -138,11 +138,10 @@ static Constant *FoldBitCast(Constant *V, Type *DestTy) {
   // Handle casts from one vector constant to another.  We know that the src
   // and dest type have the same size (otherwise its an illegal cast).
   if (VectorType *DestPTy = dyn_cast<VectorType>(DestTy)) {
-    if (VectorType *SrcTy = dyn_cast<VectorType>(V->getType())) {
+    if ([[maybe_unused]] VectorType *SrcTy = dyn_cast<VectorType>(V->getType())) {
       assert(DestPTy->getPrimitiveSizeInBits() ==
                  SrcTy->getPrimitiveSizeInBits() &&
              "Not cast between same sized vectors!");
-      SrcTy = nullptr;
       // First, check for null.  Undef is already handled.
       if (isa<ConstantAggregateZero>(V))
         return Constant::getNullValue(DestTy);

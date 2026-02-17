@@ -68,9 +68,8 @@ template <typename NodeTy> struct ilist_callback_traits {
   /// Callback before transferring nodes to this list. The nodes may already be
   /// in this same list.
   template <class Iterator>
-  void transferNodesFromList(ilist_callback_traits &OldList, Iterator /*first*/,
+  void transferNodesFromList([[maybe_unused]] ilist_callback_traits &OldList, Iterator /*first*/,
                              Iterator /*last*/) {
-    (void)OldList;
   }
 };
 

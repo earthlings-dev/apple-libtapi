@@ -646,12 +646,11 @@ void llvm::sys::PrintStackTraceOnErrorSignal(StringRef Argv0,
 
     exception_mask_t mask = EXC_MASK_CRASH;
 
-    kern_return_t ret = task_set_exception_ports(self,
+    [[maybe_unused]] kern_return_t ret = task_set_exception_ports(self,
                              mask,
                              MACH_PORT_NULL,
                              EXCEPTION_STATE_IDENTITY | MACH_EXCEPTION_CODES,
                              THREAD_STATE_NONE);
-    (void)ret;
   }
 #endif
 }

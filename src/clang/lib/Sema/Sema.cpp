@@ -798,8 +798,7 @@ static void checkUndefinedButUsed(Sema &S) {
       // one definition rule.
       S.Diag(VD->getLocation(), diag::warn_undefined_internal)
         << isa<VarDecl>(VD) << VD;
-    } else if (auto *FD = dyn_cast<FunctionDecl>(VD)) {
-      (void)FD;
+    } else if ([[maybe_unused]] auto *FD = dyn_cast<FunctionDecl>(VD)) {
       assert(FD->getMostRecentDecl()->isInlined() &&
              "used object requires definition but isn't inline or internal?");
       // FIXME: This is ill-formed; we should reject.

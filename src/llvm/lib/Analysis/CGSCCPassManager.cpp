@@ -689,12 +689,11 @@ FunctionAnalysisManagerCGSCCProxy::run(LazyCallGraph::SCC &C,
   // it is cheap and having the assertion in place is more valuable.
   auto &MAMProxy = AM.getResult<ModuleAnalysisManagerCGSCCProxy>(C, CG);
   Module &M = *C.begin()->getFunction().getParent();
-  bool ProxyExists =
+  [[maybe_unused]] bool ProxyExists =
       MAMProxy.cachedResultExists<FunctionAnalysisManagerModuleProxy>(M);
   assert(ProxyExists &&
          "The CGSCC pass manager requires that the FAM module proxy is run "
          "on the module prior to entering the CGSCC walk");
-  (void)ProxyExists;
 
   // We just return an empty result. The caller will use the updateFAM interface
   // to correctly register the relevant FunctionAnalysisManager based on the
@@ -929,8 +928,7 @@ static LazyCallGraph::SCC &updateCGAndAnalysisManagerForPass(
                  "No function transformations should introduce *new* "
                  "call edges! Any new calls should be modeled as "
                  "promoted existing ref edges!");
-          bool Inserted = RetainedEdges.insert(CalleeN).second;
-          (void)Inserted;
+          [[maybe_unused]] bool Inserted = RetainedEdges.insert(CalleeN).second;
           assert(Inserted && "We should never visit a function twice.");
           if (!E)
             NewCallEdges.insert(CalleeN);
@@ -965,8 +963,7 @@ static LazyCallGraph::SCC &updateCGAndAnalysisManagerForPass(
            "No function transformations should introduce *new* ref "
            "edges! Any new ref edges would require IPO which "
            "function passes aren't allowed to do!");
-    bool Inserted = RetainedEdges.insert(RefereeN).second;
-    (void)Inserted;
+    [[maybe_unused]] bool Inserted = RetainedEdges.insert(RefereeN).second;
     assert(Inserted && "We should never visit a function twice.");
     if (!E)
       NewRefEdges.insert(RefereeN);
@@ -978,8 +975,7 @@ static LazyCallGraph::SCC &updateCGAndAnalysisManagerForPass(
   // Handle new ref edges.
   for (Node *RefTarget : NewRefEdges) {
     SCC &TargetC = *G.lookupSCC(*RefTarget);
-    RefSCC &TargetRC = TargetC.getOuterRefSCC();
-    (void)TargetRC;
+    [[maybe_unused]] RefSCC &TargetRC = TargetC.getOuterRefSCC();
     // TODO: This only allows trivial edges to be added for now.
     assert((RC == &TargetRC ||
            RC->isAncestorOf(TargetRC)) && "New ref edge is not trivial!");
@@ -989,8 +985,7 @@ static LazyCallGraph::SCC &updateCGAndAnalysisManagerForPass(
   // Handle new call edges.
   for (Node *CallTarget : NewCallEdges) {
     SCC &TargetC = *G.lookupSCC(*CallTarget);
-    RefSCC &TargetRC = TargetC.getOuterRefSCC();
-    (void)TargetRC;
+    [[maybe_unused]] RefSCC &TargetRC = TargetC.getOuterRefSCC();
     // TODO: This only allows trivial edges to be added for now.
     assert((RC == &TargetRC ||
            RC->isAncestorOf(TargetRC)) && "New call edge is not trivial!");

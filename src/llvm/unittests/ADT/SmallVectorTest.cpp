@@ -1074,24 +1074,21 @@ TYPED_TEST_CASE(SmallVectorReferenceInvalidationTest,
                 SmallVectorReferenceInvalidationTestTypes);
 
 TYPED_TEST(SmallVectorReferenceInvalidationTest, PushBack) {
-  auto &V = this->V;
-  (void)V;
+  [[maybe_unused]] auto &V = this->V;
 #if !defined(NDEBUG) && GTEST_HAS_DEATH_TEST
   EXPECT_DEATH(V.push_back(V.back()), this->AssertionMessage);
 #endif
 }
 
 TYPED_TEST(SmallVectorReferenceInvalidationTest, PushBackMoved) {
-  auto &V = this->V;
-  (void)V;
+  [[maybe_unused]] auto &V = this->V;
 #if !defined(NDEBUG) && GTEST_HAS_DEATH_TEST
   EXPECT_DEATH(V.push_back(std::move(V.back())), this->AssertionMessage);
 #endif
 }
 
 TYPED_TEST(SmallVectorReferenceInvalidationTest, Resize) {
-  auto &V = this->V;
-  (void)V;
+  [[maybe_unused]] auto &V = this->V;
   int N = this->NumBuiltinElts(V);
 #if !defined(NDEBUG) && GTEST_HAS_DEATH_TEST
   EXPECT_DEATH(V.resize(N + 1, V.back()), this->AssertionMessage);
@@ -1102,16 +1099,14 @@ TYPED_TEST(SmallVectorReferenceInvalidationTest, Resize) {
 }
 
 TYPED_TEST(SmallVectorReferenceInvalidationTest, Append) {
-  auto &V = this->V;
-  (void)V;
+  [[maybe_unused]] auto &V = this->V;
 #if !defined(NDEBUG) && GTEST_HAS_DEATH_TEST
   EXPECT_DEATH(V.append(1, V.back()), this->AssertionMessage);
 #endif
 }
 
 TYPED_TEST(SmallVectorReferenceInvalidationTest, AppendRange) {
-  auto &V = this->V;
-  (void)V;
+  [[maybe_unused]] auto &V = this->V;
 #if !defined(NDEBUG) && GTEST_HAS_DEATH_TEST
   EXPECT_DEATH(V.append(V.begin(), V.begin() + 1), this->AssertionMessage);
 
@@ -1127,8 +1122,7 @@ TYPED_TEST(SmallVectorReferenceInvalidationTest, AppendRange) {
 }
 
 TYPED_TEST(SmallVectorReferenceInvalidationTest, Assign) {
-  auto &V = this->V;
-  (void)V;
+  [[maybe_unused]] auto &V = this->V;
 #if !defined(NDEBUG) && GTEST_HAS_DEATH_TEST
   // Regardless of capacity, assign should never reference an internal element.
   EXPECT_DEATH(V.assign(1, V.back()), this->AssertionMessage);
@@ -1150,16 +1144,14 @@ TYPED_TEST(SmallVectorReferenceInvalidationTest, AssignRange) {
 }
 
 TYPED_TEST(SmallVectorReferenceInvalidationTest, Insert) {
-  auto &V = this->V;
-  (void)V;
+  [[maybe_unused]] auto &V = this->V;
 #if !defined(NDEBUG) && GTEST_HAS_DEATH_TEST
   EXPECT_DEATH(V.insert(V.begin(), V.back()), this->AssertionMessage);
 #endif
 }
 
 TYPED_TEST(SmallVectorReferenceInvalidationTest, InsertMoved) {
-  auto &V = this->V;
-  (void)V;
+  [[maybe_unused]] auto &V = this->V;
 #if !defined(NDEBUG) && GTEST_HAS_DEATH_TEST
   EXPECT_DEATH(V.insert(V.begin(), std::move(V.back())),
                this->AssertionMessage);
@@ -1167,16 +1159,14 @@ TYPED_TEST(SmallVectorReferenceInvalidationTest, InsertMoved) {
 }
 
 TYPED_TEST(SmallVectorReferenceInvalidationTest, InsertN) {
-  auto &V = this->V;
-  (void)V;
+  [[maybe_unused]] auto &V = this->V;
 #if !defined(NDEBUG) && GTEST_HAS_DEATH_TEST
   EXPECT_DEATH(V.insert(V.begin(), 2, V.back()), this->AssertionMessage);
 #endif
 }
 
 TYPED_TEST(SmallVectorReferenceInvalidationTest, InsertRange) {
-  auto &V = this->V;
-  (void)V;
+  [[maybe_unused]] auto &V = this->V;
 #if !defined(NDEBUG) && GTEST_HAS_DEATH_TEST
   EXPECT_DEATH(V.insert(V.begin(), V.begin(), V.begin() + 1),
                this->AssertionMessage);
@@ -1193,8 +1183,7 @@ TYPED_TEST(SmallVectorReferenceInvalidationTest, InsertRange) {
 }
 
 TYPED_TEST(SmallVectorReferenceInvalidationTest, EmplaceBack) {
-  auto &V = this->V;
-  (void)V;
+  [[maybe_unused]] auto &V = this->V;
 #if !defined(NDEBUG) && GTEST_HAS_DEATH_TEST
   EXPECT_DEATH(V.emplace_back(V.back()), this->AssertionMessage);
 #endif
@@ -1232,8 +1221,7 @@ TYPED_TEST_CASE(SmallVectorInternalReferenceInvalidationTest,
                 SmallVectorInternalReferenceInvalidationTestTypes);
 
 TYPED_TEST(SmallVectorInternalReferenceInvalidationTest, EmplaceBack) {
-  auto &V = this->V;
-  (void)V;
+  [[maybe_unused]] auto &V = this->V;
 #if !defined(NDEBUG) && GTEST_HAS_DEATH_TEST
   EXPECT_DEATH(V.emplace_back(V.back().first, 0), this->AssertionMessage);
   EXPECT_DEATH(V.emplace_back(0, V.back().second), this->AssertionMessage);

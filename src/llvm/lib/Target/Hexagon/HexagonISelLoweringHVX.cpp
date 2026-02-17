@@ -795,9 +795,8 @@ HexagonTargetLowering::extractHvxElementReg(SDValue VecV, SDValue IdxV,
       const SDLoc &dl, MVT ResTy, SelectionDAG &DAG) const {
   MVT ElemTy = ty(VecV).getVectorElementType();
 
-  unsigned ElemWidth = ElemTy.getSizeInBits();
+  [[maybe_unused]] unsigned ElemWidth = ElemTy.getSizeInBits();
   assert(ElemWidth >= 8 && ElemWidth <= 32);
-  (void)ElemWidth;
 
   SDValue ByteIdx = convertToByteIndex(IdxV, ElemTy, DAG);
   SDValue ExWord = DAG.getNode(HexagonISD::VEXTRACTW, dl, MVT::i32,
@@ -838,9 +837,8 @@ HexagonTargetLowering::insertHvxElementReg(SDValue VecV, SDValue IdxV,
       SDValue ValV, const SDLoc &dl, SelectionDAG &DAG) const {
   MVT ElemTy = ty(VecV).getVectorElementType();
 
-  unsigned ElemWidth = ElemTy.getSizeInBits();
+  [[maybe_unused]] unsigned ElemWidth = ElemTy.getSizeInBits();
   assert(ElemWidth >= 8 && ElemWidth <= 32);
-  (void)ElemWidth;
 
   auto InsertWord = [&DAG,&dl,this] (SDValue VecV, SDValue ValV,
                                      SDValue ByteIdxV) {
@@ -1367,9 +1365,8 @@ HexagonTargetLowering::LowerHvxExtractSubvector(SDValue Op, SelectionDAG &DAG)
   MVT SrcTy = ty(SrcV);
   MVT DstTy = ty(Op);
   SDValue IdxV = Op.getOperand(1);
-  unsigned Idx = cast<ConstantSDNode>(IdxV.getNode())->getZExtValue();
+  [[maybe_unused]] unsigned Idx = cast<ConstantSDNode>(IdxV.getNode())->getZExtValue();
   assert(Idx % DstTy.getVectorNumElements() == 0);
-  (void)Idx;
   const SDLoc &dl(Op);
 
   MVT ElemTy = SrcTy.getVectorElementType();

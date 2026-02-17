@@ -1278,7 +1278,7 @@ RegisterInfoEmitter::runTargetDesc(raw_ostream &OS, CodeGenTarget &Target,
     OS << "\nstatic const TargetRegisterInfo::RegClassInfo RegClassInfos[]"
        << " = {\n";
     for (unsigned M = 0; M < NumModes; ++M) {
-      unsigned EV = 0;
+      [[maybe_unused]] unsigned EV = 0;
       OS << "  // Mode = " << M << " (";
       if (M == 0)
         OS << "Default";
@@ -1288,7 +1288,6 @@ RegisterInfoEmitter::runTargetDesc(raw_ostream &OS, CodeGenTarget &Target,
       for (const auto &RC : RegisterClasses) {
         assert(RC.EnumValue == EV && "Unexpected order of register classes");
         ++EV;
-        (void)EV;
         const RegSizeInfo &RI = RC.RSI.get(M);
         OS << "  { " << RI.RegSize << ", " << RI.SpillSize << ", "
            << RI.SpillAlignment;

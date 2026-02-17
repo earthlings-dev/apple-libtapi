@@ -783,11 +783,10 @@ void DWARFVerifier::verifyDebugLineRows() {
 
       // Check file paths for duplicates.
       std::string FullPath;
-      const bool HasFullPath = LineTable->getFileNameByIndex(
+      [[maybe_unused]] const bool HasFullPath = LineTable->getFileNameByIndex(
           FileIndex, CU->getCompilationDir(),
           DILineInfoSpecifier::FileLineInfoKind::AbsoluteFilePath, FullPath);
       assert(HasFullPath && "Invalid index?");
-      (void)HasFullPath;
       auto It = FullPathMap.find(FullPath);
       if (It == FullPathMap.end())
         FullPathMap[FullPath] = FileIndex;

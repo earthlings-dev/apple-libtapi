@@ -533,10 +533,9 @@ static Optional<EstimatedUnrollCost> analyzeLoopUnrollCost(
         // and if the visitor returns true, mark the instruction as free after
         // unrolling and continue.
         bool IsFree = Analyzer.visit(I);
-        bool Inserted = InstCostMap.insert({&I, (int)Iteration,
+        [[maybe_unused]] bool Inserted = InstCostMap.insert({&I, (int)Iteration,
                                            (unsigned)IsFree,
                                            /*IsCounted*/ false}).second;
-        (void)Inserted;
         assert(Inserted && "Cannot have a state for an unvisited instruction!");
 
         if (IsFree)

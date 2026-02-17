@@ -2191,10 +2191,9 @@ Sema::BuildCXXNew(SourceRange Range, bool UseGlobal,
       AllocationSize = SingleEltSize;
     } else if (KnownArraySize.hasValue() && !AllocType->isDependentType()) {
       // For array operator new, only deal with static array size case.
-      bool Overflow;
+      [[maybe_unused]] bool Overflow;
       AllocationSize = llvm::APInt(SizeTyWidth, *KnownArraySize)
                            .umul_ov(SingleEltSize, Overflow);
-      (void)Overflow;
       assert(
           !Overflow &&
           "Expected that all the overflows would have been handled already.");
@@ -4032,10 +4031,10 @@ Sema::PerformImplicitConversion(Expr *From, QualType ToType,
   case ImplicitConversionSequence::BadConversion:
     Sema::AssignConvertType ConvTy =
         CheckAssignmentConstraints(From->getExprLoc(), ToType, From->getType());
-    bool Diagnosed = DiagnoseAssignmentResult(
+    [[maybe_unused]] bool Diagnosed = DiagnoseAssignmentResult(
         ConvTy == Compatible ? Incompatible : ConvTy, From->getExprLoc(),
         ToType, From->getType(), From, Action);
-    assert(Diagnosed && "failed to diagnose bad conversion"); (void)Diagnosed;
+    assert(Diagnosed && "failed to diagnose bad conversion");
     return ExprError();
   }
 
@@ -4423,14 +4422,13 @@ Sema::PerformImplicitConversion(Expr *From, QualType ToType,
 
   case ICK_TransparentUnionConversion: {
     ExprResult FromRes = From;
-    Sema::AssignConvertType ConvTy =
+    [[maybe_unused]] Sema::AssignConvertType ConvTy =
       CheckTransparentUnionArgumentConstraints(ToType, FromRes);
     if (FromRes.isInvalid())
       return ExprError();
     From = FromRes.get();
     assert ((ConvTy == Sema::Compatible) &&
             "Improper transparent union conversion");
-    (void)ConvTy;
     break;
   }
 

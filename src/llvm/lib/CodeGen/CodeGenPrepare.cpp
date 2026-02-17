@@ -1635,12 +1635,11 @@ bool CodeGenPrepare::optimizeCmp(CmpInst *Cmp, bool &ModifiedDT) {
 /// Return true if any changes are made.
 static bool sinkAndCmp0Expression(Instruction *AndI,
                                   const TargetLowering &TLI,
-                                  SetOfInstrs &InsertedInsts) {
+                                  [[maybe_unused]] SetOfInstrs &InsertedInsts) {
   // Double-check that we're not trying to optimize an instruction that was
   // already optimized by some other part of this pass.
   assert(!InsertedInsts.count(AndI) &&
          "Attempting to optimize already optimized and instruction");
-  (void) InsertedInsts;
 
   // Nothing to do for single use in same basic block.
   if (AndI->hasOneUse() &&
@@ -3073,12 +3072,12 @@ public:
         bool OptSize, ProfileSummaryInfo *PSI, BlockFrequencyInfo *BFI) {
     ExtAddrMode Result;
 
-    bool Success = AddressingModeMatcher(AddrModeInsts, TLI, TRI, AccessTy, AS,
+    [[maybe_unused]] bool Success = AddressingModeMatcher(AddrModeInsts, TLI, TRI, AccessTy, AS,
                                          MemoryInst, Result, InsertedInsts,
                                          PromotedInsts, TPT, LargeOffsetGEP,
                                          OptSize, PSI, BFI)
                        .matchAddr(V, 0);
-    (void)Success; assert(Success && "Couldn't select *anything*?");
+    assert(Success && "Couldn't select *anything*?");
     return Result;
   }
 
@@ -4886,8 +4885,8 @@ isProfitableToFoldIntoAddressingMode(Instruction *I, ExtAddrMode &AMBefore,
         MatchedAddrModeInsts, TLI, TRI, AddressAccessTy, AS, MemoryInst, Result,
         InsertedInsts, PromotedInsts, TPT, LargeOffsetGEP, OptSize, PSI, BFI);
     Matcher.IgnoreProfitability = true;
-    bool Success = Matcher.matchAddr(Address, 0);
-    (void)Success; assert(Success && "Couldn't select *anything*?");
+    [[maybe_unused]] bool Success = Matcher.matchAddr(Address, 0);
+    assert(Success && "Couldn't select *anything*?");
 
     // The match was to check the profitability, the changes made are not
     // part of the original matcher. Therefore, they should be dropped

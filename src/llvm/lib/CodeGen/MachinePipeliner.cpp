@@ -2784,8 +2784,7 @@ void SwingSchedulerDAG::checkValidNodeOrder(const NodeSetType &Circuits) const {
   // sort, so that we can perform a binary search
   llvm::sort(Indices, CompareKey);
 
-  bool Valid = true;
-  (void)Valid;
+  [[maybe_unused]] bool Valid = true;
   // for each SUnit in the NodeOrder, check whether
   // it appears after both a successor and a predecessor
   // of the SUnit. If this is the case, and the SUnit
@@ -2798,10 +2797,8 @@ void SwingSchedulerDAG::checkValidNodeOrder(const NodeSetType &Circuits) const {
     bool PredBefore = false;
     bool SuccBefore = false;
 
-    SUnit *Succ;
-    SUnit *Pred;
-    (void)Succ;
-    (void)Pred;
+    [[maybe_unused]] SUnit *Succ;
+    [[maybe_unused]] SUnit *Pred;
 
     for (SDep &PredEdge : SU->Preds) {
       SUnit *PredSU = PredEdge.getSUnit();

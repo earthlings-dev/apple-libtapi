@@ -196,10 +196,9 @@ bool MetadataTracking::isReplaceable(const Metadata &MD) {
 }
 
 void ReplaceableMetadataImpl::addRef(void *Ref, OwnerTy Owner) {
-  bool WasInserted =
+  [[maybe_unused]] bool WasInserted =
       UseMap.insert(std::make_pair(Ref, std::make_pair(Owner, NextIndex)))
           .second;
-  (void)WasInserted;
   assert(WasInserted && "Expected to add a reference");
 
   ++NextIndex;
@@ -207,23 +206,20 @@ void ReplaceableMetadataImpl::addRef(void *Ref, OwnerTy Owner) {
 }
 
 void ReplaceableMetadataImpl::dropRef(void *Ref) {
-  bool WasErased = UseMap.erase(Ref);
-  (void)WasErased;
+  [[maybe_unused]] bool WasErased = UseMap.erase(Ref);
   assert(WasErased && "Expected to drop a reference");
 }
 
 void ReplaceableMetadataImpl::moveRef(void *Ref, void *New,
-                                      const Metadata &MD) {
+                                      [[maybe_unused]] const Metadata &MD) {
   auto I = UseMap.find(Ref);
   assert(I != UseMap.end() && "Expected to move a reference");
   auto OwnerAndIndex = I->second;
   UseMap.erase(I);
-  bool WasInserted = UseMap.insert(std::make_pair(New, OwnerAndIndex)).second;
-  (void)WasInserted;
+  [[maybe_unused]] bool WasInserted = UseMap.insert(std::make_pair(New, OwnerAndIndex)).second;
   assert(WasInserted && "Expected to add a reference");
 
   // Check that the references are direct if there's no owner.
-  (void)MD;
   assert((OwnerAndIndex.first || *static_cast<Metadata **>(Ref) == &MD) &&
          "Reference without owner must be direct");
   assert((OwnerAndIndex.first || *static_cast<Metadata **>(New) == &MD) &&

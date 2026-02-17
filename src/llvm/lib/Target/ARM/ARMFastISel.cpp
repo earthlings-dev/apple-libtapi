@@ -2011,7 +2011,7 @@ bool ARMFastISel::ProcessCallArgs(SmallVectorImpl<Value*> &Args,
       Addr.Base.Reg = ARM::SP;
       Addr.Offset = VA.getLocMemOffset();
 
-      bool EmitRet = ARMEmitStore(ArgVT, Arg, Addr); (void)EmitRet;
+      [[maybe_unused]] bool EmitRet = ARMEmitStore(ArgVT, Arg, Addr);
       assert(EmitRet && "Could not emit a store for argument!");
     }
   }
@@ -2465,13 +2465,12 @@ bool ARMFastISel::ARMTryEmitSmallMemCpy(Address Dest, Address Src,
       }
     }
 
-    bool RV;
+    [[maybe_unused]] bool RV;
     Register ResultReg;
     RV = ARMEmitLoad(VT, ResultReg, Src);
     assert(RV && "Should be able to handle this load.");
     RV = ARMEmitStore(VT, ResultReg, Dest);
     assert(RV && "Should be able to handle this store.");
-    (void)RV;
 
     unsigned Size = VT.getSizeInBits()/8;
     Len -= Size;
@@ -2674,8 +2673,7 @@ unsigned ARMFastISel::ARMEmitIntExt(MVT SrcVT, unsigned SrcReg, MVT DestVT,
   };
 
   unsigned SrcBits = SrcVT.getSizeInBits();
-  unsigned DestBits = DestVT.getSizeInBits();
-  (void) DestBits;
+  [[maybe_unused]] unsigned DestBits = DestVT.getSizeInBits();
   assert((SrcBits < DestBits) && "can only extend to larger types");
   assert((DestBits == 32 || DestBits == 16 || DestBits == 8) &&
          "other sizes unimplemented");

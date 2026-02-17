@@ -2157,10 +2157,9 @@ void ARMDAGToDAGISel::SelectVLD(SDNode *N, bool isUpdating, unsigned NumVecs,
     Ops.push_back(SDValue(VLdA, 1));
     Ops.push_back(Align);
     if (isUpdating) {
-      SDValue Inc = N->getOperand(AddrOpIdx + 1);
+      [[maybe_unused]] SDValue Inc = N->getOperand(AddrOpIdx + 1);
       assert(isa<ConstantSDNode>(Inc.getNode()) &&
              "only constant post-increment update allowed for VLD3/4");
-      (void)Inc;
       Ops.push_back(Reg0);
     }
     Ops.push_back(SDValue(VLdA, 0));
@@ -2332,10 +2331,9 @@ void ARMDAGToDAGISel::SelectVST(SDNode *N, bool isUpdating, unsigned NumVecs,
   Ops.push_back(SDValue(VStA, 0));
   Ops.push_back(Align);
   if (isUpdating) {
-    SDValue Inc = N->getOperand(AddrOpIdx + 1);
+    [[maybe_unused]] SDValue Inc = N->getOperand(AddrOpIdx + 1);
     assert(isa<ConstantSDNode>(Inc.getNode()) &&
            "only constant post-increment update allowed for VST3/4");
-    (void)Inc;
     Ops.push_back(Reg0);
   }
   Ops.push_back(RegSeq);

@@ -7985,8 +7985,7 @@ printMachOCompactUnwindSection(const MachOObjectFile *Obj,
 
 static void printRegularSecondLevelUnwindPage(StringRef PageData) {
   ptrdiff_t Pos = 0;
-  uint32_t Kind = readNext<uint32_t>(PageData, Pos);
-  (void)Kind;
+  [[maybe_unused]] uint32_t Kind = readNext<uint32_t>(PageData, Pos);
   assert(Kind == 2 && "kind for a regular 2nd level index should be 2");
 
   uint16_t EntriesStart = readNext<uint16_t>(PageData, Pos);
@@ -8008,8 +8007,7 @@ static void printCompressedSecondLevelUnwindPage(
     StringRef PageData, uint32_t FunctionBase,
     const SmallVectorImpl<uint32_t> &CommonEncodings) {
   ptrdiff_t Pos = 0;
-  uint32_t Kind = readNext<uint32_t>(PageData, Pos);
-  (void)Kind;
+  [[maybe_unused]] uint32_t Kind = readNext<uint32_t>(PageData, Pos);
   assert(Kind == 3 && "kind for a compressed 2nd level index should be 3");
 
   uint16_t EntriesStart = readNext<uint16_t>(PageData, Pos);

@@ -739,11 +739,10 @@ public:
                      ArgsUnion *args, unsigned numArgs,
                      ParsedAttr::Syntax syntax,
                      SourceLocation ellipsisLoc = SourceLocation()) {
-    size_t temp =
+    [[maybe_unused]] size_t temp =
         ParsedAttr::totalSizeToAlloc<ArgsUnion, detail::AvailabilityData,
                                      detail::TypeTagForDatatypeData, ParsedType,
                                      detail::PropertyData>(numArgs, 0, 0, 0, 0);
-    (void)temp;
     void *memory = allocate(
         ParsedAttr::totalSizeToAlloc<ArgsUnion, detail::AvailabilityData,
                                      detail::TypeTagForDatatypeData, ParsedType,

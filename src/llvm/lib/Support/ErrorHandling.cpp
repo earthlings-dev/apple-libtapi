@@ -114,8 +114,7 @@ void llvm::report_fatal_error(const Twine &Reason, bool GenCrashDiag) {
     raw_svector_ostream OS(Buffer);
     OS << "LLVM ERROR: " << Reason << "\n";
     StringRef MessageStr = OS.str();
-    ssize_t written = ::write(2, MessageStr.data(), MessageStr.size());
-    (void)written; // If something went wrong, we deliberately just give up.
+    [[maybe_unused]] ssize_t written = ::write(2, MessageStr.data(), MessageStr.size()); // If something went wrong, we deliberately just give up.
   }
 
   // If we reached here, we are failing ungracefully. Run the interrupt handlers
@@ -192,8 +191,7 @@ static void out_of_memory_new_handler() {
 // Installs new handler that causes crash on allocation failure. It is called by
 // InitLLVM.
 void llvm::install_out_of_memory_new_handler() {
-  std::new_handler old = std::set_new_handler(out_of_memory_new_handler);
-  (void)old;
+  [[maybe_unused]] std::new_handler old = std::set_new_handler(out_of_memory_new_handler);
   assert((old == nullptr || old == out_of_memory_new_handler) &&
          "new-handler already installed");
 }

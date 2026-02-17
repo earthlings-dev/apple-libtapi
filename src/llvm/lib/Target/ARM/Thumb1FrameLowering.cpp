@@ -551,8 +551,7 @@ void Thumb1FrameLowering::emitEpilogue(MachineFunction &MF,
   }
 
   if (needPopSpecialFixUp(MF)) {
-    bool Done = emitPopSpecialFixUp(MBB, /* DoIt */ true);
-    (void)Done;
+    [[maybe_unused]] bool Done = emitPopSpecialFixUp(MBB, /* DoIt */ true);
     assert(Done && "Emission of the special fixup failed!?");
   }
 }

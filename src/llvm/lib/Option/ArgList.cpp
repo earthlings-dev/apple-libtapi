@@ -218,9 +218,8 @@ unsigned InputArgList::MakeIndex(StringRef String0) const {
 unsigned InputArgList::MakeIndex(StringRef String0,
                                  StringRef String1) const {
   unsigned Index0 = MakeIndex(String0);
-  unsigned Index1 = MakeIndex(String1);
+  [[maybe_unused]] unsigned Index1 = MakeIndex(String1);
   assert(Index0 + 1 == Index1 && "Unexpected non-consecutive indices!");
-  (void) Index1;
   return Index0;
 }
 

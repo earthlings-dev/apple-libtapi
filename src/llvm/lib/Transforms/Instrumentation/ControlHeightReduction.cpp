@@ -451,10 +451,8 @@ static bool shouldApply(Function &F, ProfileSummaryInfo& PSI) {
 
 static void LLVM_ATTRIBUTE_UNUSED dumpIR(Function &F, const char *Label,
                                          CHRStats *Stats) {
-  StringRef FuncName = F.getName();
-  StringRef ModuleName = F.getParent()->getName();
-  (void)(FuncName); // Unused in release build.
-  (void)(ModuleName); // Unused in release build.
+  [[maybe_unused]] StringRef FuncName = F.getName();
+  [[maybe_unused]] StringRef ModuleName = F.getParent()->getName();
   CHR_DEBUG(dbgs() << "CHR IR dump " << Label << " " << ModuleName << " "
             << FuncName);
   if (Stats)
@@ -1403,10 +1401,9 @@ void CHR::setCHRRegions(CHRScope *Scope, CHRScope *OutermostScope) {
       auto *BI = cast<BranchInst>(R->getEntry()->getTerminator());
       // Note checkHoistValue fills in HoistStops.
       DenseMap<Instruction *, bool> Visited;
-      bool IsHoistable = checkHoistValue(BI->getCondition(), InsertPoint, DT,
+      [[maybe_unused]] bool IsHoistable = checkHoistValue(BI->getCondition(), InsertPoint, DT,
                                          Unhoistables, &HoistStops, Visited);
       assert(IsHoistable && "Must be hoistable");
-      (void)(IsHoistable);  // Unused in release build
       IsHoisted = true;
     }
     for (SelectInst *SI : RI.Selects) {
@@ -1415,10 +1412,9 @@ void CHR::setCHRRegions(CHRScope *Scope, CHRScope *OutermostScope) {
              "Must be true or false biased");
       // Note checkHoistValue fills in HoistStops.
       DenseMap<Instruction *, bool> Visited;
-      bool IsHoistable = checkHoistValue(SI->getCondition(), InsertPoint, DT,
+      [[maybe_unused]] bool IsHoistable = checkHoistValue(SI->getCondition(), InsertPoint, DT,
                                          Unhoistables, &HoistStops, Visited);
       assert(IsHoistable && "Must be hoistable");
-      (void)(IsHoistable);  // Unused in release build
       IsHoisted = true;
     }
     if (IsHoisted) {
@@ -1661,8 +1657,7 @@ static void LLVM_ATTRIBUTE_UNUSED assertBranchOrSelectConditionHoisted(
       auto *BI = cast<BranchInst>(R->getEntry()->getTerminator());
       Value *V = BI->getCondition();
       CHR_DEBUG(dbgs() << *V << "\n");
-      if (auto *I = dyn_cast<Instruction>(V)) {
-        (void)(I); // Unused in release build.
+      if ([[maybe_unused]] auto *I = dyn_cast<Instruction>(V)) {
         assert((I->getParent() == PreEntryBlock ||
                 !Scope->contains(I)) &&
                "Must have been hoisted to PreEntryBlock or outside the scope");
@@ -1675,8 +1670,7 @@ static void LLVM_ATTRIBUTE_UNUSED assertBranchOrSelectConditionHoisted(
         continue;
       Value *V = SI->getCondition();
       CHR_DEBUG(dbgs() << *V << "\n");
-      if (auto *I = dyn_cast<Instruction>(V)) {
-        (void)(I); // Unused in release build.
+      if ([[maybe_unused]] auto *I = dyn_cast<Instruction>(V)) {
         assert((I->getParent() == PreEntryBlock ||
                 !Scope->contains(I)) &&
                "Must have been hoisted to PreEntryBlock or outside the scope");
@@ -1968,7 +1962,7 @@ void CHR::addToMergedCondition(bool IsTrueBiased, Value *Cond,
 }
 
 void CHR::transformScopes(SmallVectorImpl<CHRScope *> &CHRScopes) {
-  unsigned I = 0;
+  [[maybe_unused]] unsigned I = 0;
   DenseSet<PHINode *> TrivialPHIs;
   for (CHRScope *Scope : CHRScopes) {
     transformScopes(Scope, TrivialPHIs);
@@ -1976,7 +1970,6 @@ void CHR::transformScopes(SmallVectorImpl<CHRScope *> &CHRScopes) {
         std::ostringstream oss;
         oss << " after transformScopes " << I++;
         dumpIR(F, oss.str().c_str(), nullptr));
-    (void)I;
   }
 }
 

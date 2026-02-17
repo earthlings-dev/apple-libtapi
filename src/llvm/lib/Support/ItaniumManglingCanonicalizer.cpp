@@ -42,11 +42,10 @@ template<typename ...T>
 void profileCtor(llvm::FoldingSetNodeID &ID, Node::Kind K, T ...V) {
   FoldingSetNodeIDBuilder Builder = {ID};
   Builder(K);
-  int VisitInOrder[] = {
+  [[maybe_unused]] int VisitInOrder[] = {
     (Builder(V), 0) ...,
     0 // Avoid empty array if there are no arguments.
   };
-  (void)VisitInOrder;
 }
 
 // FIXME: Convert this to a generic lambda when possible.

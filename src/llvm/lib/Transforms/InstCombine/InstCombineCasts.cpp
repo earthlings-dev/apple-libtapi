@@ -2514,17 +2514,14 @@ Instruction *InstCombinerImpl::optimizeBitCastFromPhi(CastInst &CI,
         assert(hasStoreUsersOnly(*NewBC));
       }
       else if (auto *BCI = dyn_cast<BitCastInst>(V)) {
-        Type *TyB = BCI->getOperand(0)->getType();
-        Type *TyA = BCI->getType();
+        [[maybe_unused]] Type *TyB = BCI->getOperand(0)->getType();
+        [[maybe_unused]] Type *TyA = BCI->getType();
         assert(TyA == DestTy && TyB == SrcTy);
-        (void) TyA;
-        (void) TyB;
         Instruction *I = replaceInstUsesWith(*BCI, NewPN);
         if (BCI == &CI)
           RetVal = I;
-      } else if (auto *PHI = dyn_cast<PHINode>(V)) {
+      } else if ([[maybe_unused]] auto *PHI = dyn_cast<PHINode>(V)) {
         assert(OldPhiNodes.count(PHI) > 0);
-        (void) PHI;
       } else {
         llvm_unreachable("all uses should be handled");
       }

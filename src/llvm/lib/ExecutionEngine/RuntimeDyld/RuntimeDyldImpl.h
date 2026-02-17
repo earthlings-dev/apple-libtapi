@@ -64,7 +64,7 @@ class SectionEntry {
 
   /// The total amount of space allocated for this section.  This includes the
   /// section size and the maximum amount of space that the stubs can occupy.
-  size_t AllocationSize;
+  [[maybe_unused]] size_t AllocationSize;
 
   /// ObjAddress - address of the section in the in-memory object file.  Used
   /// for calculating relocations in some object formats (like MachO).
@@ -76,9 +76,6 @@ public:
       : Name(std::string(name)), Address(address), Size(size),
         LoadAddress(reinterpret_cast<uintptr_t>(address)), StubOffset(size),
         AllocationSize(allocationSize), ObjAddress(objAddress) {
-    // AllocationSize is used only in asserts, prevent an "unused private field"
-    // warning:
-    (void)AllocationSize;
   }
 
   StringRef getName() const { return Name; }

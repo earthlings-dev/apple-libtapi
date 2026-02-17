@@ -85,9 +85,8 @@ private:
   void add(const llvm::Record *R) {
     AllTypes.emplace_back();
     AllTypes.back().Record = R;
-    bool Inserted = ByName.try_emplace(R->getName(), &AllTypes.back()).second;
+    [[maybe_unused]] bool Inserted = ByName.try_emplace(R->getName(), &AllTypes.back()).second;
     assert(Inserted && "Duplicate node name");
-    (void)Inserted;
   }
 
   void link(const llvm::Record *Derived, const llvm::Record *Base) {

@@ -1262,7 +1262,7 @@ void InterleavedAccessInfo::invalidateGroupsRequiringScalarEpilogue() {
   if (!requiresScalarEpilogue())
     return;
 
-  bool ReleasedGroup = false;
+  [[maybe_unused]] bool ReleasedGroup = false;
   // Release groups requiring scalar epilogues. Note that this also removes them
   // from InterleaveGroups.
   for (auto *Group : make_early_inc_range(InterleaveGroups)) {
@@ -1278,7 +1278,6 @@ void InterleavedAccessInfo::invalidateGroupsRequiringScalarEpilogue() {
   }
   assert(ReleasedGroup && "At least one group must be invalidated, as a "
                           "scalar epilogue was required");
-  (void)ReleasedGroup;
   RequiresScalarEpilogue = false;
 }
 

@@ -281,9 +281,8 @@ static inline bool isLogicalImmediate(uint64_t imm, unsigned regSize) {
 /// immediate instruction of the given register size.
 static inline uint64_t encodeLogicalImmediate(uint64_t imm, unsigned regSize) {
   uint64_t encoding = 0;
-  bool res = processLogicalImmediate(imm, regSize, encoding);
+  [[maybe_unused]] bool res = processLogicalImmediate(imm, regSize, encoding);
   assert(res && "invalid logical immediate");
-  (void)res;
   return encoding;
 }
 

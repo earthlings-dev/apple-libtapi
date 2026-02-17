@@ -84,15 +84,39 @@ LLVMContextRef LLVMGetGlobalContext() { return wrap(&*GlobalContext); }
 void LLVMContextSetDiagnosticHandler(LLVMContextRef C,
                                      LLVMDiagnosticHandler Handler,
                                      void *DiagnosticContext) {
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#elif defined(__GNUC__) && __GNUC__ >= 8
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-function-type"
+#endif
   unwrap(C)->setDiagnosticHandlerCallBack(
       LLVM_EXTENSION reinterpret_cast<DiagnosticHandler::DiagnosticHandlerTy>(
           Handler),
       DiagnosticContext);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__) && __GNUC__ >= 8
+#pragma GCC diagnostic pop
+#endif
 }
 
 LLVMDiagnosticHandler LLVMContextGetDiagnosticHandler(LLVMContextRef C) {
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#elif defined(__GNUC__) && __GNUC__ >= 8
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-function-type"
+#endif
   return LLVM_EXTENSION reinterpret_cast<LLVMDiagnosticHandler>(
       unwrap(C)->getDiagnosticHandlerCallBack());
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__) && __GNUC__ >= 8
+#pragma GCC diagnostic pop
+#endif
 }
 
 void *LLVMContextGetDiagnosticContext(LLVMContextRef C) {

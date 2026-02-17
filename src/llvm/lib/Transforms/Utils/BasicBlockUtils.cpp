@@ -119,8 +119,8 @@ bool llvm::EliminateUnreachableBlocks(Function &F, DomTreeUpdater *DTU,
   df_iterator_default_set<BasicBlock*> Reachable;
 
   // Mark all reachable blocks.
-  for (BasicBlock *BB : depth_first_ext(&F, Reachable))
-    (void)BB/* Mark all reachable blocks */;
+  for ([[maybe_unused]] BasicBlock *BB : depth_first_ext(&F, Reachable))
+    /* Mark all reachable blocks */;
 
   // Collect all dead blocks.
   std::vector<BasicBlock*> DeadBlocks;
@@ -322,8 +322,7 @@ bool llvm::MergeBlockSuccessorsIntoGivenBlocks(
     BasicBlock *BB = *MergeBlocks.begin();
     BasicBlock *Dest = BB->getSingleSuccessor();
     if (Dest && (!L || L->contains(Dest))) {
-      BasicBlock *Fold = Dest->getUniquePredecessor();
-      (void)Fold;
+      [[maybe_unused]] BasicBlock *Fold = Dest->getUniquePredecessor();
       if (MergeBlockIntoPredecessor(Dest, DTU, LI)) {
         assert(Fold == BB &&
                "Expecting BB to be unique predecessor of the Dest block");

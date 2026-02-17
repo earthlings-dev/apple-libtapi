@@ -999,9 +999,8 @@ void StdLibraryFunctionsChecker::initFunctionSummaries(
       for (Decl *D : LookupRes) {
         if (auto *FD = dyn_cast<FunctionDecl>(D)) {
           if (Sum.matchesAndSet(Sign, FD)) {
-            auto Res = Map.insert({FD->getCanonicalDecl(), Sum});
+            [[maybe_unused]] auto Res = Map.insert({FD->getCanonicalDecl(), Sum});
             assert(Res.second && "Function already has a summary set!");
-            (void)Res;
             if (DisplayLoadedSummaries) {
               llvm::errs() << "Loaded summary for: ";
               FD->print(llvm::errs());

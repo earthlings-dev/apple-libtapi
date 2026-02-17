@@ -470,11 +470,10 @@ APFloat APFixedPoint::convertToFloat(const fltSemantics &FloatSema) const {
   // value does not have the required precision, we will round according to the
   // given mode.
   APFloat Flt(*OpSema);
-  APFloat::opStatus S = Flt.convertFromAPInt(Val, Sema.isSigned(), RM);
+  [[maybe_unused]] APFloat::opStatus S = Flt.convertFromAPInt(Val, Sema.isSigned(), RM);
 
   // If we cared about checking for precision loss, we could look at this
   // status.
-  (void)S;
 
   // Scale down the integer value in the float to match the correct scaling
   // factor.

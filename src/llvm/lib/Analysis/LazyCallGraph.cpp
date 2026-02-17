@@ -1175,8 +1175,7 @@ void LazyCallGraph::RefSCC::removeOutgoingEdge(Node &SourceN, Node &TargetN) {
 #endif
 
   // First remove it from the node.
-  bool Removed = SourceN->removeEdgeInternal(TargetN);
-  (void)Removed;
+  [[maybe_unused]] bool Removed = SourceN->removeEdgeInternal(TargetN);
   assert(Removed && "Target not in the edge set for this caller?");
 }
 
@@ -1204,8 +1203,7 @@ LazyCallGraph::RefSCC::removeInternalRefEdge(Node &SourceN,
     assert(!(*SourceN)[*TargetN].isCall() &&
            "Cannot remove a call edge, it must first be made a ref edge");
 
-    bool Removed = SourceN->removeEdgeInternal(*TargetN);
-    (void)Removed;
+    [[maybe_unused]] bool Removed = SourceN->removeEdgeInternal(*TargetN);
     assert(Removed && "Target not in the edge set for this caller?");
   }
 
@@ -1517,8 +1515,7 @@ void LazyCallGraph::removeEdge(Node &SourceN, Node &TargetN) {
   assert(SCCMap.empty() &&
          "This method cannot be called after SCCs have been formed!");
 
-  bool Removed = SourceN->removeEdgeInternal(TargetN);
-  (void)Removed;
+  [[maybe_unused]] bool Removed = SourceN->removeEdgeInternal(TargetN);
   assert(Removed && "Target not in the edge set for this caller?");
 }
 
@@ -1974,9 +1971,8 @@ void LazyCallGraph::buildRefSCCs() {
 
         // Push the new node into the postorder list and remember its position
         // in the index map.
-        bool Inserted =
+        [[maybe_unused]] bool Inserted =
             RefSCCIndices.insert({NewRC, PostOrderRefSCCs.size()}).second;
-        (void)Inserted;
         assert(Inserted && "Cannot already have this RefSCC in the index map!");
         PostOrderRefSCCs.push_back(NewRC);
 #ifndef NDEBUG

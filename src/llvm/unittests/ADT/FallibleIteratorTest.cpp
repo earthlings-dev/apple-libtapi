@@ -153,9 +153,8 @@ TEST(FallibleIteratorTest, NoRedundantErrorCheckOnEarlyExit) {
   FallibleCollectionWalker end(C, 2);
 
   Error Err = Error::success();
-  for (auto &Elem :
+  for ([[maybe_unused]] auto &Elem :
        make_fallible_range<FallibleCollectionWalker>(begin, end, Err)) {
-    (void)Elem;
     return;
   }
   // Err not checked, but should be ok because we exit from the loop
@@ -177,9 +176,9 @@ TEST(FallibleIteratorTest, RegularLoopExitRequiresErrorCheck) {
         FallibleCollectionWalker end(C, 2);
 
         Error Err = Error::success();
-        for (auto &Elem :
+        for ([[maybe_unused]] auto &Elem :
              make_fallible_range<FallibleCollectionWalker>(begin, end, Err))
-          (void)Elem;
+          ;
       },
       "Program aborted due to an unhandled Error:")
       << "Normal (i.e. not early) loop exit should require an error check";

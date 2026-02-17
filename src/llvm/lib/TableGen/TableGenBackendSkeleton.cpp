@@ -35,7 +35,7 @@ namespace {
 
 class SkeletonEmitter {
 private:
-  RecordKeeper &Records;
+  [[maybe_unused]] RecordKeeper &Records;
 
 public:
   SkeletonEmitter(RecordKeeper &RK) : Records(RK) {}
@@ -48,7 +48,6 @@ public:
 void SkeletonEmitter::run(raw_ostream &OS) {
   emitSourceFileHeader("Skeleton data structures", OS);
 
-  (void)Records; // To suppress unused variable warning; remove on use.
 }
 
 namespace llvm {

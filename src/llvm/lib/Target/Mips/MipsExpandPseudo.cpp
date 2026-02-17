@@ -638,7 +638,7 @@ bool MipsExpandPseudo::expandAtomicBinOp(MachineBasicBlock &BB,
   unsigned AND = 0;
   unsigned NOR = 0;
 
-  bool IsOr = false;
+  [[maybe_unused]] bool IsOr = false;
   bool IsNand = false;
   bool IsMin = false;
   bool IsMax = false;
@@ -790,7 +790,6 @@ bool MipsExpandPseudo::expandAtomicBinOp(MachineBasicBlock &BB,
     BuildMI(loopMBB, DL, TII->get(NOR), Scratch).addReg(ZERO).addReg(Scratch);
   } else {
     assert(IsOr && OR && "Unknown instruction for atomic pseudo expansion!");
-    (void)IsOr;
     BuildMI(loopMBB, DL, TII->get(OR), Scratch).addReg(Incr).addReg(ZERO);
   }
 

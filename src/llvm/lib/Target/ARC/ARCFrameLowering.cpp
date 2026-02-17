@@ -353,18 +353,16 @@ bool ARCFrameLowering::assignCalleeSavedSpillSlots(
   MachineFrameInfo &MFI = MF.getFrameInfo();
   if (hasFP(MF)) {
     // Create a fixed slot at for FP
-    int StackObj = MFI.CreateFixedSpillStackObject(4, CurOffset, true);
+    [[maybe_unused]] int StackObj = MFI.CreateFixedSpillStackObject(4, CurOffset, true);
     LLVM_DEBUG(dbgs() << "Creating fixed object (" << StackObj << ") for FP at "
                       << CurOffset << "\n");
-    (void)StackObj;
     CurOffset -= 4;
   }
   if (MFI.hasCalls() || (UseSaveRestoreFunclet && Last > ARC::R14)) {
     // Create a fixed slot for BLINK.
-    int StackObj  = MFI.CreateFixedSpillStackObject(4, CurOffset, true);
+    [[maybe_unused]] int StackObj  = MFI.CreateFixedSpillStackObject(4, CurOffset, true);
     LLVM_DEBUG(dbgs() << "Creating fixed object (" << StackObj
                       << ") for BLINK at " << CurOffset << "\n");
-    (void)StackObj;
     CurOffset -= 4;
   }
 

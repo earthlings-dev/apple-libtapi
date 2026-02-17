@@ -104,8 +104,7 @@ void ContinuationRecordBuilder::writeMemberType(RecordType &Record) {
     // We need to inject some bytes before the member we just wrote but after
     // the previous member.  Save off the length of the member we just wrote so
     // that we can do some sanity checking on it.
-    uint32_t MemberLength = SegmentWriter.getOffset() - OriginalOffset;
-    (void) MemberLength;
+    [[maybe_unused]] uint32_t MemberLength = SegmentWriter.getOffset() - OriginalOffset;
     insertSegmentEnd(OriginalOffset);
     // Since this member now becomes a new top-level record, it should have
     // gotten a RecordPrefix injected, and that RecordPrefix + the member we
@@ -123,8 +122,7 @@ uint32_t ContinuationRecordBuilder::getCurrentSegmentLength() const {
 }
 
 void ContinuationRecordBuilder::insertSegmentEnd(uint32_t Offset) {
-  uint32_t SegmentBegin = SegmentOffsets.back();
-  (void)SegmentBegin;
+  [[maybe_unused]] uint32_t SegmentBegin = SegmentOffsets.back();
   assert(Offset > SegmentBegin);
   assert(Offset - SegmentBegin <= MaxSegmentLength);
 
@@ -134,8 +132,7 @@ void ContinuationRecordBuilder::insertSegmentEnd(uint32_t Offset) {
   Buffer.insert(Offset, InjectedSegmentBytes);
 
   uint32_t NewSegmentBegin = Offset + ContinuationLength;
-  uint32_t SegmentLength = NewSegmentBegin - SegmentOffsets.back();
-  (void) SegmentLength;
+  [[maybe_unused]] uint32_t SegmentLength = NewSegmentBegin - SegmentOffsets.back();
 
   assert(SegmentLength % 4 == 0);
   assert(SegmentLength <= MaxRecordLength);

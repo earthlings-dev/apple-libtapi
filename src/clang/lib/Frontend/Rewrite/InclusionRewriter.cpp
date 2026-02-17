@@ -161,10 +161,9 @@ void InclusionRewriter::FileChanged(SourceLocation Loc,
     // we didn't reach this file (eg: the main file) via an inclusion directive
     return;
   FileID Id = FullSourceLoc(Loc, SM).getFileID();
-  auto P = FileIncludes.insert(
+  [[maybe_unused]] auto P = FileIncludes.insert(
       std::make_pair(LastInclusionLocation,
                      IncludedFile(Id, NewFileType, PP.GetCurDirLookup())));
-  (void)P;
   assert(P.second && "Unexpected revisitation of the same include directive");
   LastInclusionLocation = SourceLocation();
 }
@@ -197,8 +196,7 @@ void InclusionRewriter::InclusionDirective(SourceLocation HashLoc,
                                            const Module *Imported,
                                            SrcMgr::CharacteristicKind FileType){
   if (Imported) {
-    auto P = ModuleIncludes.insert(std::make_pair(HashLoc, Imported));
-    (void)P;
+    [[maybe_unused]] auto P = ModuleIncludes.insert(std::make_pair(HashLoc, Imported));
     assert(P.second && "Unexpected revisitation of the same include directive");
   } else
     LastInclusionLocation = HashLoc;
@@ -206,16 +204,14 @@ void InclusionRewriter::InclusionDirective(SourceLocation HashLoc,
 
 void InclusionRewriter::If(SourceLocation Loc, SourceRange ConditionRange,
                            ConditionValueKind ConditionValue) {
-  auto P = IfConditions.insert(std::make_pair(Loc, ConditionValue == CVK_True));
-  (void)P;
+  [[maybe_unused]] auto P = IfConditions.insert(std::make_pair(Loc, ConditionValue == CVK_True));
   assert(P.second && "Unexpected revisitation of the same if directive");
 }
 
 void InclusionRewriter::Elif(SourceLocation Loc, SourceRange ConditionRange,
                              ConditionValueKind ConditionValue,
                              SourceLocation IfLoc) {
-  auto P = IfConditions.insert(std::make_pair(Loc, ConditionValue == CVK_True));
-  (void)P;
+  [[maybe_unused]] auto P = IfConditions.insert(std::make_pair(Loc, ConditionValue == CVK_True));
   assert(P.second && "Unexpected revisitation of the same elif directive");
 }
 

@@ -195,11 +195,10 @@ void ExprEngine::VisitObjCMessage(const ObjCMessageExpr *ME,
       if (nilState && !notNilState) {
         ExplodedNodeSet dstNil;
         StmtNodeBuilder Bldr(Pred, dstNil, *currBldrCtx);
-        bool HasTag = Pred->getLocation().getTag();
+        [[maybe_unused]] bool HasTag = Pred->getLocation().getTag();
         Pred = Bldr.generateNode(ME, Pred, nilState, nullptr,
                                  ProgramPoint::PreStmtKind);
         assert((Pred || HasTag) && "Should have cached out already!");
-        (void)HasTag;
         if (!Pred)
           return;
 
@@ -216,10 +215,9 @@ void ExprEngine::VisitObjCMessage(const ObjCMessageExpr *ME,
       // Generate a transition to the non-nil state, dropping any potential
       // nil flow.
       if (notNilState != State) {
-        bool HasTag = Pred->getLocation().getTag();
+        [[maybe_unused]] bool HasTag = Pred->getLocation().getTag();
         Pred = Bldr.generateNode(ME, Pred, notNilState);
         assert((Pred || HasTag) && "Should have cached out already!");
-        (void)HasTag;
         if (!Pred)
           return;
       }

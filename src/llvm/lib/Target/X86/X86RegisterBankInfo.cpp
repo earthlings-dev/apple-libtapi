@@ -29,8 +29,7 @@ X86RegisterBankInfo::X86RegisterBankInfo(const TargetRegisterInfo &TRI)
     : X86GenRegisterBankInfo() {
 
   // validate RegBank initialization.
-  const RegisterBank &RBGPR = getRegBank(X86::GPRRegBankID);
-  (void)RBGPR;
+  [[maybe_unused]] const RegisterBank &RBGPR = getRegBank(X86::GPRRegBankID);
   assert(&X86::GPRRegBank == &RBGPR && "Incorrect RegBanks inizalization.");
 
   // The GPR register bank is fully defined by all the registers in
@@ -223,13 +222,11 @@ X86RegisterBankInfo::getInstrMapping(const MachineInstr &MI) const {
   }
   case TargetOpcode::G_FCMP: {
     LLT Ty1 = MRI.getType(MI.getOperand(2).getReg());
-    LLT Ty2 = MRI.getType(MI.getOperand(3).getReg());
-    (void)Ty2;
+    [[maybe_unused]] LLT Ty2 = MRI.getType(MI.getOperand(3).getReg());
     assert(Ty1.getSizeInBits() == Ty2.getSizeInBits() &&
            "Mismatched operand sizes for G_FCMP");
 
-    unsigned Size = Ty1.getSizeInBits();
-    (void)Size;
+    [[maybe_unused]] unsigned Size = Ty1.getSizeInBits();
     assert((Size == 32 || Size == 64) && "Unsupported size for G_FCMP");
 
     auto FpRegBank = getPartialMappingIdx(Ty1, /* isFP */ true);

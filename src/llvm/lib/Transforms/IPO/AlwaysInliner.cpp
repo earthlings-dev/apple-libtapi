@@ -81,10 +81,9 @@ PreservedAnalyses AlwaysInlinerPass::run(Module &M,
             &FAM.getResult<BlockFrequencyAnalysis>(*(CB->getCaller())),
             &FAM.getResult<BlockFrequencyAnalysis>(F));
 
-        InlineResult Res = InlineFunction(
+        [[maybe_unused]] InlineResult Res = InlineFunction(
             *CB, IFI, &FAM.getResult<AAManager>(F), InsertLifetime);
         assert(Res.isSuccess() && "unexpected failure to inline");
-        (void)Res;
 
         // Merge the attributes based on the inlining.
         AttributeFuncs::mergeAttributesForInlining(*Caller, F);

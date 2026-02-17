@@ -252,12 +252,11 @@ bool MVEVPTOptimisations::MergeLoopEnd(MachineLoop *ML) {
   }
 
   // Replace the loop dec and loop end as a single instruction.
-  MachineInstrBuilder MI =
+  [[maybe_unused]] MachineInstrBuilder MI =
       BuildMI(*LoopEnd->getParent(), *LoopEnd, LoopEnd->getDebugLoc(),
               TII->get(ARM::t2LoopEndDec), DecReg)
           .addReg(PhiReg)
           .add(LoopEnd->getOperand(1));
-  (void)MI;
   LLVM_DEBUG(dbgs() << "Merged LoopDec and End into: " << *MI.getInstr());
 
   LoopDec->eraseFromParent();
@@ -346,12 +345,12 @@ bool MVEVPTOptimisations::ConvertTailPredLoop(MachineLoop *ML,
       return false;
     }
 
-  MachineInstrBuilder MI = BuildMI(*MBB, InsertPt, LoopStart->getDebugLoc(),
-                                   TII->get(ARM::t2DoLoopStartTP))
-                               .add(LoopStart->getOperand(0))
-                               .add(LoopStart->getOperand(1))
-                               .addReg(CountReg);
-  (void)MI;
+  [[maybe_unused]] MachineInstrBuilder MI =
+      BuildMI(*MBB, InsertPt, LoopStart->getDebugLoc(),
+              TII->get(ARM::t2DoLoopStartTP))
+          .add(LoopStart->getOperand(0))
+          .add(LoopStart->getOperand(1))
+          .addReg(CountReg);
   LLVM_DEBUG(dbgs() << "Replacing " << *LoopStart << "  with "
                     << *MI.getInstr());
   MRI->constrainRegClass(CountReg, &ARM::rGPRRegClass);
@@ -831,7 +830,7 @@ bool MVEVPTOptimisations::ConvertVPSEL(MachineBasicBlock &MBB) {
     if (!HasVCTP || MI.getOpcode() != ARM::MVE_VPSEL)
       continue;
 
-    MachineInstrBuilder MIBuilder =
+    [[maybe_unused]] MachineInstrBuilder MIBuilder =
         BuildMI(MBB, &MI, MI.getDebugLoc(), TII->get(ARM::MVE_VORR))
             .add(MI.getOperand(0))
             .add(MI.getOperand(1))
@@ -839,8 +838,6 @@ bool MVEVPTOptimisations::ConvertVPSEL(MachineBasicBlock &MBB) {
             .addImm(ARMVCC::Then)
             .add(MI.getOperand(4))
             .add(MI.getOperand(2));
-    // Silence unused variable warning in release builds.
-    (void)MIBuilder;
     LLVM_DEBUG(dbgs() << "Replacing VPSEL: "; MI.dump();
                dbgs() << "     with VMOVT: "; MIBuilder.getInstr()->dump());
     DeadInstructions.push_back(&MI);

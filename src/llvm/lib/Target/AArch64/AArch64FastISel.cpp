@@ -532,8 +532,7 @@ unsigned AArch64FastISel::fastMaterializeConstant(const Constant *C) {
   MVT VT = CEVT.getSimpleVT();
   // arm64_32 has 32-bit pointers held in 64-bit registers. Because of that,
   // 'null' pointers need to have a somewhat special treatment.
-  if (const auto *CPN = dyn_cast<ConstantPointerNull>(C)) {
-    (void)CPN;
+  if ([[maybe_unused]] const auto *CPN = dyn_cast<ConstantPointerNull>(C)) {
     assert(CPN->getType()->getPointerAddressSpace() == 0 &&
            "Unexpected address space");
     assert(VT == MVT::i64 && "Expected 64-bit pointers");
@@ -3727,7 +3726,8 @@ bool AArch64FastISel::fastLowerIntrinsicCall(const IntrinsicInst *II) {
       break;
     }
 
-    unsigned ResultReg1 = 0, ResultReg2 = 0, MulReg = 0;
+    unsigned ResultReg1 = 0, MulReg = 0;
+    [[maybe_unused]] unsigned ResultReg2 = 0;
     AArch64CC::CondCode CC = AArch64CC::Invalid;
     switch (IID) {
     default: llvm_unreachable("Unexpected intrinsic!");
@@ -3828,7 +3828,6 @@ bool AArch64FastISel::fastLowerIntrinsicCall(const IntrinsicInst *II) {
     ResultReg2 = fastEmitInst_rri(AArch64::CSINCWr, &AArch64::GPR32RegClass,
                                   AArch64::WZR, /*IsKill=*/true, AArch64::WZR,
                                   /*IsKill=*/true, getInvertedCondCode(CC));
-    (void)ResultReg2;
     assert((ResultReg1 + 1) == ResultReg2 &&
            "Nonconsecutive result registers.");
     updateValueMap(II, ResultReg1, 2);

@@ -214,9 +214,8 @@ static bool replaceCoroEndAsync(AnyCoroEndInst *End) {
   BB->splitBasicBlock(End);
   BB->getTerminator()->eraseFromParent();
 
-  auto InlineRes = InlineFunction(*MustTailCall, FnInfo);
+  [[maybe_unused]] auto InlineRes = InlineFunction(*MustTailCall, FnInfo);
   assert(InlineRes.isSuccess() && "Expected inlining to succeed");
-  (void)InlineRes;
 
   // We have cleaned up the coro.end block above.
   return false;
@@ -785,9 +784,8 @@ Value *CoroCloner::deriveNewFramePointer() {
         Shape.AsyncLowering.FrameOffset, "async.ctx.frameptr");
     // Inline the projection function.
     InlineFunctionInfo InlineInfo;
-    auto InlineRes = InlineFunction(*CallerContext, InlineInfo);
+    [[maybe_unused]] auto InlineRes = InlineFunction(*CallerContext, InlineInfo);
     assert(InlineRes.isSuccess());
-    (void)InlineRes;
     return Builder.CreateBitCast(FramePtrAddr, FramePtrTy);
   }
   // In continuation-lowering, the argument is the opaque storage.
@@ -1648,9 +1646,8 @@ static void splitAsyncCoroutine(Function &F, coro::Shape &Shape,
         coro::createMustTailCall(Suspend->getDebugLoc(), Fn, FnArgs, Builder);
     Builder.CreateRetVoid();
     InlineFunctionInfo FnInfo;
-    auto InlineRes = InlineFunction(*TailCall, FnInfo);
+    [[maybe_unused]] auto InlineRes = InlineFunction(*TailCall, FnInfo);
     assert(InlineRes.isSuccess() && "Expected inlining to succeed");
-    (void)InlineRes;
 
     // Replace the lvm.coro.async.resume intrisic call.
     replaceAsyncResumeFunction(Suspend, Continuation);

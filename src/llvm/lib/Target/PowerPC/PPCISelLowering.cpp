@@ -5804,7 +5804,7 @@ SDValue PPCTargetLowering::LowerCall_64SVR4(
       NumBytes = ((NumBytes + PtrByteSize - 1)/PtrByteSize) * PtrByteSize;
   }
 
-  unsigned NumBytesActuallyUsed = NumBytes;
+  [[maybe_unused]] unsigned NumBytesActuallyUsed = NumBytes;
 
   // In the old ELFv1 ABI,
   // the prolog code of the callee may store up to 8 GPR argument registers to
@@ -6207,7 +6207,6 @@ SDValue PPCTargetLowering::LowerCall_64SVR4(
 
   assert((!HasParameterArea || NumBytesActuallyUsed == ArgOffset) &&
          "mismatch in size of parameter area");
-  (void)NumBytesActuallyUsed;
 
   if (!MemOpChains.empty())
     Chain = DAG.getNode(ISD::TokenFactor, dl, MVT::Other, MemOpChains);

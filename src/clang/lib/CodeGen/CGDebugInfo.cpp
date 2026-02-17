@@ -3079,7 +3079,7 @@ static QualType UnwrapTypeForDebugInfo(QualType T, const ASTContext &C) {
     // that is already there.
     Quals += Qualifiers::removeCommonQualifiers(Quals, InnerQuals);
     Quals += InnerQuals;
-    QualType LastT = T;
+    [[maybe_unused]] QualType LastT = T;
     switch (T->getTypeClass()) {
     default:
       return C.getQualifiedType(T.getTypePtr(), Quals);
@@ -3132,7 +3132,6 @@ static QualType UnwrapTypeForDebugInfo(QualType T, const ASTContext &C) {
     }
 
     assert(T != LastT && "Type unwrapping failed to unwrap!");
-    (void)LastT;
   } while (true);
 }
 
@@ -4752,10 +4751,9 @@ void CGDebugInfo::EmitGlobalVariable(const ValueDecl *VD, const APValue &Init) {
       // If not CodeView, emit DW_TAG_enumeration_type if necessary. For
       // example: for "enum { ZERO };", a DW_TAG_enumeration_type is created the
       // first time `ZERO` is referenced in a function.
-      llvm::DIType *EDTy =
+      [[maybe_unused]] llvm::DIType *EDTy =
           getOrCreateType(QualType(ED->getTypeForDecl(), 0), Unit);
       assert (EDTy->getTag() == llvm::dwarf::DW_TAG_enumeration_type);
-      (void)EDTy;
       return;
     }
   }

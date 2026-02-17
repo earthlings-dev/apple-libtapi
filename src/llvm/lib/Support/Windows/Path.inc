@@ -1457,8 +1457,7 @@ static bool getTempDirEnvVar(SmallVectorImpl<char> &Res) {
   return false;
 }
 
-void system_temp_directory(bool ErasedOnReboot, SmallVectorImpl<char> &Result) {
-  (void)ErasedOnReboot;
+void system_temp_directory([[maybe_unused]] bool ErasedOnReboot, SmallVectorImpl<char> &Result) {
   Result.clear();
 
   // Check whether the temporary directory is specified by an environment var.

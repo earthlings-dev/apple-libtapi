@@ -912,10 +912,9 @@ void X86SpeculativeLoadHardeningPass::unfoldCallAndJumpLoads(
         SmallVector<MachineInstr *, 2> NewMIs;
         // If we were able to compute an unfolded reg class, any failure here
         // is just a programming error so just assert.
-        bool Unfolded =
+        [[maybe_unused]] bool Unfolded =
             TII->unfoldMemoryOperand(MF, MI, Reg, /*UnfoldLoad*/ true,
                                      /*UnfoldStore*/ false, NewMIs);
-        (void)Unfolded;
         assert(Unfolded &&
                "Computed unfolded register class but failed to unfold");
         // Now stitch the new instructions into place and erase the old one.
@@ -1112,15 +1111,14 @@ X86SpeculativeLoadHardeningPass::tracePredStateThroughIndirectBranches(
       if (MF.getTarget().getCodeModel() == CodeModel::Small &&
           !Subtarget->isPositionIndependent()) {
         // Directly materialize it into an immediate.
-        auto AddrI = BuildMI(*Pred, InsertPt, DebugLoc(),
+        [[maybe_unused]] auto AddrI = BuildMI(*Pred, InsertPt, DebugLoc(),
                              TII->get(X86::MOV64ri32), TargetReg)
                          .addMBB(&MBB);
         ++NumInstsInserted;
-        (void)AddrI;
         LLVM_DEBUG(dbgs() << "  Inserting mov: "; AddrI->dump();
                    dbgs() << "\n");
       } else {
-        auto AddrI = BuildMI(*Pred, InsertPt, DebugLoc(), TII->get(X86::LEA64r),
+        [[maybe_unused]] auto AddrI = BuildMI(*Pred, InsertPt, DebugLoc(), TII->get(X86::LEA64r),
                              TargetReg)
                          .addReg(/*Base*/ X86::RIP)
                          .addImm(/*Scale*/ 1)
@@ -1128,7 +1126,6 @@ X86SpeculativeLoadHardeningPass::tracePredStateThroughIndirectBranches(
                          .addMBB(&MBB)
                          .addReg(/*Segment*/ 0);
         ++NumInstsInserted;
-        (void)AddrI;
         LLVM_DEBUG(dbgs() << "  Inserting lea: "; AddrI->dump();
                    dbgs() << "\n");
       }
@@ -1151,16 +1148,15 @@ X86SpeculativeLoadHardeningPass::tracePredStateThroughIndirectBranches(
     if (MF.getTarget().getCodeModel() == CodeModel::Small &&
         !Subtarget->isPositionIndependent()) {
       // Check directly against a relocated immediate when we can.
-      auto CheckI = BuildMI(MBB, InsertPt, DebugLoc(), TII->get(X86::CMP64ri32))
+      [[maybe_unused]] auto CheckI = BuildMI(MBB, InsertPt, DebugLoc(), TII->get(X86::CMP64ri32))
                         .addReg(TargetReg, RegState::Kill)
                         .addMBB(&MBB);
       ++NumInstsInserted;
-      (void)CheckI;
       LLVM_DEBUG(dbgs() << "  Inserting cmp: "; CheckI->dump(); dbgs() << "\n");
     } else {
       // Otherwise compute the address into a register first.
       Register AddrReg = MRI->createVirtualRegister(&X86::GR64RegClass);
-      auto AddrI =
+      [[maybe_unused]] auto AddrI =
           BuildMI(MBB, InsertPt, DebugLoc(), TII->get(X86::LEA64r), AddrReg)
               .addReg(/*Base*/ X86::RIP)
               .addImm(/*Scale*/ 1)
@@ -1168,13 +1164,11 @@ X86SpeculativeLoadHardeningPass::tracePredStateThroughIndirectBranches(
               .addMBB(&MBB)
               .addReg(/*Segment*/ 0);
       ++NumInstsInserted;
-      (void)AddrI;
       LLVM_DEBUG(dbgs() << "  Inserting lea: "; AddrI->dump(); dbgs() << "\n");
-      auto CheckI = BuildMI(MBB, InsertPt, DebugLoc(), TII->get(X86::CMP64rr))
+      [[maybe_unused]] auto CheckI = BuildMI(MBB, InsertPt, DebugLoc(), TII->get(X86::CMP64rr))
                         .addReg(TargetReg, RegState::Kill)
                         .addReg(AddrReg, RegState::Kill);
       ++NumInstsInserted;
-      (void)CheckI;
       LLVM_DEBUG(dbgs() << "  Inserting cmp: "; CheckI->dump(); dbgs() << "\n");
     }
 
@@ -1673,32 +1667,29 @@ void X86SpeculativeLoadHardeningPass::hardenLoadAddr(
       // FIXME: We could skip this at the cost of longer encodings with AVX-512
       // but that doesn't seem likely worth it.
       Register VStateReg = MRI->createVirtualRegister(&X86::VR128RegClass);
-      auto MovI =
+      [[maybe_unused]] auto MovI =
           BuildMI(MBB, InsertPt, Loc, TII->get(X86::VMOV64toPQIrr), VStateReg)
               .addReg(StateReg);
-      (void)MovI;
       ++NumInstsInserted;
       LLVM_DEBUG(dbgs() << "  Inserting mov: "; MovI->dump(); dbgs() << "\n");
 
       // Broadcast it across the vector register.
       Register VBStateReg = MRI->createVirtualRegister(OpRC);
-      auto BroadcastI = BuildMI(MBB, InsertPt, Loc,
+      [[maybe_unused]] auto BroadcastI = BuildMI(MBB, InsertPt, Loc,
                                 TII->get(Is128Bit ? X86::VPBROADCASTQrr
                                                   : X86::VPBROADCASTQYrr),
                                 VBStateReg)
                             .addReg(VStateReg);
-      (void)BroadcastI;
       ++NumInstsInserted;
       LLVM_DEBUG(dbgs() << "  Inserting broadcast: "; BroadcastI->dump();
                  dbgs() << "\n");
 
       // Merge our potential poison state into the value with a vector or.
-      auto OrI =
+      [[maybe_unused]] auto OrI =
           BuildMI(MBB, InsertPt, Loc,
                   TII->get(Is128Bit ? X86::VPORrr : X86::VPORYrr), TmpReg)
               .addReg(VBStateReg)
               .addReg(OpReg);
-      (void)OrI;
       ++NumInstsInserted;
       LLVM_DEBUG(dbgs() << "  Inserting or: "; OrI->dump(); dbgs() << "\n");
     } else if (OpRC->hasSuperClassEq(&X86::VR128XRegClass) ||
@@ -1715,10 +1706,9 @@ void X86SpeculativeLoadHardeningPass::hardenLoadAddr(
       unsigned BroadcastOp = Is128Bit ? X86::VPBROADCASTQrZ128rr
                                       : Is256Bit ? X86::VPBROADCASTQrZ256rr
                                                  : X86::VPBROADCASTQrZrr;
-      auto BroadcastI =
+      [[maybe_unused]] auto BroadcastI =
           BuildMI(MBB, InsertPt, Loc, TII->get(BroadcastOp), VStateReg)
               .addReg(StateReg);
-      (void)BroadcastI;
       ++NumInstsInserted;
       LLVM_DEBUG(dbgs() << "  Inserting broadcast: "; BroadcastI->dump();
                  dbgs() << "\n");
@@ -1726,10 +1716,9 @@ void X86SpeculativeLoadHardeningPass::hardenLoadAddr(
       // Merge our potential poison state into the value with a vector or.
       unsigned OrOp = Is128Bit ? X86::VPORQZ128rr
                                : Is256Bit ? X86::VPORQZ256rr : X86::VPORQZrr;
-      auto OrI = BuildMI(MBB, InsertPt, Loc, TII->get(OrOp), TmpReg)
+      [[maybe_unused]] auto OrI = BuildMI(MBB, InsertPt, Loc, TII->get(OrOp), TmpReg)
                      .addReg(VStateReg)
                      .addReg(OpReg);
-      (void)OrI;
       ++NumInstsInserted;
       LLVM_DEBUG(dbgs() << "  Inserting or: "; OrI->dump(); dbgs() << "\n");
     } else {
@@ -1748,11 +1737,10 @@ void X86SpeculativeLoadHardeningPass::hardenLoadAddr(
       } else {
         // We need to avoid touching EFLAGS so shift out all but the least
         // significant bit using the instruction that doesn't update flags.
-        auto ShiftI =
+        [[maybe_unused]] auto ShiftI =
             BuildMI(MBB, InsertPt, Loc, TII->get(X86::SHRX64rr), TmpReg)
                 .addReg(OpReg)
                 .addReg(StateReg);
-        (void)ShiftI;
         ++NumInstsInserted;
         LLVM_DEBUG(dbgs() << "  Inserting shrx: "; ShiftI->dump();
                    dbgs() << "\n");

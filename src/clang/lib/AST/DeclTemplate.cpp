@@ -284,8 +284,7 @@ void RedeclarableTemplateDecl::addSpecializationImpl(
 #endif
     Specializations.InsertNode(Entry, InsertPos);
   } else {
-    EntryType *Existing = Specializations.GetOrInsertNode(Entry);
-    (void)Existing;
+    [[maybe_unused]] EntryType *Existing = Specializations.GetOrInsertNode(Entry);
     assert(SETraits::getDecl(Existing)->isCanonicalDecl() &&
            "non-canonical specialization?");
   }
@@ -503,9 +502,8 @@ void ClassTemplateDecl::AddPartialSpecialization(
   if (InsertPos)
     getPartialSpecializations().InsertNode(D, InsertPos);
   else {
-    ClassTemplatePartialSpecializationDecl *Existing
+    [[maybe_unused]] ClassTemplatePartialSpecializationDecl *Existing
       = getPartialSpecializations().GetOrInsertNode(D);
-    (void)Existing;
     assert(Existing->isCanonicalDecl() && "Non-canonical specialization?");
   }
 
@@ -1177,9 +1175,8 @@ void VarTemplateDecl::AddPartialSpecialization(
   if (InsertPos)
     getPartialSpecializations().InsertNode(D, InsertPos);
   else {
-    VarTemplatePartialSpecializationDecl *Existing =
+    [[maybe_unused]] VarTemplatePartialSpecializationDecl *Existing =
         getPartialSpecializations().GetOrInsertNode(D);
-    (void)Existing;
     assert(Existing->isCanonicalDecl() && "Non-canonical specialization?");
   }
 

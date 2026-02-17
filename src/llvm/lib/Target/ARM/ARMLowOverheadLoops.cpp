@@ -1569,10 +1569,9 @@ void ARMLowOverheadLoops::ConvertVPTBlocks(LowOverheadLoop &LoLoop) {
       // preceeding un-merged VCMP into a VPT. This VCMP comes from a VPT
       // block that no longer exists
       MachineInstr *VPST = Insts.front();
-      auto Next = ++MachineBasicBlock::iterator(VPST);
+      [[maybe_unused]] auto Next = ++MachineBasicBlock::iterator(VPST);
       assert(getVPTInstrPredicate(*Next) != ARMVCC::None &&
              "The instruction after a VPST must be predicated");
-      (void)Next;
       MachineInstr *VprDef = RDA->getUniqueReachingMIDef(VPST, ARM::VPR);
       if (VprDef && VCMPOpcodeToVPT(VprDef->getOpcode()) &&
           !LoLoop.ToRemove.contains(VprDef)) {

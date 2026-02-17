@@ -3449,9 +3449,8 @@ void clang_toggleCrashRecovery(unsigned isEnabled) {
 CXTranslationUnit clang_createTranslationUnit(CXIndex CIdx,
                                               const char *ast_filename) {
   CXTranslationUnit TU;
-  enum CXErrorCode Result =
+  [[maybe_unused]] enum CXErrorCode Result =
       clang_createTranslationUnit2(CIdx, ast_filename, &TU);
-  (void)Result;
   assert((TU && Result == CXError_Success) ||
          (!TU && Result != CXError_Success));
   return TU;
@@ -3669,10 +3668,9 @@ clang_parseTranslationUnit(CXIndex CIdx, const char *source_filename,
                            struct CXUnsavedFile *unsaved_files,
                            unsigned num_unsaved_files, unsigned options) {
   CXTranslationUnit TU;
-  enum CXErrorCode Result = clang_parseTranslationUnit2(
+  [[maybe_unused]] enum CXErrorCode Result = clang_parseTranslationUnit2(
       CIdx, source_filename, command_line_args, num_command_line_args,
       unsaved_files, num_unsaved_files, options, &TU);
-  (void)Result;
   assert((TU && Result == CXError_Success) ||
          (!TU && Result != CXError_Success));
   return TU;
@@ -5720,10 +5718,9 @@ GetCursorVisitor(CXCursor cursor, CXCursor parent, CXClientData client_data) {
         return CXChildVisit_Break;
       Data->VisitedDeclaratorDeclStartLoc = StartLoc;
 
-    } else if (const ObjCPropertyImplDecl *PropImp =
+    } else if ([[maybe_unused]] const ObjCPropertyImplDecl *PropImp =
                    dyn_cast_or_null<ObjCPropertyImplDecl>(
                        getCursorDecl(cursor))) {
-      (void)PropImp;
       // Check that when we have multiple @synthesize in the same line,
       // that later ones do not override the previous ones.
       // If we have:

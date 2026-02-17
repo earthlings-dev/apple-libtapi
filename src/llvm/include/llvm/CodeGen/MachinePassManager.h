@@ -246,7 +246,7 @@ private:
   std::map<PassIndex, llvm::unique_function<FuncTy>> MachineModulePasses;
 
   // Run codegen in the SCC order.
-  bool RequireCodeGenSCCOrder;
+  [[maybe_unused]] bool RequireCodeGenSCCOrder;
 
   bool VerifyMachineFunction;
 };

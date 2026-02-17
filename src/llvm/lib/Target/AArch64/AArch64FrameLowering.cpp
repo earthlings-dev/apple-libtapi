@@ -2096,7 +2096,7 @@ StackOffset AArch64FrameLowering::resolveFrameOffsetReference(
   const auto *RegInfo = static_cast<const AArch64RegisterInfo *>(
       MF.getSubtarget().getRegisterInfo());
   const auto *AFI = MF.getInfo<AArch64FunctionInfo>();
-  const auto &Subtarget = MF.getSubtarget<AArch64Subtarget>();
+  [[maybe_unused]] const auto &Subtarget = MF.getSubtarget<AArch64Subtarget>();
 
   int64_t FPOffset = getFPOffset(MF, ObjectOffset).getFixed();
   int64_t Offset = getStackOffset(MF, ObjectOffset).getFixed();
@@ -2156,7 +2156,6 @@ StackOffset AArch64FrameLowering::resolveFrameOffsetReference(
         // Funclets access the locals contained in the parent's stack frame
         // via the frame pointer, so we have to use the FP in the parent
         // function.
-        (void) Subtarget;
         assert(
             Subtarget.isCallingConvWin64(MF.getFunction().getCallingConv()) &&
             "Funclets should only be present on Win64");
@@ -2330,9 +2329,8 @@ static void computeCalleeSaveRegisterPairs(
   bool NeedsWinCFI = needsWinCFI(MF);
   AArch64FunctionInfo *AFI = MF.getInfo<AArch64FunctionInfo>();
   MachineFrameInfo &MFI = MF.getFrameInfo();
-  CallingConv::ID CC = MF.getFunction().getCallingConv();
+  [[maybe_unused]] CallingConv::ID CC = MF.getFunction().getCallingConv();
   unsigned Count = CSI.size();
-  (void)CC;
   // MachO's compact unwind format relies on all registers being stored in
   // pairs.
   assert((!produceCompactUnwindFrame(MF) ||

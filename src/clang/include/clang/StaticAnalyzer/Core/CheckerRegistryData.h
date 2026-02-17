@@ -65,11 +65,10 @@ struct CmdLineOption {
            "Invalid value for boolean command line option! Maybe incorrect "
            "parameters to the addCheckerOption or addPackageOption method?");
 
-    int Tmp;
+    [[maybe_unused]] int Tmp;
     assert((OptionType != "int" || !DefaultValStr.getAsInteger(0, Tmp)) &&
            "Invalid value for integer command line option! Maybe incorrect "
            "parameters to the addCheckerOption or addPackageOption method?");
-    (void)Tmp;
 
     assert((DevelopmentStatus == "alpha" || DevelopmentStatus == "beta" ||
             DevelopmentStatus == "released") &&

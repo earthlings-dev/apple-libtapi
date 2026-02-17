@@ -277,8 +277,7 @@ static bool RegisterCrashPrinter() {
 void llvm::EnablePrettyStackTrace() {
 #if ENABLE_BACKTRACES
   // The first time this is called, we register the crash printer.
-  static bool HandlerRegistered = RegisterCrashPrinter();
-  (void)HandlerRegistered;
+  [[maybe_unused]] static bool HandlerRegistered = RegisterCrashPrinter();
 #endif
 }
 
@@ -290,13 +289,12 @@ void llvm::EnablePrettyStackTraceOnSigInfoForThisThread(bool ShouldEnable) {
   }
 
   // The first time this is called, we register the SIGINFO handler.
-  static bool HandlerRegistered = []{
+  [[maybe_unused]] static bool HandlerRegistered = []{
     sys::SetInfoSignalFunction([]{
       GlobalSigInfoGenerationCounter.fetch_add(1, std::memory_order_relaxed);
     });
     return false;
   }();
-  (void)HandlerRegistered;
 
   // Next, enable it for the current thread.
   ThreadLocalSigInfoGenerationCounter =

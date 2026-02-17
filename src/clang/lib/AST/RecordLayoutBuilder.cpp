@@ -1280,8 +1280,7 @@ ItaniumRecordLayoutBuilder::LayoutBase(const BaseSubobjectInfo *Base) {
     while (!EmptySubobjects->CanPlaceBaseAtOffset(Base, Offset))
       Offset += AlignTo;
   } else {
-    bool Allowed = EmptySubobjects->CanPlaceBaseAtOffset(Base, Offset);
-    (void)Allowed;
+    [[maybe_unused]] bool Allowed = EmptySubobjects->CanPlaceBaseAtOffset(Base, Offset);
     assert(Allowed && "Base subobject externally placed at overlapping offset");
 
     if (InferAlignment && Offset < getDataSize().alignTo(AlignTo)) {
@@ -1979,8 +1978,7 @@ void ItaniumRecordLayoutBuilder::LayoutField(const FieldDecl *D,
 
     if (!IsUnion && EmptySubobjects) {
       // Record the fact that we're placing a field at this offset.
-      bool Allowed = EmptySubobjects->CanPlaceFieldAtOffset(D, FieldOffset);
-      (void)Allowed;
+      [[maybe_unused]] bool Allowed = EmptySubobjects->CanPlaceFieldAtOffset(D, FieldOffset);
       assert(Allowed && "Externally-placed field cannot be placed here");
     }
   } else {

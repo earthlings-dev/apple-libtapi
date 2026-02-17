@@ -1417,8 +1417,7 @@ bool AArch64InstrInfo::optimizePTestInstr(
   Pred->setDesc(get(NewOp));
   PTest->eraseFromParent();
   if (OpChanged) {
-    bool succeeded = UpdateOperandRegClass(*Pred);
-    (void)succeeded;
+    [[maybe_unused]] bool succeeded = UpdateOperandRegClass(*Pred);
     assert(succeeded && "Operands have incompatible register classes!");
     Pred->addRegisterDefined(AArch64::NZCV, TRI);
   }
@@ -1469,8 +1468,7 @@ bool AArch64InstrInfo::optimizeCompareInstr(
     const MCInstrDesc &MCID = get(NewOpc);
     CmpInstr.setDesc(MCID);
     CmpInstr.RemoveOperand(DeadNZCVIdx);
-    bool succeeded = UpdateOperandRegClass(CmpInstr);
-    (void)succeeded;
+    [[maybe_unused]] bool succeeded = UpdateOperandRegClass(CmpInstr);
     assert(succeeded && "Some operands reg class are incompatible!");
     return true;
   }
@@ -1730,8 +1728,7 @@ bool AArch64InstrInfo::substituteCmpToZero(
   // Update the instruction to set NZCV.
   MI->setDesc(get(NewOpc));
   CmpInstr.eraseFromParent();
-  bool succeeded = UpdateOperandRegClass(*MI);
-  (void)succeeded;
+  [[maybe_unused]] bool succeeded = UpdateOperandRegClass(*MI);
   assert(succeeded && "Some operands reg class are incompatible!");
   MI->addRegisterDefined(AArch64::NZCV, TRI);
   return true;

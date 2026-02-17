@@ -2709,9 +2709,8 @@ SCEVExpanderCleaner::~SCEVExpanderCleaner() {
 
   auto InsertedInstructions = Expander.getAllInsertedInstructions();
 #ifndef NDEBUG
-  SmallPtrSet<Instruction *, 8> InsertedSet(InsertedInstructions.begin(),
+  [[maybe_unused]] SmallPtrSet<Instruction *, 8> InsertedSet(InsertedInstructions.begin(),
                                             InsertedInstructions.end());
-  (void)InsertedSet;
 #endif
   // Remove sets with value handles.
   Expander.clear();

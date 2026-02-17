@@ -163,9 +163,8 @@ bool X86DiscriminateMemOps::runOnMachineFunction(MachineFunction &MF) {
         assert(DI && "DI should not be nullptr");
         updateDebugInfo(&MI, DI);
         Changed = true;
-        std::pair<DenseSet<unsigned>::iterator, bool> MustInsert =
+        [[maybe_unused]] std::pair<DenseSet<unsigned>::iterator, bool> MustInsert =
             Set.insert(DI->getBaseDiscriminator());
-        (void)MustInsert; // Silence warning in release build.
         assert(MustInsert.second && "New discriminator shouldn't be present in set");
       }
 

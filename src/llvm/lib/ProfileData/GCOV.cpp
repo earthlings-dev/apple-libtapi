@@ -494,9 +494,8 @@ uint64_t GCOVBlock::getCyclesCount(const BlockVector &blocks) {
   }
   // If there is no more loop, all traversable bits should have been cleared.
   // This property is needed by subsequent calls.
-  for (auto b : blocks) {
+  for ([[maybe_unused]] auto b : blocks) {
     assert(!b->traversable);
-    (void)b;
   }
   return count;
 }

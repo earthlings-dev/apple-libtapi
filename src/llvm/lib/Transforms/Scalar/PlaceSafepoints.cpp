@@ -650,9 +650,8 @@ InsertSafepointPoll(Instruction *InsertBefore,
 
   // Do the actual inlining
   InlineFunctionInfo IFI;
-  bool InlineStatus = InlineFunction(*PollCall, IFI).isSuccess();
+  [[maybe_unused]] bool InlineStatus = InlineFunction(*PollCall, IFI).isSuccess();
   assert(InlineStatus && "inline must succeed");
-  (void)InlineStatus; // suppress warning in release-asserts
 
   // Check post-conditions
   assert(IFI.StaticAllocas.empty() && "can't have allocs");

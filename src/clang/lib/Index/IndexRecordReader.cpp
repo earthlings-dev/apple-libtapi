@@ -106,9 +106,8 @@ struct IndexRecordReader::Implementation {
       // FIXME this drops the error on the floor.
       consumeError(MaybeRecID.takeError());
     }
-    unsigned RecID = MaybeRecID.get();
+    [[maybe_unused]] unsigned RecID = MaybeRecID.get();
     assert(RecID == REC_DECLINFO);
-    (void)RecID;
 
     unsigned I = 0;
     RecD.DeclID = Index+1;

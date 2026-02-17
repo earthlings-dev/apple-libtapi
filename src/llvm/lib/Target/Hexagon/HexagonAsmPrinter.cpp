@@ -425,9 +425,8 @@ void HexagonAsmPrinter::HexagonProcessInstruction(MCInst &Inst,
     MCOperand &MO = MappedInst.getOperand(2);
     int64_t Imm;
     MCExpr const *Expr = MO.getExpr();
-    bool Success = Expr->evaluateAsAbsolute(Imm);
+    [[maybe_unused]] bool Success = Expr->evaluateAsAbsolute(Imm);
     assert(Success && "Expected immediate and none was found");
-    (void)Success;
     MCInst TmpInst;
     if (Imm == 0) {
       TmpInst.setOpcode(Hexagon::S2_vsathub);
@@ -452,9 +451,8 @@ void HexagonAsmPrinter::HexagonProcessInstruction(MCInst &Inst,
     MCOperand &MO2 = MappedInst.getOperand(2);
     MCExpr const *Expr = MO2.getExpr();
     int64_t Imm;
-    bool Success = Expr->evaluateAsAbsolute(Imm);
+    [[maybe_unused]] bool Success = Expr->evaluateAsAbsolute(Imm);
     assert(Success && "Expected immediate and none was found");
-    (void)Success;
     MCInst TmpInst;
     if (Imm == 0) {
       TmpInst.setOpcode(Hexagon::A2_combinew);
@@ -488,9 +486,8 @@ void HexagonAsmPrinter::HexagonProcessInstruction(MCInst &Inst,
     MCOperand &MO = Inst.getOperand(2);
     MCExpr const *Expr = MO.getExpr();
     int64_t Imm;
-    bool Success = Expr->evaluateAsAbsolute(Imm);
+    [[maybe_unused]] bool Success = Expr->evaluateAsAbsolute(Imm);
     assert(Success && "Expected immediate and none was found");
-    (void)Success;
     MCInst TmpInst;
     if (Imm == 0) {
       TmpInst.setOpcode(Hexagon::A2_tfr);
@@ -578,9 +575,8 @@ void HexagonAsmPrinter::HexagonProcessInstruction(MCInst &Inst,
     MCOperand &Imm = MappedInst.getOperand(2);
     MCExpr const *Expr = Imm.getExpr();
     int64_t Value;
-    bool Success = Expr->evaluateAsAbsolute(Value);
+    [[maybe_unused]] bool Success = Expr->evaluateAsAbsolute(Value);
     assert(Success);
-    (void)Success;
     if (Value < 0 && Value > -256) {
       MappedInst.setOpcode(Hexagon::M2_mpysin);
       Imm.setExpr(HexagonMCExpr::create(
@@ -763,9 +759,9 @@ void HexagonAsmPrinter::emitInstruction(const MachineInstr *MI) {
     HexagonMCInstrInfo::setMemReorderDisabled(MCB);
 
   MCContext &Ctx = OutStreamer->getContext();
-  bool Ok = HexagonMCInstrInfo::canonicalizePacket(MCII, *Subtarget, Ctx,
+  [[maybe_unused]] bool Ok = HexagonMCInstrInfo::canonicalizePacket(MCII, *Subtarget, Ctx,
                                                    MCB, nullptr);
-  assert(Ok); (void)Ok;
+  assert(Ok);
   if (HexagonMCInstrInfo::bundleSize(MCB) == 0)
     return;
   OutStreamer->emitInstruction(MCB, getSubtargetInfo());

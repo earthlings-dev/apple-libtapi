@@ -5951,9 +5951,8 @@ static bool HandleUnionActiveMemberChange(EvalInfo &Info, const Expr *LHSExpr,
           ICE->getCastKind() != CK_UncheckedDerivedToBase)
         break;
       // Walk path backwards as we walk up from the base to the derived class.
-      for (const CXXBaseSpecifier *Elt : llvm::reverse(ICE->path())) {
+      for ([[maybe_unused]] const CXXBaseSpecifier *Elt : llvm::reverse(ICE->path())) {
         --PathLength;
-        (void)Elt;
         assert(declaresSameEntity(Elt->getType()->getAsCXXRecordDecl(),
                                   LHS.Designator.Entries[PathLength]
                                       .getAsBaseOrMember().getPointer()));
@@ -7949,7 +7948,7 @@ public:
 
   bool VisitMemberExpr(const MemberExpr *E) {
     // Handle non-static data members.
-    QualType BaseTy;
+    [[maybe_unused]] QualType BaseTy;
     bool EvalOK;
     if (E->isArrow()) {
       EvalOK = evaluatePointer(E->getBase(), Result);
@@ -7973,7 +7972,6 @@ public:
     if (const FieldDecl *FD = dyn_cast<FieldDecl>(E->getMemberDecl())) {
       assert(BaseTy->castAs<RecordType>()->getDecl()->getCanonicalDecl() ==
              FD->getParent()->getCanonicalDecl() && "record / field mismatch");
-      (void)BaseTy;
       if (!HandleLValueMember(this->Info, E, Result, FD))
         return false;
     } else if (const IndirectFieldDecl *IFD = dyn_cast<IndirectFieldDecl>(MD)) {
@@ -12486,8 +12484,7 @@ public:
       : Info(Info), NoteFailure(NoteFailure) {}
   ~DelayedNoteFailureRAII() {
     if (NoteFailure) {
-      bool ContinueAfterFailure = Info.noteFailure();
-      (void)ContinueAfterFailure;
+      [[maybe_unused]] bool ContinueAfterFailure = Info.noteFailure();
       assert(ContinueAfterFailure &&
              "Shouldn't have kept evaluating on failure.");
     }
@@ -14978,8 +14975,7 @@ APSInt Expr::EvaluateKnownConstInt(const ASTContext &Ctx,
   EvalInfo Info(Ctx, EVResult, EvalInfo::EM_IgnoreSideEffects);
   Info.InConstantContext = true;
 
-  bool Result = ::EvaluateAsRValue(this, EVResult, Ctx, Info);
-  (void)Result;
+  [[maybe_unused]] bool Result = ::EvaluateAsRValue(this, EVResult, Ctx, Info);
   assert(Result && "Could not evaluate expression");
   assert(EVResult.Val.isInt() && "Expression did not evaluate to integer");
 
@@ -14997,8 +14993,7 @@ APSInt Expr::EvaluateKnownConstIntCheckOverflow(
   Info.InConstantContext = true;
   Info.CheckingForUndefinedBehavior = true;
 
-  bool Result = ::EvaluateAsRValue(Info, this, EVResult.Val);
-  (void)Result;
+  [[maybe_unused]] bool Result = ::EvaluateAsRValue(Info, this, EVResult.Val);
   assert(Result && "Could not evaluate expression");
   assert(EVResult.Val.isInt() && "Expression did not evaluate to integer");
 

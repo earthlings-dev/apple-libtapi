@@ -209,7 +209,7 @@ bool CGPassManager::RefreshCallGraph(const CallGraphSCC &CurSCC, CallGraph &CG,
              for (CallGraphNode *CGN
                   : CurSCC) CGN->dump(););
 
-  bool MadeChange = false;
+  [[maybe_unused]] bool MadeChange = false;
   bool DevirtualizedCall = false;
 
   // Scan all functions in the SCC.
@@ -422,8 +422,6 @@ bool CGPassManager::RefreshCallGraph(const CallGraphSCC &CurSCC, CallGraph &CG,
   } else {
     dbgs() << "CGSCCPASSMGR: SCC Refresh didn't change call graph.\n";
   });
-  (void)MadeChange;
-
   return DevirtualizedCall;
 }
 

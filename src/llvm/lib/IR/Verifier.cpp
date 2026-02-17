@@ -5713,8 +5713,7 @@ TBAAVerifier::verifyTBAABaseNode(Instruction &I, const MDNode *BaseNode,
     return Itr->second;
 
   auto Result = verifyTBAABaseNodeImpl(I, BaseNode, IsNewFormat);
-  auto InsertResult = TBAABaseNodes.insert({BaseNode, Result});
-  (void)InsertResult;
+  [[maybe_unused]] auto InsertResult = TBAABaseNodes.insert({BaseNode, Result});
   assert(InsertResult.second && "We just checked!");
   return Result;
 }
@@ -5860,8 +5859,7 @@ bool TBAAVerifier::isValidScalarTBAANode(const MDNode *MD) {
 
   SmallPtrSet<const MDNode *, 4> Visited;
   bool Result = IsScalarTBAANodeImpl(MD, Visited);
-  auto InsertResult = TBAAScalarNodes.insert({MD, Result});
-  (void)InsertResult;
+  [[maybe_unused]] auto InsertResult = TBAAScalarNodes.insert({MD, Result});
   assert(InsertResult.second && "Just checked!");
 
   return Result;

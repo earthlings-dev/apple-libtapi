@@ -692,7 +692,7 @@ void ARMBaseRegisterInfo::resolveFrameIndex(MachineInstr &MI, Register BaseReg,
     ++i;
     assert(i < MI.getNumOperands() && "Instr doesn't have FrameIndex operand!");
   }
-  bool Done = false;
+  [[maybe_unused]] bool Done = false;
   if (!AFI->isThumbFunction())
     Done = rewriteARMFrameIndex(MI, i, BaseReg, Off, TII);
   else {
@@ -700,7 +700,6 @@ void ARMBaseRegisterInfo::resolveFrameIndex(MachineInstr &MI, Register BaseReg,
     Done = rewriteT2FrameIndex(MI, i, BaseReg, Off, TII, this);
   }
   assert(Done && "Unable to resolve frame index!");
-  (void)Done;
 }
 
 bool ARMBaseRegisterInfo::isFrameOffsetLegal(const MachineInstr *MI,

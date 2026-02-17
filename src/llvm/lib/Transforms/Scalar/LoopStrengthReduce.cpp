@@ -3348,8 +3348,8 @@ LSRInstance::InsertInitialFormula(const SCEV *S, LSRUse &LU, size_t LUIdx) {
 
   Formula F;
   F.initialMatch(S, L, SE);
-  bool Inserted = InsertFormula(LU, LUIdx, F);
-  assert(Inserted && "Initial formula already exists!"); (void)Inserted;
+  [[maybe_unused]] bool Inserted = InsertFormula(LU, LUIdx, F);
+  assert(Inserted && "Initial formula already exists!");
 }
 
 /// Insert a simple single-register formula for the given expression into the
@@ -3360,8 +3360,8 @@ LSRInstance::InsertSupplementalFormula(const SCEV *S,
   Formula F;
   F.BaseRegs.push_back(S);
   F.HasBaseReg = true;
-  bool Inserted = InsertFormula(LU, LUIdx, F);
-  assert(Inserted && "Supplemental formula already exists!"); (void)Inserted;
+  [[maybe_unused]] bool Inserted = InsertFormula(LU, LUIdx, F);
+  assert(Inserted && "Supplemental formula already exists!");
 }
 
 /// Note which registers are used by the given formula, updating RegUses.
@@ -5574,9 +5574,8 @@ LSRInstance::LSRInstance(Loop *L, IVUsers &IU, ScalarEvolution &SE,
   // If there's too much analysis to be done, bail early. We won't be able to
   // model the problem anyway.
   unsigned NumUsers = 0;
-  for (const IVStrideUse &U : IU) {
+  for ([[maybe_unused]] const IVStrideUse &U : IU) {
     if (++NumUsers > MaxIVUsers) {
-      (void)U;
       LLVM_DEBUG(dbgs() << "LSR skipping loop, too many IV Users in " << U
                         << "\n");
       return;

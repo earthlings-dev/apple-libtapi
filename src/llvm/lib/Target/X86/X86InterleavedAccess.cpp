@@ -170,8 +170,7 @@ void X86InterleavedAccessGroup::decompose(
   assert((isa<LoadInst>(VecInst) || isa<ShuffleVectorInst>(VecInst)) &&
          "Expected Load or Shuffle");
 
-  Type *VecWidth = VecInst->getType();
-  (void)VecWidth;
+  [[maybe_unused]] Type *VecWidth = VecInst->getType();
   assert(VecWidth->isVectorTy() &&
          DL.getTypeSizeInBits(VecWidth) >=
              DL.getTypeSizeInBits(SubVecTy) * NumSubVectors &&

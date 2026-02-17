@@ -901,11 +901,10 @@ const TargetRegisterClass *HexagonBitSimplify::getFinalVRegClass(
   auto *RC = MRI.getRegClass(RR.Reg);
   if (RR.Sub == 0)
     return RC;
-  auto &HRI = static_cast<const HexagonRegisterInfo&>(
+  [[maybe_unused]] auto &HRI = static_cast<const HexagonRegisterInfo&>(
                   *MRI.getTargetRegisterInfo());
 
   auto VerifySR = [&HRI] (const TargetRegisterClass *RC, unsigned Sub) -> void {
-    (void)HRI;
     assert(Sub == HRI.getHexagonSubRegIndex(*RC, Hexagon::ps_sub_lo) ||
            Sub == HRI.getHexagonSubRegIndex(*RC, Hexagon::ps_sub_hi));
   };

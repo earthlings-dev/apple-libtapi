@@ -436,7 +436,7 @@ bool FPS::processBasicBlock(MachineFunction &MF, MachineBasicBlock &BB) {
     if (FPInstClass == X86II::NotFP)
       continue;  // Efficiently ignore non-fp insts!
 
-    MachineInstr *PrevMI = nullptr;
+    [[maybe_unused]] MachineInstr *PrevMI = nullptr;
     if (I != BB.begin())
       PrevMI = &*std::prev(I);
 
@@ -493,7 +493,6 @@ bool FPS::processBasicBlock(MachineFunction &MF, MachineBasicBlock &BB) {
       }
       dumpStack();
     });
-    (void)PrevMI;
 
     Changed = true;
   }

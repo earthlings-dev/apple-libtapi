@@ -107,8 +107,7 @@ public:
   }
 
   void addVar(StringRef Name, Init *I) {
-    bool Ins = vars.insert(std::make_pair(std::string(Name), I)).second;
-    (void)Ins;
+    [[maybe_unused]] bool Ins = vars.insert(std::make_pair(std::string(Name), I)).second;
     assert(Ins && "Local variable already exists");
   }
 };

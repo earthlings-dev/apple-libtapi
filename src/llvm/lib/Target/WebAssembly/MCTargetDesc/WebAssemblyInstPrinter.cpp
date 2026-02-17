@@ -209,9 +209,8 @@ static std::string toString(const APFloat &FP) {
   // Use C99's hexadecimal floating-point representation.
   static const size_t BufBytes = 128;
   char Buf[BufBytes];
-  auto Written = FP.convertToHexString(
+  [[maybe_unused]] auto Written = FP.convertToHexString(
       Buf, /*HexDigits=*/0, /*UpperCase=*/false, APFloat::rmNearestTiesToEven);
-  (void)Written;
   assert(Written != 0);
   assert(Written < BufBytes);
   return Buf;

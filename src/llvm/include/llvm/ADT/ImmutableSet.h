@@ -190,10 +190,8 @@ public:
   ///  return value.  An invalid tree will cause an assertion to fire in
   ///  a debug build.
   unsigned validateTree() const {
-    unsigned HL = getLeft() ? getLeft()->validateTree() : 0;
-    unsigned HR = getRight() ? getRight()->validateTree() : 0;
-    (void) HL;
-    (void) HR;
+    [[maybe_unused]] unsigned HL = getLeft() ? getLeft()->validateTree() : 0;
+    [[maybe_unused]] unsigned HR = getRight() ? getRight()->validateTree() : 0;
 
     assert(getHeight() == ( HL > HR ? HL : HR ) + 1
             && "Height calculation wrong");

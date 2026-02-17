@@ -913,8 +913,7 @@ bool SimplifyCFGOpt::SimplifyEqualityComparisonWithOnlyPredecessor(
       // uncond br.
       assert(ThisCases.size() == 1 && "Branch can only have one case!");
       // Insert the new branch.
-      Instruction *NI = Builder.CreateBr(ThisDef);
-      (void)NI;
+      [[maybe_unused]] Instruction *NI = Builder.CreateBr(ThisDef);
 
       // Remove PHI node entries for the dead edge.
       ThisCases[0].Dest->removePredecessor(PredDef);
@@ -1002,8 +1001,7 @@ bool SimplifyCFGOpt::SimplifyEqualityComparisonWithOnlyPredecessor(
       CheckEdge = nullptr;
 
   // Insert the new branch.
-  Instruction *NI = Builder.CreateBr(TheRealDest);
-  (void)NI;
+  [[maybe_unused]] Instruction *NI = Builder.CreateBr(TheRealDest);
 
   LLVM_DEBUG(dbgs() << "Threading pred instr: " << *Pred->getTerminator()
                     << "Through successor TI: " << *TI << "Leaving: " << *NI
@@ -1264,8 +1262,7 @@ bool SimplifyCFGOpt::FoldValueComparisonIntoPredecessors(Instruction *TI,
       // successors.
       for (const std::pair<BasicBlock *, int /*Num*/> &NewSuccessor :
            NewSuccessors) {
-        for (auto I : seq(0, NewSuccessor.second)) {
-          (void)I;
+        for ([[maybe_unused]] auto I : seq(0, NewSuccessor.second)) {
           AddPredecessorToBlock(NewSuccessor.first, Pred, BB);
         }
         Updates.push_back({DominatorTree::Insert, Pred, NewSuccessor.first});
@@ -2777,10 +2774,8 @@ bool SimplifyCFGOpt::SimplifyCondBranchToTwoReturns(BranchInst *BI,
     }
   }
 
-  Value *RI =
+  [[maybe_unused]] Value *RI =
       !TrueValue ? Builder.CreateRetVoid() : Builder.CreateRet(TrueValue);
-
-  (void)RI;
 
   LLVM_DEBUG(dbgs() << "\nCHANGING BRANCH TO TWO RETURNS INTO SELECT:"
                     << "\n  " << *BI << "\nNewRet = " << *RI << "\nTRUEBLOCK: "
@@ -3094,7 +3089,6 @@ bool llvm::FoldBranchToCommonDest(BranchInst *BI, DomTreeUpdater *DTU,
               // So let's just rewrite it...
               return true;
             }
-            (void)BI;
             assert(isa<PHINode>(User) && "All external users must be PHI's.");
             auto *PN = cast<PHINode>(User);
             assert(is_contained(successors(BB), User->getParent()) &&
@@ -4802,8 +4796,7 @@ bool SimplifyCFGOpt::simplifyUnreachable(UnreachableInst *UI) {
         CSI->eraseFromParent();
         Changed = true;
       }
-    } else if (auto *CRI = dyn_cast<CleanupReturnInst>(TI)) {
-      (void)CRI;
+    } else if ([[maybe_unused]] auto *CRI = dyn_cast<CleanupReturnInst>(TI)) {
       assert(CRI->hasUnwindDest() && CRI->getUnwindDest() == BB &&
              "Expected to always have an unwind to BB.");
       Updates.push_back({DominatorTree::Delete, Predecessor, BB});

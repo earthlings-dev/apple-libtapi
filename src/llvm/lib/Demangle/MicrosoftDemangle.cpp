@@ -863,9 +863,8 @@ VariableSymbolNode *Demangler::demangleVariableEncoding(StringView &MangledName,
     std::tie(ExtraChildQuals, IsMember) = demangleQualifiers(MangledName);
 
     if (PTN->ClassParent) {
-      QualifiedNameNode *BackRefName =
+      [[maybe_unused]] QualifiedNameNode *BackRefName =
           demangleFullyQualifiedTypeName(MangledName);
-      (void)BackRefName;
     }
     PTN->Pointee->Quals = Qualifiers(PTN->Pointee->Quals | ExtraChildQuals);
 

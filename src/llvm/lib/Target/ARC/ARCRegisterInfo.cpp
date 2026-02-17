@@ -61,14 +61,13 @@ static void ReplaceFrameIndex(MachineBasicBlock::iterator II,
     if (!BaseReg) {
       // We can be sure that the scavenged-register slot is within the range
       // of the load offset.
-      const TargetRegisterInfo *TRI =
+      [[maybe_unused]] const TargetRegisterInfo *TRI =
           MBB.getParent()->getSubtarget().getRegisterInfo();
       BaseReg = RS->scavengeRegister(&ARC::GPR32RegClass, II, SPAdj);
       assert(BaseReg && "Register scavenging failed.");
       LLVM_DEBUG(dbgs() << "Scavenged register " << printReg(BaseReg, TRI)
                         << " for FrameReg=" << printReg(FrameReg, TRI)
                         << "+Offset=" << Offset << "\n");
-      (void)TRI;
       RS->setRegUsed(BaseReg);
     }
     unsigned AddOpc = isUInt<6>(Offset) ? ARC::ADD_rru6 : ARC::ADD_rrlimm;
@@ -171,7 +170,7 @@ void ARCRegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator II,
   int Offset = MF.getFrameInfo().getObjectOffset(FrameIndex);
   int ObjSize = MF.getFrameInfo().getObjectSize(FrameIndex);
   int StackSize = MF.getFrameInfo().getStackSize();
-  int LocalFrameSize = MF.getFrameInfo().getLocalFrameSize();
+  [[maybe_unused]] int LocalFrameSize = MF.getFrameInfo().getLocalFrameSize();
 
   LLVM_DEBUG(dbgs() << "\nFunction         : " << MF.getName() << "\n");
   LLVM_DEBUG(dbgs() << "<--------->\n");
@@ -181,7 +180,6 @@ void ARCRegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator II,
   LLVM_DEBUG(dbgs() << "FrameOffset        : " << Offset << "\n");
   LLVM_DEBUG(dbgs() << "StackSize          : " << StackSize << "\n");
   LLVM_DEBUG(dbgs() << "LocalFrameSize     : " << LocalFrameSize << "\n");
-  (void)LocalFrameSize;
 
   // Special handling of DBG_VALUE instructions.
   if (MI.isDebugValue()) {

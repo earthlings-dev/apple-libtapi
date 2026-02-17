@@ -17316,7 +17316,6 @@ static bool checkMapConflicts(
                "Map clause expression with no components!");
         assert(StackComponents.back().getAssociatedDeclaration() == VD &&
                "Map clause expression with unexpected base!");
-        (void)VD;
 
         // The whole expression in the stack.
         const Expr *RE = StackComponents.front().getAssociatedExpression();
@@ -17793,10 +17792,9 @@ static void checkMappableExpressionList(
         "Expecting components to have associated only canonical declarations.");
 
     auto *VD = dyn_cast<VarDecl>(CurDeclaration);
-    const auto *FD = dyn_cast<FieldDecl>(CurDeclaration);
+    [[maybe_unused]] const auto *FD = dyn_cast<FieldDecl>(CurDeclaration);
 
     assert((VD || FD) && "Only variables or fields are expected here!");
-    (void)FD;
 
     // OpenMP 4.5 [2.15.5.1, map Clause, Restrictions, p.10]
     // threadprivate variables cannot appear in a map clause.

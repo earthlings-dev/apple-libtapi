@@ -636,8 +636,7 @@ Register MachineFunction::addLiveIn(MCRegister PReg,
   MachineRegisterInfo &MRI = getRegInfo();
   Register VReg = MRI.getLiveInVirtReg(PReg);
   if (VReg) {
-    const TargetRegisterClass *VRegRC = MRI.getRegClass(VReg);
-    (void)VRegRC;
+    [[maybe_unused]] const TargetRegisterClass *VRegRC = MRI.getRegClass(VReg);
     // A physical register can be added several times.
     // Between two calls, the register class of the related virtual register
     // may have been constrained to match some operation constraints.
@@ -952,8 +951,7 @@ void MachineFunction::setDebugInstrNumberingCount(unsigned Num) {
 
 void MachineFunction::makeDebugValueSubstitution(DebugInstrOperandPair A,
                                                  DebugInstrOperandPair B) {
-  auto Result = DebugValueSubstitutions.insert(std::make_pair(A, B));
-  (void)Result;
+  [[maybe_unused]] auto Result = DebugValueSubstitutions.insert(std::make_pair(A, B));
   assert(Result.second && "Substitution for an already substituted value?");
 }
 
@@ -973,8 +971,7 @@ void MachineFunction::substituteDebugValuesForInst(const MachineInstr &Old,
   MaxOperand = std::min(MaxOperand, Old.getNumOperands());
   for (unsigned int I = 0; I < Old.getNumOperands(); ++I) {
     const auto &OldMO = Old.getOperand(I);
-    auto &NewMO = New.getOperand(I);
-    (void)NewMO;
+    [[maybe_unused]] auto &NewMO = New.getOperand(I);
 
     if (!OldMO.isReg() || !OldMO.isDef())
       continue;

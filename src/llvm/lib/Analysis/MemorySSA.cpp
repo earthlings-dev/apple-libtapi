@@ -460,8 +460,7 @@ checkClobberSanity(const MemoryAccess *Start, MemoryAccess *ClobberAt,
         continue;
       }
 
-      if (const auto *MU = dyn_cast<MemoryUse>(MA)) {
-        (void)MU;
+      if ([[maybe_unused]] const auto *MU = dyn_cast<MemoryUse>(MA)) {
         assert (MU == Start &&
                 "Can only find use in def chain if Start is a use");
         continue;
@@ -1121,13 +1120,12 @@ void MemorySSA::renameSuccessorPhis(BasicBlock *BB, MemoryAccess *IncomingVal,
     AccessList *Accesses = It->second.get();
     auto *Phi = cast<MemoryPhi>(&Accesses->front());
     if (RenameAllUses) {
-      bool ReplacementDone = false;
+      [[maybe_unused]] bool ReplacementDone = false;
       for (unsigned I = 0, E = Phi->getNumIncomingValues(); I != E; ++I)
         if (Phi->getIncomingBlock(I) == BB) {
           Phi->setIncomingValue(I, IncomingVal);
           ReplacementDone = true;
         }
-      (void) ReplacementDone;
       assert(ReplacementDone && "Incomplete phi during partial rename");
     } else
       Phi->addIncoming(IncomingVal, BB);
@@ -1707,8 +1705,7 @@ void MemorySSA::moveTo(MemoryAccess *What, BasicBlock *BB,
            "Can only move a Phi at the beginning of the block");
     // Update lookup table entry
     ValueToMemoryAccess.erase(What->getBlock());
-    bool Inserted = ValueToMemoryAccess.insert({BB, What}).second;
-    (void)Inserted;
+    [[maybe_unused]] bool Inserted = ValueToMemoryAccess.insert({BB, What}).second;
     assert(Inserted && "Cannot move a Phi to a block that already has one");
   }
 

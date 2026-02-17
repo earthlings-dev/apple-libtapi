@@ -1204,8 +1204,7 @@ static unsigned emitNop(MCStreamer &OS, unsigned NumBytes,
 /// Emit the optimal amount of multi-byte nops on X86.
 static void emitX86Nops(MCStreamer &OS, unsigned NumBytes,
                         const X86Subtarget *Subtarget) {
-  unsigned NopsToEmit = NumBytes;
-  (void)NopsToEmit;
+  [[maybe_unused]] unsigned NopsToEmit = NumBytes;
   while (NumBytes) {
     NumBytes -= emitNop(OS, NumBytes, Subtarget);
     assert(NopsToEmit >= NumBytes && "Emitted more than I asked for!");
@@ -1362,9 +1361,8 @@ void X86AsmPrinter::LowerPATCHABLE_OP(const MachineInstr &MI,
       // bytes too, so the check on MinSize is important.
       MCI.setOpcode(X86::PUSH64rmr);
     } else {
-      unsigned NopSize = emitNop(*OutStreamer, MinSize, Subtarget);
+      [[maybe_unused]] unsigned NopSize = emitNop(*OutStreamer, MinSize, Subtarget);
       assert(NopSize == MinSize && "Could not implement MinSize!");
-      (void)NopSize;
     }
   }
 

@@ -728,10 +728,9 @@ int GCNHazardRecognizer::createsVALUHazard(const MachineInstr &MI) {
   // of their dmask set.
   // All our MIMG definitions use a 256-bit T#, so we can skip checking for them.
   if (TII->isMIMG(MI)) {
-    int SRsrcIdx = AMDGPU::getNamedOperandIdx(Opcode, AMDGPU::OpName::srsrc);
+    [[maybe_unused]] int SRsrcIdx = AMDGPU::getNamedOperandIdx(Opcode, AMDGPU::OpName::srsrc);
     assert(SRsrcIdx != -1 &&
            AMDGPU::getRegBitWidth(Desc.OpInfo[SRsrcIdx].RegClass) == 256);
-    (void)SRsrcIdx;
   }
 
   if (TII->isFLAT(MI)) {

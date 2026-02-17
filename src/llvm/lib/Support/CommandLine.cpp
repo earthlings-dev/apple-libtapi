@@ -2561,8 +2561,7 @@ void cl::AddExtraVersionPrinter(VersionPrinterTy func) {
 }
 
 StringMap<Option *> &cl::getRegisteredOptions(SubCommand &Sub) {
-  auto &Subs = GlobalParser->RegisteredSubCommands;
-  (void)Subs;
+  [[maybe_unused]] auto &Subs = GlobalParser->RegisteredSubCommands;
   assert(is_contained(Subs, &Sub));
   return Sub.OptionsMap;
 }

@@ -4387,8 +4387,8 @@ SDValue DAGTypeLegalizer::WidenVecRes_SETCC(SDNode *N) {
   SDValue InOp1 = N->getOperand(0);
   EVT InVT = InOp1.getValueType();
   assert(InVT.isVector() && "can not widen non-vector type");
-  EVT WidenInVT = EVT::getVectorVT(*DAG.getContext(),
-                                   InVT.getVectorElementType(), WidenNumElts);
+  [[maybe_unused]] EVT WidenInVT =
+      EVT::getVectorVT(*DAG.getContext(), InVT.getVectorElementType(), WidenNumElts);
 
   // The input and output types often differ here, and it could be that while
   // we'd prefer to widen the result type, the input operands have been split.
@@ -4414,7 +4414,6 @@ SDValue DAGTypeLegalizer::WidenVecRes_SETCC(SDNode *N) {
   assert(InOp1.getValueType() == WidenInVT &&
          InOp2.getValueType() == WidenInVT &&
          "Input not widened to expected type!");
-  (void)WidenInVT;
   return DAG.getNode(ISD::SETCC, SDLoc(N),
                      WidenVT, InOp1, InOp2, N->getOperand(2));
 }

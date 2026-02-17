@@ -637,7 +637,7 @@ bool DarwinAsmParser::parseDirectiveLsym(StringRef, SMLoc) {
     return TokError("expected identifier in directive");
 
   // Handle the identifier as the key symbol.
-  MCSymbol *Sym = getContext().getOrCreateSymbol(Name);
+  [[maybe_unused]] MCSymbol *Sym = getContext().getOrCreateSymbol(Name);
 
   if (getLexer().isNot(AsmToken::Comma))
     return TokError("unexpected token in '.lsym' directive");
@@ -655,7 +655,6 @@ bool DarwinAsmParser::parseDirectiveLsym(StringRef, SMLoc) {
   // We don't currently support this directive.
   //
   // FIXME: Diagnostic location!
-  (void) Sym;
   return TokError("directive '.lsym' is unsupported");
 }
 

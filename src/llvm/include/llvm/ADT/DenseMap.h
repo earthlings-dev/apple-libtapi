@@ -403,8 +403,7 @@ protected:
           !KeyInfoT::isEqual(B->getFirst(), TombstoneKey)) {
         // Insert the key/value into the new table.
         BucketT *DestBucket;
-        bool FoundVal = LookupBucketFor(B->getFirst(), DestBucket);
-        (void)FoundVal; // silence warning.
+        [[maybe_unused]] bool FoundVal = LookupBucketFor(B->getFirst(), DestBucket);
         assert(!FoundVal && "Key already in new map?");
         DestBucket->getFirst() = std::move(B->getFirst());
         ::new (&DestBucket->getSecond()) ValueT(std::move(B->getSecond()));

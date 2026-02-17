@@ -198,8 +198,7 @@ static bool optimizeDivRem(Function &F, const TargetTransformInfo &TTI,
     auto &DivInst = E.DivInst;
     auto &RemInst = E.RemInst;
 
-    const bool RemOriginallyWasInExpandedForm = E.isRemExpanded();
-    (void)RemOriginallyWasInExpandedForm; // suppress unused variable warning
+    [[maybe_unused]] const bool RemOriginallyWasInExpandedForm = E.isRemExpanded();
 
     if (HasDivRemOp && E.isRemExpanded()) {
       // The target supports div+rem but the rem is expanded.

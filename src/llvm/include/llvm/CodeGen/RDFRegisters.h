@@ -208,7 +208,7 @@ namespace rdf {
       MapType Masks;
       MapType::iterator Pos;
       unsigned Index;
-      const RegisterAggr *Owner;
+      [[maybe_unused]] const RegisterAggr *Owner;
 
     public:
       rr_iterator(const RegisterAggr &RG, bool End);
@@ -225,7 +225,6 @@ namespace rdf {
 
       bool operator==(const rr_iterator &I) const {
         assert(Owner == I.Owner);
-        (void)Owner;
         return Index == I.Index;
       }
 

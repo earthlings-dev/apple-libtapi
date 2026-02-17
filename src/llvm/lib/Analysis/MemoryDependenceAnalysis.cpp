@@ -101,9 +101,8 @@ RemoveFromReverseMap(DenseMap<Instruction *, SmallPtrSet<KeyTy, 4>> &ReverseMap,
   typename DenseMap<Instruction *, SmallPtrSet<KeyTy, 4>>::iterator InstIt =
       ReverseMap.find(Inst);
   assert(InstIt != ReverseMap.end() && "Reverse map out of sync?");
-  bool Found = InstIt->second.erase(Val);
+  [[maybe_unused]] bool Found = InstIt->second.erase(Val);
   assert(Found && "Invalid reverse map!");
-  (void)Found;
   if (InstIt->second.empty())
     ReverseMap.erase(InstIt);
 }
@@ -1203,7 +1202,7 @@ bool MemoryDependenceResults::getNonLocalPointerDepFromBB(
   // revisit blocks after we insert info for them.
   unsigned NumSortedEntries = Cache->size();
   unsigned WorklistEntries = BlockNumberLimit;
-  bool GotWorklistLimit = false;
+  [[maybe_unused]] bool GotWorklistLimit = false;
   LLVM_DEBUG(AssertSorted(*Cache));
 
   while (!Worklist.empty()) {
@@ -1446,7 +1445,6 @@ bool MemoryDependenceResults::getNonLocalPointerDepFromBB(
         break;
       }
     }
-    (void)GotWorklistLimit;
     // Go ahead and report unknown dependence.
     Result.push_back(
         NonLocalDepResult(BB, MemDepResult::getUnknown(), Pointer.getAddr()));

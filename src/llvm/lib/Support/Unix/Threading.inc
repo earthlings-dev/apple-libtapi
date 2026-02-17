@@ -153,7 +153,7 @@ uint32_t llvm::get_max_thread_name_length() {
 void llvm::set_thread_name(const Twine &Name) {
   // Make sure the input is null terminated.
   SmallString<64> Storage;
-  StringRef NameStr = Name.toNullTerminatedStringRef(Storage);
+  [[maybe_unused]] StringRef NameStr = Name.toNullTerminatedStringRef(Storage);
 
   // Truncate from the beginning, not the end, if the specified name is too
   // long.  For one, this ensures that the resulting string is still null
@@ -163,7 +163,6 @@ void llvm::set_thread_name(const Twine &Name) {
   // Note that the name length includes the null terminator.
   if (get_max_thread_name_length() > 0)
     NameStr = NameStr.take_back(get_max_thread_name_length() - 1);
-  (void)NameStr;
 #if defined(__linux__)
 #if (defined(__GLIBC__) && defined(_GNU_SOURCE)) || defined(__ANDROID__)
 #if HAVE_PTHREAD_SETNAME_NP

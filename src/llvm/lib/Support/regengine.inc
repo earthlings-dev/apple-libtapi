@@ -365,8 +365,7 @@ dissect(struct match *m, const char *start, const char *stop, sopno startst,
 			esub = es - 1;
 			/* did innards match? */
 			if (slow(m, sp, rest, ssub, esub) != NULL) {
-				const char *dp = dissect(m, sp, rest, ssub, esub);
-				(void)dp; /* avoid warning if assertions off */
+				[[maybe_unused]] const char *dp = dissect(m, sp, rest, ssub, esub);
 				assert(dp == rest);
 			} else		/* no */
 				assert(sp == rest);
@@ -405,8 +404,7 @@ dissect(struct match *m, const char *start, const char *stop, sopno startst,
 			assert(sep == rest);	/* must exhaust substring */
 			assert(slow(m, ssp, sep, ssub, esub) == rest);
 			{
-				const char *dp = dissect(m, ssp, sep, ssub, esub);
-				(void)dp; /* avoid warning if assertions off */
+				[[maybe_unused]] const char *dp = dissect(m, ssp, sep, ssub, esub);
 				assert(dp == sep);
 			}
 			sp = rest;
@@ -443,8 +441,7 @@ dissect(struct match *m, const char *start, const char *stop, sopno startst,
 					assert(OP(m->g->strip[esub]) == O_CH);
 			}
 			{
-				const char *dp = dissect(m, sp, rest, ssub, esub);
-				(void)dp; /* avoid warning if assertions off */
+				[[maybe_unused]] const char *dp = dissect(m, sp, rest, ssub, esub);
 				assert(dp == rest);
 			}
 			sp = rest;

@@ -152,7 +152,7 @@ static void benchmark(llvm::TimerGroup &Group, llvm::StringRef Name,
                                  E = JSONText.end();
        I != E; ++I) { C += *I; }
   BaseLine.stopTimer();
-  volatile char DontOptimizeOut = C; (void)DontOptimizeOut;
+  [[maybe_unused]] volatile char DontOptimizeOut = C;
 
   llvm::Timer Tokenizing((Name + ".tokenizing").str(),
                          (Description + ": Tokenizing").str(), Group);

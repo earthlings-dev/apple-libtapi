@@ -63,11 +63,11 @@ using namespace llvm;
 
 #define DEBUG_TYPE "si-insert-waitcnts"
 
-DEBUG_COUNTER(ForceExpCounter, DEBUG_TYPE"-forceexp",
+[[maybe_unused]] DEBUG_COUNTER(ForceExpCounter, DEBUG_TYPE"-forceexp",
               "Force emit s_waitcnt expcnt(0) instrs");
-DEBUG_COUNTER(ForceLgkmCounter, DEBUG_TYPE"-forcelgkm",
+[[maybe_unused]] DEBUG_COUNTER(ForceLgkmCounter, DEBUG_TYPE"-forcelgkm",
               "Force emit s_waitcnt lgkmcnt(0) instrs");
-DEBUG_COUNTER(ForceVMCounter, DEBUG_TYPE"-forcevm",
+[[maybe_unused]] DEBUG_COUNTER(ForceVMCounter, DEBUG_TYPE"-forcevm",
               "Force emit s_waitcnt vmcnt(0) instrs");
 
 static cl::opt<bool> ForceEmitZeroFlag(
@@ -407,9 +407,6 @@ public:
   static char ID;
 
   SIInsertWaitcnts() : MachineFunctionPass(ID) {
-    (void)ForceExpCounter;
-    (void)ForceLgkmCounter;
-    (void)ForceVMCounter;
   }
 
   bool runOnMachineFunction(MachineFunction &MF) override;

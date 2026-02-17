@@ -158,8 +158,7 @@ public:
 
 private:
   void setCachedEntry(StringRef Filename, const CachedFileSystemEntry *Entry) {
-    bool IsInserted = Cache.try_emplace(Filename, Entry).second;
-    (void)IsInserted;
+    [[maybe_unused]] bool IsInserted = Cache.try_emplace(Filename, Entry).second;
     assert(IsInserted && "local cache is updated more than once");
   }
 

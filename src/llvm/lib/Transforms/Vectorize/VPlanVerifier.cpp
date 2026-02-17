@@ -64,9 +64,8 @@ static void verifyBlocksInRegion(const VPRegionBlock *Region) {
 
     for (const VPBlockBase *Succ : Successors) {
       // There must be a bi-directional link between block and successor.
-      const auto &SuccPreds = Succ->getPredecessors();
+      [[maybe_unused]] const auto &SuccPreds = Succ->getPredecessors();
       assert(llvm::is_contained(SuccPreds, VPB) && "Missing predecessor link.");
-      (void)SuccPreds;
     }
 
     // Check block's predecessors.
@@ -83,9 +82,8 @@ static void verifyBlocksInRegion(const VPRegionBlock *Region) {
              "Predecessor is not in the same region.");
 
       // There must be a bi-directional link between block and predecessor.
-      const auto &PredSuccs = Pred->getSuccessors();
+      [[maybe_unused]] const auto &PredSuccs = Pred->getSuccessors();
       assert(llvm::is_contained(PredSuccs, VPB) && "Missing successor link.");
-      (void)PredSuccs;
     }
   }
 }
@@ -93,14 +91,12 @@ static void verifyBlocksInRegion(const VPRegionBlock *Region) {
 /// Verify the CFG invariants of VPRegionBlock \p Region and its nested
 /// VPBlockBases. Do not recurse inside nested VPRegionBlocks.
 static void verifyRegion(const VPRegionBlock *Region) {
-  const VPBlockBase *Entry = Region->getEntry();
-  const VPBlockBase *Exit = Region->getExit();
+  [[maybe_unused]] const VPBlockBase *Entry = Region->getEntry();
+  [[maybe_unused]] const VPBlockBase *Exit = Region->getExit();
 
   // Entry and Exit shouldn't have any predecessor/successor, respectively.
   assert(!Entry->getNumPredecessors() && "Region entry has predecessors.");
   assert(!Exit->getNumSuccessors() && "Region exit has successors.");
-  (void)Entry;
-  (void)Exit;
 
   verifyBlocksInRegion(Region);
 }

@@ -1308,8 +1308,7 @@ Address CodeGenFunction::GetAddrOfBlockDecl(const VarDecl *variable) {
 
 void CodeGenModule::setAddrOfGlobalBlock(const BlockExpr *BE,
                                          llvm::Constant *Addr) {
-  bool Ok = EmittedGlobalBlocks.insert(std::make_pair(BE, Addr)).second;
-  (void)Ok;
+  [[maybe_unused]] bool Ok = EmittedGlobalBlocks.insert(std::make_pair(BE, Addr)).second;
   assert(Ok && "Trying to replace an already-existing global block!");
 }
 

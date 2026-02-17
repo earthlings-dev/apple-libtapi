@@ -180,8 +180,7 @@ void AMDGPUAsmPrinter::emitEndOfAsmFile(Module &M) {
   // Emit HSA Metadata (NT_AMD_AMDGPU_HSA_METADATA).
   if (TM.getTargetTriple().getOS() == Triple::AMDHSA) {
     HSAMetadataStream->end();
-    bool Success = HSAMetadataStream->emitTo(*getTargetStreamer());
-    (void)Success;
+    [[maybe_unused]] bool Success = HSAMetadataStream->emitTo(*getTargetStreamer());
     assert(Success && "Malformed HSA Metadata");
   }
 }

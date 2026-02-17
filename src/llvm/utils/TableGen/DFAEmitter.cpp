@@ -288,7 +288,7 @@ void Automaton::emit(raw_ostream &OS) {
   // transitions.
   std::deque<uint64_t> Worklist(1, 0);
   std::set<uint64_t> SeenStates;
-  unsigned NumTransitions = 0;
+  [[maybe_unused]] unsigned NumTransitions = 0;
   SeenStates.insert(Worklist.front());
   while (!Worklist.empty()) {
     uint64_t State = Worklist.front();

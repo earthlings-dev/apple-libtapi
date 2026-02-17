@@ -613,8 +613,7 @@ void VPlan::execute(VPTransformState *State) {
   BranchInst::Create(VectorLatchBB, LastBB);
 
   // Merge LastBB with Latch.
-  bool Merged = MergeBlockIntoPredecessor(VectorLatchBB, nullptr, State->LI);
-  (void)Merged;
+  [[maybe_unused]] bool Merged = MergeBlockIntoPredecessor(VectorLatchBB, nullptr, State->LI);
   assert(Merged && "Could not merge last basic block with latch.");
   VectorLatchBB = LastBB;
 

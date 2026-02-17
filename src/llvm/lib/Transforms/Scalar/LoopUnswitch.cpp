@@ -1932,8 +1932,7 @@ void LoopUnswitch::simplifyCode(std::vector<Instruction *> &Worklist, Loop *L) {
       if (BI->isUnconditional()) {
         // If BI's parent is the only pred of the successor, fold the two blocks
         // together.
-        BasicBlock *Pred = BI->getParent();
-        (void)Pred;
+        [[maybe_unused]] BasicBlock *Pred = BI->getParent();
         BasicBlock *Succ = BI->getSuccessor(0);
         BasicBlock *SinglePred = Succ->getSinglePredecessor();
         if (!SinglePred) continue;  // Nothing to do.

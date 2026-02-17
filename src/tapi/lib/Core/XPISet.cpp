@@ -36,9 +36,8 @@ GlobalSymbol *XPISet::addGlobalSymbolImp(StringRef name, APILinkage linkage,
     assert(globalSymbol->getFlags() == flags && "flags are not equal");
   }
 
-  auto success = globalSymbol->updateAccess(access);
+  [[maybe_unused]] auto success = globalSymbol->updateAccess(access);
   assert(success && "Access is not equal");
-  (void)success;
 
   return globalSymbol;
 }
@@ -56,9 +55,8 @@ ObjCClass *XPISet::addObjCClassImpl(StringRef name, APILinkage linkage,
     objcClass = cast<ObjCClass>(result.first->second);
   }
 
-  auto success = objcClass->updateAccess(access);
+  [[maybe_unused]] auto success = objcClass->updateAccess(access);
   assert(success && "Access is not equal");
-  (void)success;
 
   return objcClass;
 }
@@ -77,9 +75,8 @@ ObjCClassEHType *XPISet::addObjCClassEHTypeImpl(StringRef name,
     objCClassEH = cast<ObjCClassEHType>(result.first->second);
   }
 
-  auto success = objCClassEH->updateAccess(access);
+  [[maybe_unused]] auto success = objCClassEH->updateAccess(access);
   assert(success && "Access is not equal");
-  (void)success;
 
   return objCClassEH;
 }
@@ -100,9 +97,8 @@ ObjCInstanceVariable *XPISet::addObjCInstanceVariableImpl(StringRef name,
     objcInstanceVariable = cast<ObjCInstanceVariable>(result.first->second);
   }
 
-  auto success = objcInstanceVariable->updateAccess(access);
+  [[maybe_unused]] auto success = objcInstanceVariable->updateAccess(access);
   assert(success && "Access is not equal");
-  (void)success;
 
   return objcInstanceVariable;
 }

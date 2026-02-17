@@ -4099,7 +4099,7 @@ MachineBasicBlock *SITargetLowering::EmitInstrWithCustomInserter(
     MachineRegisterInfo &MRI = MF->getRegInfo();
     Register InputReg = MI.getOperand(0).getReg();
     Register CountReg = MRI.createVirtualRegister(&AMDGPU::SGPR_32RegClass);
-    bool Found = false;
+    [[maybe_unused]] bool Found = false;
 
     // Move the COPY of the input reg to the beginning, so that we can use it.
     for (auto I = BB->begin(); I != &MI; I++) {
@@ -4117,7 +4117,6 @@ MachineBasicBlock *SITargetLowering::EmitInstrWithCustomInserter(
       break;
     }
     assert(Found);
-    (void)Found;
 
     // This should be before all vector instructions.
     unsigned Mask = (getSubtarget()->getWavefrontSize() << 1) - 1;

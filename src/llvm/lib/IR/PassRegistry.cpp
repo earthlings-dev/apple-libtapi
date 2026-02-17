@@ -54,10 +54,9 @@ const PassInfo *PassRegistry::getPassInfo(StringRef Arg) const {
 
 void PassRegistry::registerPass(const PassInfo &PI, bool ShouldFree) {
   sys::SmartScopedWriter<true> Guard(Lock);
-  bool Inserted =
+  [[maybe_unused]] bool Inserted =
       PassInfoMap.insert(std::make_pair(PI.getTypeInfo(), &PI)).second;
   assert(Inserted && "Pass registered multiple times!");
-  (void)Inserted;
   PassInfoStringMap[PI.getPassArgument()] = &PI;
 
   // Notify any listeners.

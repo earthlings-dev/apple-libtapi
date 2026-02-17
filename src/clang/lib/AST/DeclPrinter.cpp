@@ -1452,7 +1452,7 @@ void DeclPrinter::VisitObjCPropertyDecl(ObjCPropertyDecl *PDecl) {
 
   Out << "@property";
   if (PDecl->getPropertyAttributes() != ObjCPropertyAttribute::kind_noattr) {
-    bool first = true;
+    [[maybe_unused]] bool first = true;
     Out << "(";
     if (PDecl->getPropertyAttributes() & ObjCPropertyAttribute::kind_class) {
       Out << (first ? "" : ", ") << "class";
@@ -1537,7 +1537,6 @@ void DeclPrinter::VisitObjCPropertyDecl(ObjCPropertyDecl *PDecl) {
       }
     }
 
-    (void) first; // Silence dead store warning due to idiomatic code.
     Out << ")";
   }
   std::string TypeStr = PDecl->getASTContext().getUnqualifiedObjCPointerType(T).

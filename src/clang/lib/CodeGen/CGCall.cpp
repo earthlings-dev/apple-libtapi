@@ -765,8 +765,7 @@ CodeGenTypes::arrangeLLVMFunctionInfo(CanQualType resultType,
                               paramInfos, resultType, argTypes, required);
   FunctionInfos.InsertNode(FI, insertPos);
 
-  bool inserted = FunctionsBeingProcessed.insert(FI).second;
-  (void)inserted;
+  [[maybe_unused]] bool inserted = FunctionsBeingProcessed.insert(FI).second;
   assert(inserted && "Recursively being processed?");
 
   // Compute ABI information.
@@ -791,7 +790,7 @@ CodeGenTypes::arrangeLLVMFunctionInfo(CanQualType resultType,
     if (I.info.canHaveCoerceToType() && I.info.getCoerceToType() == nullptr)
       I.info.setCoerceToType(ConvertType(I.type));
 
-  bool erased = FunctionsBeingProcessed.erase(FI); (void)erased;
+  [[maybe_unused]] bool erased = FunctionsBeingProcessed.erase(FI);
   assert(erased && "Not in set?");
 
   return *FI;
@@ -1565,8 +1564,7 @@ llvm::FunctionType *CodeGenTypes::GetFunctionType(GlobalDecl GD) {
 llvm::FunctionType *
 CodeGenTypes::GetFunctionType(const CGFunctionInfo &FI) {
 
-  bool Inserted = FunctionsBeingProcessed.insert(&FI).second;
-  (void)Inserted;
+  [[maybe_unused]] bool Inserted = FunctionsBeingProcessed.insert(&FI).second;
   assert(Inserted && "Recursively being processed?");
 
   llvm::Type *resultType = nullptr;
@@ -1691,7 +1689,7 @@ CodeGenTypes::GetFunctionType(const CGFunctionInfo &FI) {
     }
   }
 
-  bool Erased = FunctionsBeingProcessed.erase(&FI); (void)Erased;
+  [[maybe_unused]] bool Erased = FunctionsBeingProcessed.erase(&FI);
   assert(Erased && "Not in set?");
 
   return llvm::FunctionType::get(resultType, ArgTypes, FI.isVariadic());
@@ -4016,7 +4014,7 @@ void CodeGenFunction::EmitCallArgs(
   for (unsigned I = 0, E = ArgTypes.size(); I != E; ++I) {
     unsigned Idx = LeftToRight ? I : E - I - 1;
     CallExpr::const_arg_iterator Arg = ArgRange.begin() + Idx;
-    unsigned InitialArgSize = Args.size();
+    [[maybe_unused]] unsigned InitialArgSize = Args.size();
     // If *Arg is an ObjCIndirectCopyRestoreExpr, check that either the types of
     // the argument and parameter match or the objc method is parameterized.
     assert((!isa<ObjCIndirectCopyRestoreExpr>(*Arg) ||
@@ -4030,7 +4028,6 @@ void CodeGenFunction::EmitCallArgs(
     // objectsize bits depend on there only being one arg if !LeftToRight.
     assert(InitialArgSize + 1 == Args.size() &&
            "The code below depends on only adding one arg per EmitCallArg");
-    (void)InitialArgSize;
     // Since pointer argument are never emitted as LValue, it is safe to emit
     // non-null argument check for r-value only.
     if (!Args.back().hasLValue()) {

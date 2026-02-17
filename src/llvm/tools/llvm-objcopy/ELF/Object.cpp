@@ -182,9 +182,8 @@ static bool addressOverflows32bit(uint64_t Addr) {
 
 template <class T> static T checkedGetHex(StringRef S) {
   T Value;
-  bool Fail = S.getAsInteger(16, Value);
+  [[maybe_unused]] bool Fail = S.getAsInteger(16, Value);
   assert(!Fail);
-  (void)Fail;
   return Value;
 }
 

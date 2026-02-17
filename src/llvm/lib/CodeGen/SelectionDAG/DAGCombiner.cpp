@@ -224,8 +224,7 @@ namespace {
       }
 
       if (N) {
-        bool GoodWorklistEntry = WorklistMap.erase(N);
-        (void)GoodWorklistEntry;
+        [[maybe_unused]] bool GoodWorklistEntry = WorklistMap.erase(N);
         assert(GoodWorklistEntry &&
                "Found a worklist entry without a corresponding map entry!");
       }
@@ -6957,9 +6956,8 @@ calculateByteProvider(SDValue Op, unsigned Index, unsigned Depth,
   unsigned BitWidth = Op.getValueSizeInBits();
   if (BitWidth % 8 != 0)
     return None;
-  unsigned ByteWidth = BitWidth / 8;
+  [[maybe_unused]] unsigned ByteWidth = BitWidth / 8;
   assert(Index < ByteWidth && "invalid index requested");
-  (void) ByteWidth;
 
   switch (Op.getOpcode()) {
   case ISD::OR: {
@@ -8294,8 +8292,7 @@ static SDValue combineShiftToMULH(SDNode *N, SelectionDAG &DAG,
     return SDValue();
 
   EVT WideVT1 = LeftOp.getValueType();
-  EVT WideVT2 = RightOp.getValueType();
-  (void)WideVT2;
+  [[maybe_unused]] EVT WideVT2 = RightOp.getValueType();
   // Proceed with the transformation if the wide types match.
   assert((WideVT1 == WideVT2) &&
          "Cannot have a multiply node with two different operand types.");
@@ -15391,13 +15388,12 @@ SDValue DAGCombiner::visitLOAD(SDNode *N) {
     if (MaybeAlign Alignment = DAG.InferPtrAlign(Ptr)) {
       if (*Alignment > LD->getAlign() &&
           isAligned(*Alignment, LD->getSrcValueOffset())) {
-        SDValue NewLoad = DAG.getExtLoad(
+        [[maybe_unused]] SDValue NewLoad = DAG.getExtLoad(
             LD->getExtensionType(), SDLoc(N), LD->getValueType(0), Chain, Ptr,
             LD->getPointerInfo(), LD->getMemoryVT(), *Alignment,
             LD->getMemOperand()->getFlags(), LD->getAAInfo());
         // NewLoad will always be N as we are only refining the alignment
         assert(NewLoad.getNode() == N);
-        (void)NewLoad;
       }
     }
   }
@@ -17518,13 +17514,12 @@ SDValue DAGCombiner::visitSTORE(SDNode *N) {
     if (MaybeAlign Alignment = DAG.InferPtrAlign(Ptr)) {
       if (*Alignment > ST->getAlign() &&
           isAligned(*Alignment, ST->getSrcValueOffset())) {
-        SDValue NewStore =
+        [[maybe_unused]] SDValue NewStore =
             DAG.getTruncStore(Chain, SDLoc(N), Value, Ptr, ST->getPointerInfo(),
                               ST->getMemoryVT(), *Alignment,
                               ST->getMemOperand()->getFlags(), ST->getAAInfo());
         // NewStore will always be N as we are only refining the alignment
         assert(NewStore.getNode() == N);
-        (void)NewStore;
       }
     }
   }

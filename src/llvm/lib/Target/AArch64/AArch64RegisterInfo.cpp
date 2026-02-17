@@ -578,9 +578,8 @@ void AArch64RegisterInfo::resolveFrameIndex(MachineInstr &MI, Register BaseReg,
   const MachineFunction *MF = MI.getParent()->getParent();
   const AArch64InstrInfo *TII =
       MF->getSubtarget<AArch64Subtarget>().getInstrInfo();
-  bool Done = rewriteAArch64FrameIndex(MI, i, BaseReg, Off, TII);
+  [[maybe_unused]] bool Done = rewriteAArch64FrameIndex(MI, i, BaseReg, Off, TII);
   assert(Done && "Unable to resolve frame index!");
-  (void)Done;
 }
 
 // Create a scratch register for the frame index elimination in an instruction.

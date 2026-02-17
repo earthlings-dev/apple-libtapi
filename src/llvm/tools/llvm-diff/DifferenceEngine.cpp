@@ -173,9 +173,8 @@ class FunctionDifferenceEngine {
   void unify(Instruction *L, Instruction *R) {
     DifferenceEngine::Context C(Engine, L, R);
 
-    bool Result = diff(L, R, true, true);
+    [[maybe_unused]] bool Result = diff(L, R, true, true);
     assert(!Result && "structural differences second time around?");
-    (void) Result;
     if (!L->use_empty())
       Values[L] = R;
   }

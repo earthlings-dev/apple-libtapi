@@ -498,8 +498,7 @@ void ForceSuccessCommand::Print(raw_ostream &OS, const char *Terminator,
 int ForceSuccessCommand::Execute(ArrayRef<llvm::Optional<StringRef>> Redirects,
                                  std::string *ErrMsg,
                                  bool *ExecutionFailed) const {
-  int Status = Command::Execute(Redirects, ErrMsg, ExecutionFailed);
-  (void)Status;
+  [[maybe_unused]] int Status = Command::Execute(Redirects, ErrMsg, ExecutionFailed);
   if (ExecutionFailed)
     *ExecutionFailed = false;
   return 0;

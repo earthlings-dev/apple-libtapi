@@ -845,9 +845,9 @@ bool ConstantHoistingPass::emitBaseConstants(GlobalVariable *BaseGV) {
     if (IPSet.empty())
       continue;
 
-    unsigned UsesNum = 0;
-    unsigned ReBasesNum = 0;
-    unsigned NotRebasedNum = 0;
+    [[maybe_unused]] unsigned UsesNum = 0;
+    [[maybe_unused]] unsigned ReBasesNum = 0;
+    [[maybe_unused]] unsigned NotRebasedNum = 0;
     for (Instruction *IP : IPSet) {
       // First, collect constants depending on this IP of the base.
       unsigned Uses = 0;
@@ -907,9 +907,6 @@ bool ConstantHoistingPass::emitBaseConstants(GlobalVariable *BaseGV) {
       assert(isa<Instruction>(Base->user_back()) &&
              "All uses should be instructions.");
     }
-    (void)UsesNum;
-    (void)ReBasesNum;
-    (void)NotRebasedNum;
     // Expect all uses are rebased after rebase is done.
     assert(UsesNum == (ReBasesNum + NotRebasedNum) &&
            "Not all uses are rebased");

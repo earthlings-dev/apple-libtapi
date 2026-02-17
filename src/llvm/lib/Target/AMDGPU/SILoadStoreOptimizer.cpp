@@ -1060,7 +1060,7 @@ SILoadStoreOptimizer::mergeRead2Pair(CombineInfo &CI, CombineInfo &Paired,
     BaseSubReg = 0;
   }
 
-  MachineInstrBuilder Read2 =
+  [[maybe_unused]] MachineInstrBuilder Read2 =
       BuildMI(*MBB, Paired.I, DL, Read2Desc, DestReg)
           .addReg(BaseReg, BaseRegFlags, BaseSubReg) // addr
           .addImm(NewOffset0)                        // offset0
@@ -1068,7 +1068,6 @@ SILoadStoreOptimizer::mergeRead2Pair(CombineInfo &CI, CombineInfo &Paired,
           .addImm(0)                                 // gds
           .cloneMergedMemRefs({&*CI.I, &*Paired.I});
 
-  (void)Read2;
 
   const MCInstrDesc &CopyDesc = TII->get(TargetOpcode::COPY);
 
@@ -1639,11 +1638,10 @@ SILoadStoreOptimizer::createRegOrImm(int32_t Val, MachineInstr &MI) const {
     return MachineOperand::CreateImm(Val);
 
   Register Reg = MRI->createVirtualRegister(&AMDGPU::SReg_32RegClass);
-  MachineInstr *Mov =
+  [[maybe_unused]] MachineInstr *Mov =
   BuildMI(*MI.getParent(), MI.getIterator(), MI.getDebugLoc(),
           TII->get(AMDGPU::S_MOV_B32), Reg)
     .addImm(Val);
-  (void)Mov;
   LLVM_DEBUG(dbgs() << "    "; Mov->dump());
   return MachineOperand::CreateReg(Reg, false);
 }
@@ -1674,33 +1672,30 @@ Register SILoadStoreOptimizer::computeBase(MachineInstr &MI,
 
   Register DestSub0 = MRI->createVirtualRegister(&AMDGPU::VGPR_32RegClass);
   Register DestSub1 = MRI->createVirtualRegister(&AMDGPU::VGPR_32RegClass);
-  MachineInstr *LoHalf =
+  [[maybe_unused]] MachineInstr *LoHalf =
     BuildMI(*MBB, MBBI, DL, TII->get(AMDGPU::V_ADD_CO_U32_e64), DestSub0)
       .addReg(CarryReg, RegState::Define)
       .addReg(Addr.Base.LoReg, 0, Addr.Base.LoSubReg)
       .add(OffsetLo)
       .addImm(0); // clamp bit
-  (void)LoHalf;
   LLVM_DEBUG(dbgs() << "    "; LoHalf->dump(););
 
-  MachineInstr *HiHalf =
+  [[maybe_unused]] MachineInstr *HiHalf =
   BuildMI(*MBB, MBBI, DL, TII->get(AMDGPU::V_ADDC_U32_e64), DestSub1)
     .addReg(DeadCarryReg, RegState::Define | RegState::Dead)
     .addReg(Addr.Base.HiReg, 0, Addr.Base.HiSubReg)
     .add(OffsetHi)
     .addReg(CarryReg, RegState::Kill)
     .addImm(0); // clamp bit
-  (void)HiHalf;
   LLVM_DEBUG(dbgs() << "    "; HiHalf->dump(););
 
   Register FullDestReg = MRI->createVirtualRegister(&AMDGPU::VReg_64RegClass);
-  MachineInstr *FullBase =
+  [[maybe_unused]] MachineInstr *FullBase =
     BuildMI(*MBB, MBBI, DL, TII->get(TargetOpcode::REG_SEQUENCE), FullDestReg)
       .addReg(DestSub0)
       .addImm(AMDGPU::sub0)
       .addReg(DestSub1)
       .addImm(AMDGPU::sub1);
-  (void)FullBase;
   LLVM_DEBUG(dbgs() << "    "; FullBase->dump(); dbgs() << "\n";);
 
   return FullDestReg;

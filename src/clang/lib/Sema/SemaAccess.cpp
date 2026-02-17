@@ -932,10 +932,9 @@ static CXXBasePath *FindBestPath(Sema &S,
   const CXXRecordDecl *Base = Target.getDeclaringClass();
 
   // FIXME: fail correctly when there are dependent paths.
-  bool isDerived = Derived->isDerivedFrom(const_cast<CXXRecordDecl*>(Base),
+  [[maybe_unused]] bool isDerived = Derived->isDerivedFrom(const_cast<CXXRecordDecl*>(Base),
                                           Paths);
   assert(isDerived && "derived class not actually derived from base");
-  (void) isDerived;
 
   CXXBasePath *BestPath = nullptr;
 

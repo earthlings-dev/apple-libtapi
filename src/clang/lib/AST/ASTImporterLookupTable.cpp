@@ -94,8 +94,7 @@ void ASTImporterLookupTable::add(DeclContext *DC, NamedDecl *ND) {
 
 void ASTImporterLookupTable::remove(DeclContext *DC, NamedDecl *ND) {
   DeclList &Decls = LookupTable[DC][ND->getDeclName()];
-  bool EraseResult = Decls.remove(ND);
-  (void)EraseResult;
+  [[maybe_unused]] bool EraseResult = Decls.remove(ND);
   assert(EraseResult == true && "Trying to remove not contained Decl");
 }
 

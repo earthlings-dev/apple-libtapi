@@ -39,8 +39,7 @@ namespace clang {
 static std::unique_ptr<FrontendAction>
 CreateFrontendBaseAction(CompilerInstance &CI) {
   using namespace clang::frontend;
-  StringRef Action("unknown");
-  (void)Action;
+  [[maybe_unused]] StringRef Action("unknown");
 
   switch (CI.getFrontendOpts().ProgramAction) {
   case ASTDeclList:            return std::make_unique<ASTDeclListAction>();

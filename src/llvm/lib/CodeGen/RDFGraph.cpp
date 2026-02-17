@@ -423,10 +423,9 @@ void RefNode::setRegRef(RegisterRef RR, DataFlowGraph &G) {
 
 // Set the register reference in the reference node based on a machine
 // operand (for references in statement nodes).
-void RefNode::setRegRef(MachineOperand *Op, DataFlowGraph &G) {
+void RefNode::setRegRef(MachineOperand *Op, [[maybe_unused]] DataFlowGraph &G) {
   assert(NodeAttrs::type(Attrs) == NodeAttrs::Ref);
   assert(!(NodeAttrs::flags(Attrs) & NodeAttrs::PhiRef));
-  (void)G;
   Ref.Op = Op;
 }
 

@@ -529,10 +529,9 @@ ExprResult InitListChecker::PerformEmptyInit(SourceLocation Loc,
   if (!InitSeq && EmptyInitList && InitSeq.getFailureKind() ==
           InitializationSequence::FK_ExplicitConstructor) {
     OverloadCandidateSet::iterator Best;
-    OverloadingResult O =
+    [[maybe_unused]] OverloadingResult O =
         InitSeq.getFailedCandidateSet()
             .BestViableFunction(SemaRef, Kind.getLocation(), Best);
-    (void)O;
     assert(O == OR_Success && "Inconsistent overload resolution");
     CXXConstructorDecl *CtorDecl = cast<CXXConstructorDecl>(Best->Function);
     CXXRecordDecl *R = CtorDecl->getParent();
@@ -1467,10 +1466,9 @@ void InitListChecker::CheckSubElementType(const InitializedEntity &Entity,
       // We cannot initialize this element, so let PerformCopyInitialization
       // produce the appropriate diagnostic. We already checked that this
       // initialization will fail.
-      ExprResult Copy =
+      [[maybe_unused]] ExprResult Copy =
           SemaRef.PerformCopyInitialization(Entity, SourceLocation(), expr,
                                             /*TopLevelOfInitList=*/true);
-      (void)Copy;
       assert(Copy.isInvalid() &&
              "expected non-aggregate initialization to fail");
     }
@@ -8943,10 +8941,9 @@ bool InitializationSequence::Diagnose(Sema &S,
       // the target type.
       assert(Kind.getKind() == InitializationKind::IK_Value ||
              DestType->isReferenceType());
-      bool Diagnosed =
+      [[maybe_unused]] bool Diagnosed =
         DiagnoseUninitializedReference(S, Kind.getLocation(), DestType);
       assert(Diagnosed && "couldn't find uninitialized reference to diagnose");
-      (void)Diagnosed;
     } else  // FIXME: diagnostic below could be better!
       S.Diag(Kind.getLocation(), diag::err_reference_has_multiple_inits)
           << SourceRange(Args.front()->getBeginLoc(), Args.back()->getEndLoc());
@@ -9370,9 +9367,8 @@ bool InitializationSequence::Diagnose(Sema &S,
     S.Diag(Kind.getLocation(), diag::err_selected_explicit_constructor)
       << Args[0]->getSourceRange();
     OverloadCandidateSet::iterator Best;
-    OverloadingResult Ovl
+    [[maybe_unused]] OverloadingResult Ovl
       = FailedCandidateSet.BestViableFunction(S, Kind.getLocation(), Best);
-    (void)Ovl;
     assert(Ovl == OR_Success && "Inconsistent overload resolution");
     CXXConstructorDecl *CtorDecl = cast<CXXConstructorDecl>(Best->Function);
     S.Diag(CtorDecl->getLocation(),

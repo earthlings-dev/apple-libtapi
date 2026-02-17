@@ -477,8 +477,7 @@ void CallInst::init(FunctionType *FTy, Value *Func, ArrayRef<Value *> Args,
 
   llvm::copy(Args, op_begin());
 
-  auto It = populateBundleOperandInfos(Bundles, Args.size());
-  (void)It;
+  [[maybe_unused]] auto It = populateBundleOperandInfos(Bundles, Args.size());
   assert(It + 1 == op_end() && "Should add up!");
 
   setName(NameStr);
@@ -827,8 +826,7 @@ void InvokeInst::init(FunctionType *FTy, Value *Fn, BasicBlock *IfNormal,
 
   llvm::copy(Args, op_begin());
 
-  auto It = populateBundleOperandInfos(Bundles, Args.size());
-  (void)It;
+  [[maybe_unused]] auto It = populateBundleOperandInfos(Bundles, Args.size());
   assert(It + 3 == op_end() && "Should add up!");
 
   setName(NameStr);
@@ -910,8 +908,7 @@ void CallBrInst::init(FunctionType *FTy, Value *Fn, BasicBlock *Fallthrough,
 
   std::copy(Args.begin(), Args.end(), op_begin());
 
-  auto It = populateBundleOperandInfos(Bundles, Args.size());
-  (void)It;
+  [[maybe_unused]] auto It = populateBundleOperandInfos(Bundles, Args.size());
   assert(It + 2 + IndirectDests.size() == op_end() && "Should add up!");
 
   setName(NameStr);
@@ -2431,8 +2428,7 @@ UnaryOperator *UnaryOperator::Create(UnaryOps Op, Value *S,
 }
 
 void UnaryOperator::AssertOK() {
-  Value *LHS = getOperand(0);
-  (void)LHS; // Silence warnings.
+  [[maybe_unused]] Value *LHS = getOperand(0);
 #ifndef NDEBUG
   switch (getOpcode()) {
   case FNeg:
@@ -2478,8 +2474,7 @@ BinaryOperator::BinaryOperator(BinaryOps iType, Value *S1, Value *S2,
 }
 
 void BinaryOperator::AssertOK() {
-  Value *LHS = getOperand(0), *RHS = getOperand(1);
-  (void)LHS; (void)RHS; // Silence warnings.
+  [[maybe_unused]] Value *LHS = getOperand(0), *RHS = getOperand(1);
   assert(LHS->getType() == RHS->getType() &&
          "Binary operator operand types must match!");
 #ifndef NDEBUG

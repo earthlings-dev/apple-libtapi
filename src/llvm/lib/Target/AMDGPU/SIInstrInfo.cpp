@@ -6304,10 +6304,8 @@ void SIInstrInfo::splitScalar64BitBFE(SetVectorType &Worklist,
 
   MachineOperand &Dest = Inst.getOperand(0);
   uint32_t Imm = Inst.getOperand(2).getImm();
-  uint32_t Offset = Imm & 0x3f; // Extract bits [5:0].
+  [[maybe_unused]] uint32_t Offset = Imm & 0x3f; // Extract bits [5:0].
   uint32_t BitWidth = (Imm & 0x7f0000) >> 16; // Extract bits [22:16].
-
-  (void) Offset;
 
   // Only sext_inreg cases handled.
   assert(Inst.getOpcode() == AMDGPU::S_BFE_I64 && BitWidth <= 32 &&

@@ -89,8 +89,7 @@ static bool f64AssignAAPCS(unsigned ValNo, MVT ValVT, MVT LocVT,
     if (HiRegList[i] == Reg)
       break;
 
-  unsigned T = State.AllocateReg(LoRegList[i]);
-  (void)T;
+  [[maybe_unused]] unsigned T = State.AllocateReg(LoRegList[i]);
   assert(T == LoRegList[i] && "Could not allocate register");
 
   State.addLoc(CCValAssign::getCustomReg(ValNo, ValVT, Reg, LocVT, LocInfo));

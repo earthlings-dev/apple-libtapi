@@ -48,18 +48,15 @@ AArch64RegisterBankInfo::AArch64RegisterBankInfo(const TargetRegisterInfo &TRI)
     // (AArch64::RegBanks) is unique in the compiler. At some point, it
     // will get tablegen'ed and the whole constructor becomes empty.
 
-    const RegisterBank &RBGPR = getRegBank(AArch64::GPRRegBankID);
-    (void)RBGPR;
+    [[maybe_unused]] const RegisterBank &RBGPR = getRegBank(AArch64::GPRRegBankID);
     assert(&AArch64::GPRRegBank == &RBGPR &&
            "The order in RegBanks is messed up");
 
-    const RegisterBank &RBFPR = getRegBank(AArch64::FPRRegBankID);
-    (void)RBFPR;
+    [[maybe_unused]] const RegisterBank &RBFPR = getRegBank(AArch64::FPRRegBankID);
     assert(&AArch64::FPRRegBank == &RBFPR &&
            "The order in RegBanks is messed up");
 
-    const RegisterBank &RBCCR = getRegBank(AArch64::CCRegBankID);
-    (void)RBCCR;
+    [[maybe_unused]] const RegisterBank &RBCCR = getRegBank(AArch64::CCRegBankID);
     assert(&AArch64::CCRegBank == &RBCCR &&
            "The order in RegBanks is messed up");
 
@@ -148,13 +145,12 @@ AArch64RegisterBankInfo::AArch64RegisterBankInfo(const TargetRegisterInfo &TRI)
 
 #define CHECK_VALUEMAP_CROSSREGCPY(RBNameDst, RBNameSrc, Size)                 \
   do {                                                                         \
-    unsigned PartialMapDstIdx = PMI_##RBNameDst##Size - PMI_Min;               \
-    unsigned PartialMapSrcIdx = PMI_##RBNameSrc##Size - PMI_Min;               \
-    (void)PartialMapDstIdx;                                                    \
-    (void)PartialMapSrcIdx;                                                    \
-    const ValueMapping *Map = getCopyMapping(                                  \
+    [[maybe_unused]] unsigned PartialMapDstIdx =                               \
+        PMI_##RBNameDst##Size - PMI_Min;                                       \
+    [[maybe_unused]] unsigned PartialMapSrcIdx =                               \
+        PMI_##RBNameSrc##Size - PMI_Min;                                       \
+    [[maybe_unused]] const ValueMapping *Map = getCopyMapping(                 \
         AArch64::RBNameDst##RegBankID, AArch64::RBNameSrc##RegBankID, Size);  \
-    (void)Map;                                                                 \
     assert(Map[0].BreakDown ==                                                 \
                &AArch64GenRegisterBankInfo::PartMappings[PartialMapDstIdx] &&  \
            Map[0].NumBreakDowns == 1 && #RBNameDst #Size                       \
@@ -177,12 +173,12 @@ AArch64RegisterBankInfo::AArch64RegisterBankInfo(const TargetRegisterInfo &TRI)
 
 #define CHECK_VALUEMAP_FPEXT(DstSize, SrcSize)                                 \
   do {                                                                         \
-    unsigned PartialMapDstIdx = PMI_FPR##DstSize - PMI_Min;                    \
-    unsigned PartialMapSrcIdx = PMI_FPR##SrcSize - PMI_Min;                    \
-    (void)PartialMapDstIdx;                                                    \
-    (void)PartialMapSrcIdx;                                                    \
-    const ValueMapping *Map = getFPExtMapping(DstSize, SrcSize);               \
-    (void)Map;                                                                 \
+    [[maybe_unused]] unsigned PartialMapDstIdx =                               \
+        PMI_FPR##DstSize - PMI_Min;                                            \
+    [[maybe_unused]] unsigned PartialMapSrcIdx =                               \
+        PMI_FPR##SrcSize - PMI_Min;                                            \
+    [[maybe_unused]] const ValueMapping *Map =                                 \
+        getFPExtMapping(DstSize, SrcSize);                                     \
     assert(Map[0].BreakDown ==                                                 \
                &AArch64GenRegisterBankInfo::PartMappings[PartialMapDstIdx] &&  \
            Map[0].NumBreakDowns == 1 && "FPR" #DstSize                         \
@@ -456,8 +452,7 @@ AArch64RegisterBankInfo::getSameKindOfOperandsMapping(
             RBIdx, OpTy.getSizeInBits()) ==
             AArch64GenRegisterBankInfo::getRegBankBaseIdxOffset(RBIdx, Size) &&
         "Operand has incompatible size");
-    bool OpIsFPR = OpTy.isVector() || isPreISelGenericFloatingPointOpcode(Opc);
-    (void)OpIsFPR;
+    [[maybe_unused]] bool OpIsFPR = OpTy.isVector() || isPreISelGenericFloatingPointOpcode(Opc);
     assert(IsFPR == OpIsFPR && "Operand has incompatible type");
   }
 #endif // End NDEBUG.

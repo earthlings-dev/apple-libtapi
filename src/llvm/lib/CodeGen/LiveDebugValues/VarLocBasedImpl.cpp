@@ -1731,10 +1731,9 @@ void VarLocBasedLDV::flushPendingLocs(VarLocInMBB &PendingInLocs,
       const VarLoc &DiffIt = VarLocIDs[LocIndex::fromRawInteger(ID)];
       if (DiffIt.isEntryBackupLoc())
         continue;
-      MachineInstr *MI = DiffIt.BuildDbgValue(*MBB.getParent());
+      [[maybe_unused]] MachineInstr *MI = DiffIt.BuildDbgValue(*MBB.getParent());
       MBB.insert(MBB.instr_begin(), MI);
 
-      (void)MI;
       LLVM_DEBUG(dbgs() << "Inserted: "; MI->dump(););
     }
   }

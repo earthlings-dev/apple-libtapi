@@ -103,8 +103,7 @@ static bool stripQuotes(StringRef &Str, bool &IsLongString) {
   if (IsLongString)
     Str = Str.drop_front();
 
-  bool StripSuccess = Str.consume_front("\"") && Str.consume_back("\"");
-  (void)StripSuccess;
+  [[maybe_unused]] bool StripSuccess = Str.consume_front("\"") && Str.consume_back("\"");
   assert(StripSuccess && "Strings should be enclosed in quotes.");
   return true;
 }

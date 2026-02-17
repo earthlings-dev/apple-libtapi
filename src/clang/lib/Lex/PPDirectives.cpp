@@ -534,8 +534,7 @@ void Preprocessor::SkipExcludedConditionalBlock(SourceLocation HashTokenLoc,
       if (Sub == "ndif") {  // "endif"
         PPConditionalInfo CondInfo;
         CondInfo.WasSkipping = true; // Silence bogus warning.
-        bool InCond = CurPPLexer->popConditionalLevel(CondInfo);
-        (void)InCond;  // Silence warning in no-asserts mode.
+        [[maybe_unused]] bool InCond = CurPPLexer->popConditionalLevel(CondInfo);
         assert(!InCond && "Can't be skipping if not in a conditional!");
 
         // If we popped the outermost skipping block, we're done skipping!

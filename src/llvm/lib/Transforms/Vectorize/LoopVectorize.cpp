@@ -2738,7 +2738,7 @@ void InnerLoopVectorizer::vectorizeMemoryInstruction(
   // Determine if the pointer operand of the access is either consecutive or
   // reverse consecutive.
   bool Reverse = (Decision == LoopVectorizationCostModel::CM_Widen_Reverse);
-  bool ConsecutiveStride =
+  [[maybe_unused]] bool ConsecutiveStride =
       Reverse || (Decision == LoopVectorizationCostModel::CM_Widen);
   bool CreateGatherScatter =
       (Decision == LoopVectorizationCostModel::CM_GatherScatter);
@@ -2747,7 +2747,6 @@ void InnerLoopVectorizer::vectorizeMemoryInstruction(
   // gather/scatter. Otherwise Decision should have been to Scalarize.
   assert((ConsecutiveStride || CreateGatherScatter) &&
          "The instruction should be scalarized");
-  (void)ConsecutiveStride;
 
   VectorParts BlockInMaskParts(UF);
   bool isMaskRequired = BlockInMask;

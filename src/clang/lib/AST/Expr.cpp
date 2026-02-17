@@ -241,11 +241,10 @@ SourceLocation Expr::getExprLoc() const {
 // Primary Expressions.
 //===----------------------------------------------------------------------===//
 
-static void AssertResultStorageKind(ConstantExpr::ResultStorageKind Kind) {
+static void AssertResultStorageKind([[maybe_unused]] ConstantExpr::ResultStorageKind Kind) {
   assert((Kind == ConstantExpr::RSK_APValue ||
           Kind == ConstantExpr::RSK_Int64 || Kind == ConstantExpr::RSK_None) &&
          "Invalid StorageKind Value");
-  (void)Kind;
 }
 
 ConstantExpr::ResultStorageKind

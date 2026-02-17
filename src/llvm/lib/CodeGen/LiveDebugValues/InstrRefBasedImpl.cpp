@@ -1844,9 +1844,8 @@ void InstrRefBasedLDV::performCopy(Register SrcRegNum, Register DstRegNum) {
     LocIdx SrcL = MTracker->getRegMLoc(SrcSubReg);
     assert(SrcL.asU64());
     (void)MTracker->readReg(DstSubReg);
-    LocIdx DstL = MTracker->getRegMLoc(DstSubReg);
+    [[maybe_unused]] LocIdx DstL = MTracker->getRegMLoc(DstSubReg);
     assert(DstL.asU64());
-    (void)DstL;
     ValueIDNum CpyValue = {SrcValue.getBlock(), SrcValue.getInst(), SrcL};
 
     MTracker->setReg(DstSubReg, CpyValue);
@@ -2181,12 +2180,11 @@ void InstrRefBasedLDV::produceMLocTransferFunction(
       // MachineInstr and its position.
       if (uint64_t InstrNo = MI.peekDebugInstrNum()) {
         auto InstrAndPos = std::make_pair(&MI, CurInst);
-        auto InsertResult =
+        [[maybe_unused]] auto InsertResult =
             DebugInstrNumToInstr.insert(std::make_pair(InstrNo, InstrAndPos));
 
         // There should never be duplicate instruction numbers.
         assert(InsertResult.second);
-        (void)InsertResult;
       }
 
       ++CurInst;
@@ -2662,8 +2660,7 @@ std::tuple<bool, bool> InstrRefBasedLDV::vlocJoin(
     DowngradeOccurred = true;
 
   auto ConfirmValue = [&InLocsT](const DebugVariable &DV, DbgValue VR) {
-    auto Result = InLocsT.insert(std::make_pair(DV, VR));
-    (void)Result;
+    [[maybe_unused]] auto Result = InLocsT.insert(std::make_pair(DV, VR));
     assert(Result.second);
   };
 

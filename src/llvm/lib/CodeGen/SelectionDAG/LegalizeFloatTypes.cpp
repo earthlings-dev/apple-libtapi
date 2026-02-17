@@ -1961,11 +1961,10 @@ SDValue DAGTypeLegalizer::ExpandFloatOp_STORE(SDNode *N, unsigned OpNo) {
   SDValue Chain = ST->getChain();
   SDValue Ptr = ST->getBasePtr();
 
-  EVT NVT = TLI.getTypeToTransformTo(*DAG.getContext(),
+  [[maybe_unused]] EVT NVT = TLI.getTypeToTransformTo(*DAG.getContext(),
                                      ST->getValue().getValueType());
   assert(NVT.isByteSized() && "Expanded type not byte sized!");
   assert(ST->getMemoryVT().bitsLE(NVT) && "Float type not round?");
-  (void)NVT;
 
   SDValue Lo, Hi;
   GetExpandedOp(ST->getValue(), Lo, Hi);

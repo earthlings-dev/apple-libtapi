@@ -693,8 +693,7 @@ bool RuntimeDyldCheckerImpl::check(StringRef CheckExpr) const {
   LLVM_DEBUG(dbgs() << "RuntimeDyldChecker: Checking '" << CheckExpr
                     << "'...\n");
   RuntimeDyldCheckerExprEval P(*this, ErrStream);
-  bool Result = P.evaluate(CheckExpr);
-  (void)Result;
+  [[maybe_unused]] bool Result = P.evaluate(CheckExpr);
   LLVM_DEBUG(dbgs() << "RuntimeDyldChecker: '" << CheckExpr << "' "
                     << (Result ? "passed" : "FAILED") << ".\n");
   return Result;

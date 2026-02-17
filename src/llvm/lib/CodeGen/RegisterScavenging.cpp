@@ -201,13 +201,13 @@ void RegScavenger::forward() {
         // S1 is can be freely clobbered.
         // Ideally we would like a way to model this, but leaving the
         // insert_subreg around causes both correctness and performance issues.
-        bool SubUsed = false;
+        [[maybe_unused]] bool SubUsed = false;
         for (const MCPhysReg &SubReg : TRI->subregs(Reg))
           if (isRegUsed(SubReg)) {
             SubUsed = true;
             break;
           }
-        bool SuperUsed = false;
+        [[maybe_unused]] bool SuperUsed = false;
         for (MCSuperRegIterator SR(Reg, TRI); SR.isValid(); ++SR) {
           if (isRegUsed(*SR)) {
             SuperUsed = true;
@@ -218,8 +218,6 @@ void RegScavenger::forward() {
           MBB->getParent()->verify(nullptr, "In Register Scavenger");
           llvm_unreachable("Using an undefined register!");
         }
-        (void)SubUsed;
-        (void)SuperUsed;
       }
     } else {
       assert(MO.isDef());

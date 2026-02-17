@@ -507,8 +507,7 @@ void LTO::addModuleToGlobalRes(ArrayRef<InputFile::Symbol> Syms,
                                ArrayRef<SymbolResolution> Res,
                                unsigned Partition, bool InSummary) {
   auto *ResI = Res.begin();
-  auto *ResE = Res.end();
-  (void)ResE;
+  [[maybe_unused]] auto *ResE = Res.end();
   for (const InputFile::Symbol &Sym : Syms) {
     assert(ResI != ResE);
     SymbolResolution Res = *ResI++;

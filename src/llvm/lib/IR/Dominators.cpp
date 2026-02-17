@@ -370,9 +370,8 @@ PreservedAnalyses DominatorTreePrinterPass::run(Function &F,
 
 PreservedAnalyses DominatorTreeVerifierPass::run(Function &F,
                                                  FunctionAnalysisManager &AM) {
-  auto &DT = AM.getResult<DominatorTreeAnalysis>(F);
+  [[maybe_unused]] auto &DT = AM.getResult<DominatorTreeAnalysis>(F);
   assert(DT.verify());
-  (void)DT;
   return PreservedAnalyses::all();
 }
 

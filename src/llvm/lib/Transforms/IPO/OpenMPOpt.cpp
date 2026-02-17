@@ -333,26 +333,19 @@ struct OMPInformationCache : public InformationCache {
 
     // Helper macros for handling __VA_ARGS__ in OMP_RTL
 #define OMP_TYPE(VarName, ...)                                                 \
-  Type *VarName = OMPBuilder.VarName;                                          \
-  (void)VarName;
+  [[maybe_unused]] Type *VarName = OMPBuilder.VarName;
 
 #define OMP_ARRAY_TYPE(VarName, ...)                                           \
-  ArrayType *VarName##Ty = OMPBuilder.VarName##Ty;                             \
-  (void)VarName##Ty;                                                           \
-  PointerType *VarName##PtrTy = OMPBuilder.VarName##PtrTy;                     \
-  (void)VarName##PtrTy;
+  [[maybe_unused]] ArrayType *VarName##Ty = OMPBuilder.VarName##Ty;            \
+  [[maybe_unused]] PointerType *VarName##PtrTy = OMPBuilder.VarName##PtrTy;
 
 #define OMP_FUNCTION_TYPE(VarName, ...)                                        \
-  FunctionType *VarName = OMPBuilder.VarName;                                  \
-  (void)VarName;                                                               \
-  PointerType *VarName##Ptr = OMPBuilder.VarName##Ptr;                         \
-  (void)VarName##Ptr;
+  [[maybe_unused]] FunctionType *VarName = OMPBuilder.VarName;                 \
+  [[maybe_unused]] PointerType *VarName##Ptr = OMPBuilder.VarName##Ptr;
 
 #define OMP_STRUCT_TYPE(VarName, ...)                                          \
-  StructType *VarName = OMPBuilder.VarName;                                    \
-  (void)VarName;                                                               \
-  PointerType *VarName##Ptr = OMPBuilder.VarName##Ptr;                         \
-  (void)VarName##Ptr;
+  [[maybe_unused]] StructType *VarName = OMPBuilder.VarName;                   \
+  [[maybe_unused]] PointerType *VarName##Ptr = OMPBuilder.VarName##Ptr;
 
 #define OMP_RTL(_Enum, _Name, _IsVarArg, _ReturnType, ...)                     \
   {                                                                            \
@@ -366,8 +359,7 @@ struct OMPInformationCache : public InformationCache {
       RFI.ReturnType = OMPBuilder._ReturnType;                                 \
       RFI.ArgumentTypes = std::move(ArgsTypes);                                \
       RFI.Declaration = F;                                                     \
-      unsigned NumUses = collectUses(RFI);                                     \
-      (void)NumUses;                                                           \
+      [[maybe_unused]] unsigned NumUses = collectUses(RFI);                     \
       LLVM_DEBUG({                                                             \
         dbgs() << TAG << RFI.Name << (RFI.Declaration ? "" : " not")           \
                << " found\n";                                                  \

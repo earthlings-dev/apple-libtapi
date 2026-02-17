@@ -113,10 +113,9 @@ void PerTargetMIParsingState::initNames2Regs() {
   assert(TRI && "Expected target register info");
 
   for (unsigned I = 0, E = TRI->getNumRegs(); I < E; ++I) {
-    bool WasInserted =
+    [[maybe_unused]] bool WasInserted =
         Names2Regs.insert(std::make_pair(StringRef(TRI->getName(I)).lower(), I))
             .second;
-    (void)WasInserted;
     assert(WasInserted && "Expected registers to be unique case-insensitively");
   }
 }

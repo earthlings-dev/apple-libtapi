@@ -962,8 +962,7 @@ static std::pair<ScalarExprEmitter::ImplicitConversionCheckKind,
 EmitIntegerTruncationCheckHelper(Value *Src, QualType SrcType, Value *Dst,
                                  QualType DstType, CGBuilderTy &Builder) {
   llvm::Type *SrcTy = Src->getType();
-  llvm::Type *DstTy = Dst->getType();
-  (void)DstTy; // Only used in assert()
+  [[maybe_unused]] llvm::Type *DstTy = Dst->getType();
 
   // This should be truncation of integral types.
   assert(Src != Dst);
@@ -1061,14 +1060,10 @@ EmitIntegerSignChangeCheckHelper(Value *Src, QualType SrcType, Value *Dst,
   assert(isa<llvm::IntegerType>(SrcTy) && isa<llvm::IntegerType>(DstTy) &&
          "non-integer llvm type");
 
-  bool SrcSigned = SrcType->isSignedIntegerOrEnumerationType();
-  bool DstSigned = DstType->isSignedIntegerOrEnumerationType();
-  (void)SrcSigned; // Only used in assert()
-  (void)DstSigned; // Only used in assert()
-  unsigned SrcBits = SrcTy->getScalarSizeInBits();
-  unsigned DstBits = DstTy->getScalarSizeInBits();
-  (void)SrcBits; // Only used in assert()
-  (void)DstBits; // Only used in assert()
+  [[maybe_unused]] bool SrcSigned = SrcType->isSignedIntegerOrEnumerationType();
+  [[maybe_unused]] bool DstSigned = DstType->isSignedIntegerOrEnumerationType();
+  [[maybe_unused]] unsigned SrcBits = SrcTy->getScalarSizeInBits();
+  [[maybe_unused]] unsigned DstBits = DstTy->getScalarSizeInBits();
 
   assert(((SrcBits != DstBits) || (SrcSigned != DstSigned)) &&
          "either the widths should be different, or the signednesses.");
@@ -1332,8 +1327,7 @@ Value *ScalarExprEmitter::EmitScalarConversion(Value *Src, QualType SrcType,
 
     // Source and destination are both expected to be vectors.
     llvm::Type *SrcElementTy = cast<llvm::VectorType>(SrcTy)->getElementType();
-    llvm::Type *DstElementTy = cast<llvm::VectorType>(DstTy)->getElementType();
-    (void)DstElementTy;
+    [[maybe_unused]] llvm::Type *DstElementTy = cast<llvm::VectorType>(DstTy)->getElementType();
 
     assert(((SrcElementTy->isIntegerTy() &&
              DstElementTy->isIntegerTy()) ||
@@ -1736,8 +1730,7 @@ static int getAsInt32(llvm::ConstantInt *C, llvm::Type *I32Ty) {
 }
 
 Value *ScalarExprEmitter::VisitInitListExpr(InitListExpr *E) {
-  bool Ignore = TestAndClearIgnoreResultAssign();
-  (void)Ignore;
+  [[maybe_unused]] bool Ignore = TestAndClearIgnoreResultAssign();
   assert (Ignore == false && "init list ignored");
   unsigned NumInitElements = E->getNumInits();
 
@@ -4138,12 +4131,11 @@ Value *ScalarExprEmitter::EmitCompare(const BinaryOperator *E,
       LHS.second = llvm::Constant::getNullValue(LHS.first->getType());
       CETy = LHSTy;
     }
-    if (auto *CTy = RHSTy->getAs<ComplexType>()) {
+    if ([[maybe_unused]] auto *CTy = RHSTy->getAs<ComplexType>()) {
       RHS = CGF.EmitComplexExpr(E->getRHS());
       assert(CGF.getContext().hasSameUnqualifiedType(CETy,
                                                      CTy->getElementType()) &&
              "The element types must always match.");
-      (void)CTy;
     } else {
       RHS.first = Visit(E->getRHS());
       RHS.second = llvm::Constant::getNullValue(RHS.first->getType());

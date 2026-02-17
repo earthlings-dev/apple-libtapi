@@ -2534,11 +2534,10 @@ SUnit *SchedBoundary::pickOnlyChoice() {
     }
     ++I;
   }
-  for (unsigned i = 0; Available.empty(); ++i) {
+  for ([[maybe_unused]] unsigned i = 0; Available.empty(); ++i) {
 //  FIXME: Re-enable assert once PR20057 is resolved.
 //    assert(i <= (HazardRec->getMaxLookAhead() + MaxObservedStall) &&
 //           "permanent hazard");
-    (void)i;
     bumpCycle(CurrCycle + 1);
     releasePending();
   }

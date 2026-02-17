@@ -197,13 +197,12 @@ static std::string toBinaryString(uint8_t Byte) {
 void ExplainOutputStyle::explainPdbFpmBlockOffset() {
   const MSFLayout &Layout = File.pdb().getMsfLayout();
   uint32_t MainFpm = Layout.mainFpmBlock();
-  uint32_t AltFpm = Layout.alternateFpmBlock();
+  [[maybe_unused]] uint32_t AltFpm = Layout.alternateFpmBlock();
 
   assert(isPdbFpmBlock());
   uint32_t Fpm = isPdbFpm1() ? 1 : 2;
   uint32_t FpmChunk = pdbBlockIndex() / File.pdb().getBlockSize();
   assert((Fpm == MainFpm) || (Fpm == AltFpm));
-  (void)AltFpm;
   bool IsMain = (Fpm == MainFpm);
   P.formatLine("Address is in FPM{0} ({1} FPM)", Fpm, IsMain ? "Main" : "Alt");
   uint32_t DescribedBlockStart =

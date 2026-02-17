@@ -751,7 +751,7 @@ void SelectionDAGISel::CodeGenAndEmitDAG() {
   StringRef GroupName = "sdag";
   StringRef GroupDescription = "Instruction Selection and Scheduling";
   std::string BlockName;
-  bool MatchFilterBB = false; (void)MatchFilterBB;
+  [[maybe_unused]] bool MatchFilterBB = false;
 #ifndef NDEBUG
   TargetTransformInfo &TTI =
       getAnalysis<TargetTransformInfoWrapperPass>().getTTI(*FuncInfo->Fn);
@@ -1225,7 +1225,6 @@ static void mapWasmLandingPadIndex(MachineBasicBlock *MBB,
       }
     }
     assert(IntrFound && "wasm.landingpad.index intrinsic not found!");
-    (void)IntrFound;
   }
 }
 
@@ -2950,8 +2949,7 @@ void SelectionDAGISel::SelectCodeCommon(SDNode *NodeToMatch,
 
         FailIndex = MatcherIndex+NumToSkip;
 
-        unsigned MatcherIndexOfPredicate = MatcherIndex;
-        (void)MatcherIndexOfPredicate; // silence warning.
+        [[maybe_unused]] unsigned MatcherIndexOfPredicate = MatcherIndex;
 
         // If we can't evaluate this predicate without pushing a scope (e.g. if
         // it is a 'MoveParent') or if the predicate succeeds on this node, we
@@ -3124,7 +3122,7 @@ void SelectionDAGISel::SelectCodeCommon(SDNode *NodeToMatch,
 
     case OPC_SwitchOpcode: {
       unsigned CurNodeOpcode = N.getOpcode();
-      unsigned SwitchStart = MatcherIndex-1; (void)SwitchStart;
+      [[maybe_unused]] unsigned SwitchStart = MatcherIndex-1;
       unsigned CaseSize;
       while (true) {
         // Get the size of this case.
@@ -3155,7 +3153,7 @@ void SelectionDAGISel::SelectCodeCommon(SDNode *NodeToMatch,
 
     case OPC_SwitchType: {
       MVT CurNodeVT = N.getSimpleValueType();
-      unsigned SwitchStart = MatcherIndex-1; (void)SwitchStart;
+      [[maybe_unused]] unsigned SwitchStart = MatcherIndex-1;
       unsigned CaseSize;
       while (true) {
         // Get the size of this case.

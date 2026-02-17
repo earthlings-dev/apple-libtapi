@@ -3071,14 +3071,13 @@ getPatternForClassTemplateSpecialization(
     for (unsigned I = 0, N = PartialSpecs.size(); I != N; ++I) {
       ClassTemplatePartialSpecializationDecl *Partial = PartialSpecs[I];
       TemplateDeductionInfo Info(FailedCandidates.getLocation());
-      if (Sema::TemplateDeductionResult Result = S.DeduceTemplateArguments(
+      if ([[maybe_unused]] Sema::TemplateDeductionResult Result = S.DeduceTemplateArguments(
               Partial, ClassTemplateSpec->getTemplateArgs(), Info)) {
         // Store the failed-deduction information for use in diagnostics, later.
         // TODO: Actually use the failed-deduction info?
         FailedCandidates.addCandidate().set(
             DeclAccessPair::make(Template, AS_public), Partial,
             MakeDeductionFailureInfo(S.Context, Result, Info));
-        (void)Result;
       } else {
         Matched.push_back(PartialSpecMatchResult());
         Matched.back().Partial = Partial;

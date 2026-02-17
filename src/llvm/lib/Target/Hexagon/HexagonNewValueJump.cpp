@@ -679,7 +679,7 @@ bool HexagonNewValueJump::runOnMachineFunction(MachineFunction &MF) {
           MBB->splice(jmpPos, MI.getParent(), MI);
           MBB->splice(jmpPos, MI.getParent(), cmpInstr);
           DebugLoc dl = MI.getDebugLoc();
-          MachineInstr *NewMI;
+          [[maybe_unused]] MachineInstr *NewMI;
 
           assert((isNewValueJumpCandidate(*cmpInstr)) &&
                  "This compare is not a New Value Jump candidate.");
@@ -702,7 +702,6 @@ bool HexagonNewValueJump::runOnMachineFunction(MachineFunction &MF) {
                         .addMBB(jmpTarget);
 
           assert(NewMI && "New Value Jump Instruction Not created!");
-          (void)NewMI;
           if (cmpInstr->getOperand(0).isReg() &&
               cmpInstr->getOperand(0).isKill())
             cmpInstr->getOperand(0).setIsKill(false);

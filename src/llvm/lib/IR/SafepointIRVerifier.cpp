@@ -85,7 +85,7 @@ public:
   bool hasLiveIncomingEdge(const PHINode *PN, const BasicBlock *InBB) const {
     assert(!isDeadBlock(InBB) && "block must be live");
     const BasicBlock* BB = PN->getParent();
-    bool Listed = false;
+    [[maybe_unused]] bool Listed = false;
     for (const_pred_iterator PredIt(BB), End(BB, true); PredIt != End; ++PredIt) {
       if (InBB == *PredIt) {
         if (!isDeadEdge(&getEdge(PredIt)))
@@ -93,7 +93,6 @@ public:
         Listed = true;
       }
     }
-    (void)Listed;
     assert(Listed && "basic block is not found among incoming blocks");
     return false;
   }
@@ -596,9 +595,8 @@ void GCPtrTracker::verifyFunction(GCPtrTracker &&Tracker,
 
       // Model the effect of current instruction on AvailableSet to keep the set
       // relevant at each point of BB.
-      bool Cleared = false;
+      [[maybe_unused]] bool Cleared = false;
       transferInstruction(I, Cleared, AvailableSet);
-      (void)Cleared;
     }
   }
 }
@@ -723,9 +721,8 @@ bool GCPtrTracker::removeValidUnrelocatedDefs(const BasicBlock *BB,
                         << BB->getName() << "\n");
       ContributionChanged = true;
     } else {
-      bool Cleared = false;
+      [[maybe_unused]] bool Cleared = false;
       transferInstruction(I, Cleared, AvailableSet);
-      (void)Cleared;
     }
   }
   return ContributionChanged;

@@ -791,10 +791,9 @@ void PreservedCFGCheckerInstrumentation::registerCallbacks(
 
   PIC.registerAfterPassInvalidatedCallback(
       [this](StringRef P, const PreservedAnalyses &PassPA) {
-        auto Before = GraphStackBefore.pop_back_val();
+        [[maybe_unused]] auto Before = GraphStackBefore.pop_back_val();
         assert(Before.first == P &&
                "Before and After callbacks must correspond");
-        (void)Before;
       });
 
   PIC.registerAfterPassCallback([this](StringRef P, Any IR,

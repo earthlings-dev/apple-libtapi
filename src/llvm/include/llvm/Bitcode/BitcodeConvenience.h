@@ -237,9 +237,8 @@ public:
     data = ElementTy::convert(buffer.front());
   }
 
-  template <typename T> static void read(ArrayRef<T> buffer, NoneType) {
+  template <typename T> static void read([[maybe_unused]] ArrayRef<T> buffer, NoneType) {
     assert(buffer.size() == 1 && "record data does not match layout");
-    (void)buffer;
   }
 
   template <typename T> static void read(ArrayRef<T> buffer) = delete;
@@ -293,8 +292,7 @@ public:
                  llvm::map_iterator(buffer.end(), T::convert));
   }
 
-  template <typename T> static void read(ArrayRef<T> buffer, NoneType) {
-    (void)buffer;
+  template <typename T> static void read([[maybe_unused]] ArrayRef<T> buffer, NoneType) {
   }
 
   template <typename T> static void read(ArrayRef<T> buffer) = delete;
@@ -311,7 +309,7 @@ public:
     Stream.EmitRecordWithBlob(code, buffer, data);
   }
 
-  template <typename T> static void read(ArrayRef<T> buffer) { (void)buffer; }
+  template <typename T> static void read([[maybe_unused]] ArrayRef<T> buffer) { }
 
   /// Blob data is not stored in the buffer if you are using the correct
   /// accessor; this method should not be used.

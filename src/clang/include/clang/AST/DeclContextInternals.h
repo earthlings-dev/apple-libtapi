@@ -105,9 +105,8 @@ public:
 
   void remove(NamedDecl *D) {
     assert(!isNull() && "removing from empty list");
-    if (NamedDecl *Singleton = getAsDecl()) {
+    if ([[maybe_unused]] NamedDecl *Singleton = getAsDecl()) {
       assert(Singleton == D && "list is different singleton");
-      (void)Singleton;
       Data = (NamedDecl *)nullptr;
       return;
     }

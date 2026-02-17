@@ -468,9 +468,9 @@ SUnit *ConvergingVLIWScheduler::VLIWSchedBoundary::pickOnlyChoice() {
         getWeakLeft(*Available.begin(), isTop()) != 0;
     return false;
   };
-  for (unsigned i = 0; AdvanceCycle(); ++i) {
+  for ([[maybe_unused]] unsigned i = 0; AdvanceCycle(); ++i) {
     assert(i <= (HazardRec->getMaxLookAhead() + MaxMinLatency) &&
-           "permanent hazard"); (void)i;
+           "permanent hazard");
     ResourceModel->reserveResources(nullptr, isTop());
     bumpCycle();
     releasePending();
@@ -953,10 +953,9 @@ SUnit *ConvergingVLIWScheduler::pickNode(bool &IsTopNode) {
     SU = Top.pickOnlyChoice();
     if (!SU) {
       SchedCandidate TopCand;
-      CandResult TopResult =
+      [[maybe_unused]] CandResult TopResult =
         pickNodeFromQueue(Top, DAG->getTopRPTracker(), TopCand);
       assert(TopResult != NoCand && "failed to find the first candidate");
-      (void)TopResult;
       SU = TopCand.SU;
     }
     IsTopNode = true;
@@ -964,10 +963,9 @@ SUnit *ConvergingVLIWScheduler::pickNode(bool &IsTopNode) {
     SU = Bot.pickOnlyChoice();
     if (!SU) {
       SchedCandidate BotCand;
-      CandResult BotResult =
+      [[maybe_unused]] CandResult BotResult =
         pickNodeFromQueue(Bot, DAG->getBotRPTracker(), BotCand);
       assert(BotResult != NoCand && "failed to find the first candidate");
-      (void)BotResult;
       SU = BotCand.SU;
     }
     IsTopNode = false;

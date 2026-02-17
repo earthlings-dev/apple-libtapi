@@ -89,7 +89,10 @@ Expected<unsigned> Process::getPageSize() {
 }
 
 size_t Process::GetMallocUsage() {
-#if defined(HAVE_MALLINFO)
+#if defined(HAVE_MALLINFO2)
+  struct mallinfo2 mi = mallinfo2();
+  return mi.uordblks;
+#elif defined(HAVE_MALLINFO)
   struct mallinfo mi;
   mi = ::mallinfo();
   return mi.uordblks;
@@ -450,8 +453,7 @@ unsigned llvm::sys::Process::GetRandomNumber() {
 #if HAVE_DECL_ARC4RANDOM
   return arc4random();
 #else
-  static int x = (static_cast<void>(::srand(GetRandomNumberSeed())), 0);
-  (void)x;
+  [[maybe_unused]] static int x = (static_cast<void>(::srand(GetRandomNumberSeed())), 0);
   return ::rand();
 #endif
 }

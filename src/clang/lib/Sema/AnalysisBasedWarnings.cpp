@@ -1050,9 +1050,8 @@ namespace {
     bool foundSwitchStatements() const { return FoundSwitchStatements; }
 
     void markFallthroughVisited(const AttributedStmt *Stmt) {
-      bool Found = FallthroughStmts.erase(Stmt);
+      [[maybe_unused]] bool Found = FallthroughStmts.erase(Stmt);
       assert(Found);
-      (void)Found;
     }
 
     typedef llvm::SmallPtrSet<const AttributedStmt*, 8> AttrStmts;

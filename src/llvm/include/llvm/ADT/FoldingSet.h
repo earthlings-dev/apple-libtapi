@@ -474,8 +474,7 @@ public:
   /// InsertNode - Insert the specified node into the folding set, knowing that
   /// it is not already in the folding set.
   void InsertNode(T *N) {
-    T *Inserted = GetOrInsertNode(N);
-    (void)Inserted;
+    [[maybe_unused]] T *Inserted = GetOrInsertNode(N);
     assert(Inserted == N && "Node already inserted!");
   }
 };

@@ -1088,8 +1088,7 @@ Compilation *Driver::BuildCompilation(ArrayRef<const char *> ArgList) {
       // Disable any warnings not explicitly turned on.
       for (const char *Warning : WarningsToDisable) {
         StringRef S(Warning);
-        bool Consumed = S.consume_front("-Wno-");
-        (void)Consumed;
+        [[maybe_unused]] bool Consumed = S.consume_front("-Wno-");
         assert(Consumed && "Warning flag should be in '-Wno-' form");
         if (!WarningsToKeep.count(S))
           ExtraArgs.push_back(Warning);

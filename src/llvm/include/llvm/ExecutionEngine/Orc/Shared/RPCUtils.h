@@ -1254,17 +1254,12 @@ protected:
       // Start by deserializing the arguments.
       using ArgsTuple = typename detail::RPCFunctionArgsTuple<
           typename detail::HandlerTraits<HandlerT>::Type>::Type;
-      auto Args = std::make_shared<ArgsTuple>();
+      [[maybe_unused]] auto Args = std::make_shared<ArgsTuple>();
 
       if (auto Err =
               detail::HandlerTraits<typename Func::Type>::deserializeArgs(
                   Channel, *Args))
         return Err;
-
-      // GCC 4.7 and 4.8 incorrectly issue a -Wunused-but-set-variable warning
-      // for RPCArgs. Void cast RPCArgs to work around this for now.
-      // FIXME: Remove this workaround once we can assume a working GCC version.
-      (void)Args;
 
       // End receieve message, unlocking the channel for reading.
       if (auto Err = Channel.endReceiveMessage())
@@ -1288,17 +1283,12 @@ protected:
           typename detail::HandlerTraits<HandlerT>::Type>;
       using ArgsTuple =
           typename detail::RPCFunctionArgsTuple<typename AHTraits::Type>::Type;
-      auto Args = std::make_shared<ArgsTuple>();
+      [[maybe_unused]] auto Args = std::make_shared<ArgsTuple>();
 
       if (auto Err =
               detail::HandlerTraits<typename Func::Type>::deserializeArgs(
                   Channel, *Args))
         return Err;
-
-      // GCC 4.7 and 4.8 incorrectly issue a -Wunused-but-set-variable warning
-      // for RPCArgs. Void cast RPCArgs to work around this for now.
-      // FIXME: Remove this workaround once we can assume a working GCC version.
-      (void)Args;
 
       // End receieve message, unlocking the channel for reading.
       if (auto Err = Channel.endReceiveMessage())

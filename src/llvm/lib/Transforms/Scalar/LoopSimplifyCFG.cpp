@@ -540,8 +540,7 @@ public:
     // Collect all available information about status of blocks after constant
     // folding.
     analyze();
-    BasicBlock *Header = L.getHeader();
-    (void)Header;
+    [[maybe_unused]] BasicBlock *Header = L.getHeader();
 
     LLVM_DEBUG(dbgs() << "In function " << Header->getParent()->getName()
                       << ": ");

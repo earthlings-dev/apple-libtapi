@@ -88,7 +88,7 @@ class ScoreboardHazardRecognizer : public ScheduleHazardRecognizer {
 
   // Support for tracing ScoreboardHazardRecognizer as a component within
   // another module.
-  const char *DebugType;
+  [[maybe_unused]] const char *DebugType;
 
   // Itinerary data for the target.
   const InstrItineraryData *ItinData;

@@ -1544,8 +1544,7 @@ void IRMover::IdentifiedStructTypeSet::addNonOpaque(StructType *Ty) {
 void IRMover::IdentifiedStructTypeSet::switchToNonOpaque(StructType *Ty) {
   assert(!Ty->isOpaque());
   NonOpaqueStructTypes.insert(Ty);
-  bool Removed = OpaqueStructTypes.erase(Ty);
-  (void)Removed;
+  [[maybe_unused]] bool Removed = OpaqueStructTypes.erase(Ty);
   assert(Removed);
 }
 

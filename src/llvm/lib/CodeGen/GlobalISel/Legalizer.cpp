@@ -217,7 +217,7 @@ Legalizer::legalizeMachineFunction(MachineFunction &MF, const LegalizerInfo &LI,
   do {
     LLVM_DEBUG(dbgs() << "=== New Iteration ===\n");
     assert(RetryList.empty() && "Expected no instructions in RetryList");
-    unsigned NumArtifacts = ArtifactList.size();
+    [[maybe_unused]] unsigned NumArtifacts = ArtifactList.size();
     while (!InstList.empty()) {
       MachineInstr &MI = *InstList.pop_back_val();
       assert(isPreISelGenericOpcode(MI.getOpcode()) &&
@@ -243,7 +243,6 @@ Legalizer::legalizeMachineFunction(MachineFunction &MF, const LegalizerInfo &LI,
                  "Artifacts are only expected in instruction list starting the "
                  "second iteration, but each iteration starting second must "
                  "start with an empty artifacts list");
-          (void)NumArtifacts;
           RetryList.push_back(&MI);
           continue;
         }

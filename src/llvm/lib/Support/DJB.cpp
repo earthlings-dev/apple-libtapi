@@ -40,10 +40,9 @@ static StringRef toUTF8(UTF32 C, MutableArrayRef<UTF8> Storage) {
 
   // The case-folded output should always be a valid unicode character, so use
   // strict mode here.
-  ConversionResult CR = ConvertUTF32toUTF8(&Begin32, &C + 1, &Begin8,
+  [[maybe_unused]] ConversionResult CR = ConvertUTF32toUTF8(&Begin32, &C + 1, &Begin8,
                                            Storage.end(), strictConversion);
   assert(CR == conversionOK && "Case folding produced invalid char?");
-  (void)CR;
   return StringRef(reinterpret_cast<char *>(Storage.begin()),
                    Begin8 - Storage.begin());
 }

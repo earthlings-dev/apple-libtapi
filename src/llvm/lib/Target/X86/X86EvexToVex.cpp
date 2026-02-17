@@ -146,9 +146,8 @@ static bool usesExtendedRegister(const MachineInstr &MI) {
 }
 
 // Do any custom cleanup needed to finalize the conversion.
-static bool performCustomAdjustments(MachineInstr &MI, unsigned NewOpc,
+static bool performCustomAdjustments(MachineInstr &MI, [[maybe_unused]] unsigned NewOpc,
                                      const X86Subtarget *ST) {
-  (void)NewOpc;
   unsigned Opc = MI.getOpcode();
   switch (Opc) {
   case X86::VPDPBUSDSZ256m:

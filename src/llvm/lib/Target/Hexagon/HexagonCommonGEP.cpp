@@ -560,8 +560,7 @@ void HexagonCommonGEP::common() {
       // creating a class for it then.
       if (!C.empty()) {
         C.insert(N);  // Finalize the set before adding it to the relation.
-        std::pair<NodeSymRel::iterator, bool> Ins = EqRel.insert(C);
-        (void)Ins;
+        [[maybe_unused]] std::pair<NodeSymRel::iterator, bool> Ins = EqRel.insert(C);
         assert(Ins.second && "Cannot add a class");
       }
     }
@@ -591,8 +590,7 @@ void HexagonCommonGEP::common() {
   for (NodeSymRel::iterator I = EqRel.begin(), E = EqRel.end(); I != E; ++I) {
     const NodeSet &S = *I;
     GepNode *Min = *std::min_element(S.begin(), S.end(), NodeOrder);
-    std::pair<ProjMap::iterator,bool> Ins = PM.insert(std::make_pair(&S, Min));
-    (void)Ins;
+    [[maybe_unused]] std::pair<ProjMap::iterator,bool> Ins = PM.insert(std::make_pair(&S, Min));
     assert(Ins.second && "Cannot add minimal element");
 
     // Update the min element's flags, and user list.

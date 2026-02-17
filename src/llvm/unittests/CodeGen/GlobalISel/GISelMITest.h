@@ -157,16 +157,11 @@ class AMDGPUGISelMITest : public GISelMITest {
   public:                                                                      \
     Name##Info(const TargetSubtargetInfo &ST) {                                \
       using namespace TargetOpcode;                                            \
-      const LLT s8 = LLT::scalar(8);                                           \
-      (void)s8;                                                                \
-      const LLT s16 = LLT::scalar(16);                                         \
-      (void)s16;                                                               \
-      const LLT s32 = LLT::scalar(32);                                         \
-      (void)s32;                                                               \
-      const LLT s64 = LLT::scalar(64);                                         \
-      (void)s64;                                                               \
-      const LLT s128 = LLT::scalar(128);                                       \
-      (void)s128;                                                              \
+      [[maybe_unused]] const LLT s8 = LLT::scalar(8);                           \
+      [[maybe_unused]] const LLT s16 = LLT::scalar(16);                        \
+      [[maybe_unused]] const LLT s32 = LLT::scalar(32);                        \
+      [[maybe_unused]] const LLT s64 = LLT::scalar(64);                        \
+      [[maybe_unused]] const LLT s128 = LLT::scalar(128);                      \
       do                                                                       \
         SettingUpActionsBlock while (0);                                       \
       computeTables();                                                         \

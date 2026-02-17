@@ -699,7 +699,7 @@ inline static void addOps(MCInst &subInstPtr, MCInst const &Inst,
 
 MCInst HexagonMCInstrInfo::deriveSubInst(MCInst const &Inst) {
   MCInst Result;
-  bool Absolute;
+  [[maybe_unused]] bool Absolute;
   int64_t Value;
   switch (Inst.getOpcode()) {
   default:
@@ -764,7 +764,7 @@ MCInst HexagonMCInstrInfo::deriveSubInst(MCInst const &Inst) {
   case Hexagon::A4_combineii:
   case Hexagon::A2_combineii:
     Absolute = Inst.getOperand(1).getExpr()->evaluateAsAbsolute(Value);
-    assert(Absolute);(void)Absolute;
+    assert(Absolute);
     if (Value == 1) {
       Result.setOpcode(Hexagon::SA1_combine1i);
       addOps(Result, Inst, 0);
@@ -889,7 +889,7 @@ MCInst HexagonMCInstrInfo::deriveSubInst(MCInst const &Inst) {
     }
   case Hexagon::S4_storeirb_io:
     Absolute = Inst.getOperand(2).getExpr()->evaluateAsAbsolute(Value);
-    assert(Absolute);(void)Absolute;
+    assert(Absolute);
     if (Value == 0) {
       Result.setOpcode(Hexagon::SS2_storebi0);
       addOps(Result, Inst, 0);
@@ -921,7 +921,7 @@ MCInst HexagonMCInstrInfo::deriveSubInst(MCInst const &Inst) {
     break; //    1,2,3 SUBInst memb($Rs + #$u4_0) = $Rt
   case Hexagon::S4_storeiri_io:
     Absolute = Inst.getOperand(2).getExpr()->evaluateAsAbsolute(Value);
-    assert(Absolute);(void)Absolute;
+    assert(Absolute);
     if (Value == 0) {
       Result.setOpcode(Hexagon::SS2_storewi0);
       addOps(Result, Inst, 0);

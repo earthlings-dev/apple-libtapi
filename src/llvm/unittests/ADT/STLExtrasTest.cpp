@@ -181,8 +181,7 @@ TEST(STLExtrasTest, EnumerateLifetimeSemantics) {
   // lvalue ranges need be neither copyable nor moveable.
   Range<false, false> R(Copies, Moves, Destructors);
   {
-    auto Enumerator = enumerate(R);
-    (void)Enumerator;
+    [[maybe_unused]] auto Enumerator = enumerate(R);
     EXPECT_EQ(0, Copies);
     EXPECT_EQ(0, Moves);
     EXPECT_EQ(0, Destructors);

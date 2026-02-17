@@ -914,9 +914,8 @@ bool AsmParser::Run(bool NoInitialTextSection, bool NoFinalize) {
       getStreamer().emitLabel(SectionStartSym);
       Sec->setBeginSymbol(SectionStartSym);
     }
-    bool InsertResult = getContext().addGenDwarfSection(Sec);
+    [[maybe_unused]] bool InsertResult = getContext().addGenDwarfSection(Sec);
     assert(InsertResult && ".text section should not have debug info yet");
-    (void)InsertResult;
   }
 
   // While we have input, parse each statement.
@@ -3508,11 +3507,10 @@ bool AsmParser::parseDirectiveFile(SMLoc DirectiveLoc) {
 /// parseDirectiveLine
 /// ::= .line [number]
 bool AsmParser::parseDirectiveLine() {
-  int64_t LineNumber;
+  [[maybe_unused]] int64_t LineNumber;
   if (getLexer().is(AsmToken::Integer)) {
     if (parseIntToken(LineNumber, "unexpected token in '.line' directive"))
       return true;
-    (void)LineNumber;
     // FIXME: Do something with the .line.
   }
   if (parseToken(AsmToken::EndOfStatement,

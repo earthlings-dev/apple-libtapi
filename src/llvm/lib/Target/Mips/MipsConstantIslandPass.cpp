@@ -483,8 +483,8 @@ bool MipsConstantIslands::runOnMachineFunction(MachineFunction &mf) {
 
   // Iteratively place constant pool entries and fix up branches until there
   // is no change.
-  unsigned NoCPIters = 0, NoBRIters = 0;
-  (void)NoBRIters;
+  unsigned NoCPIters = 0;
+  [[maybe_unused]] unsigned NoBRIters = 0;
   while (true) {
     LLVM_DEBUG(dbgs() << "Beginning CP iteration #" << NoCPIters << '\n');
     bool CPChange = false;
@@ -1631,8 +1631,7 @@ MipsConstantIslands::fixupConditionalBr(ImmBranch &Br) {
 }
 
 void MipsConstantIslands::prescanForConstants() {
-  unsigned J = 0;
-  (void)J;
+  [[maybe_unused]] unsigned J = 0;
   for (MachineFunction::iterator B =
          MF->begin(), E = MF->end(); B != E; ++B) {
     for (MachineBasicBlock::instr_iterator I =

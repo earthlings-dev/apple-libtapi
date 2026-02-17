@@ -147,7 +147,7 @@ bool AArch64CondBrTuning::tryToTuneBranch(MachineInstr &MI,
 
   bool IsFlagSetting = true;
   unsigned MIOpc = MI.getOpcode();
-  MachineInstr *NewCmp = nullptr, *NewBr = nullptr;
+  [[maybe_unused]] MachineInstr *NewCmp = nullptr, *NewBr = nullptr;
   switch (DefMI.getOpcode()) {
   default:
     return false;
@@ -263,7 +263,6 @@ bool AArch64CondBrTuning::tryToTuneBranch(MachineInstr &MI,
     }
     break;
   }
-  (void)NewCmp; (void)NewBr;
   assert(NewCmp && NewBr && "Expected new instructions.");
 
   LLVM_DEBUG(dbgs() << "  with instruction:\n    ");

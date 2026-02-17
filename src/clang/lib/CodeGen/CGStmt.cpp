@@ -2005,8 +2005,8 @@ SimplifyConstraint(const char *Constraint, const TargetInfo &Target,
       assert(OutCons &&
              "Must pass output names to constraints with a symbolic name");
       unsigned Index;
-      bool result = Target.resolveSymbolicName(Constraint, *OutCons, Index);
-      assert(result && "Could not resolve symbolic name"); (void)result;
+      [[maybe_unused]] bool result = Target.resolveSymbolicName(Constraint, *OutCons, Index);
+      assert(result && "Could not resolve symbolic name");
       Result += llvm::utostr(Index);
       break;
     }
@@ -2216,7 +2216,7 @@ void CodeGenFunction::EmitAsmStmt(const AsmStmt &S) {
     if (const GCCAsmStmt *GAS = dyn_cast<GCCAsmStmt>(&S))
       Name = GAS->getOutputName(i);
     TargetInfo::ConstraintInfo Info(S.getOutputConstraint(i), Name);
-    bool IsValid = getTarget().validateOutputConstraint(Info); (void)IsValid;
+    [[maybe_unused]] bool IsValid = getTarget().validateOutputConstraint(Info);
     assert(IsValid && "Failed to parse output constraint");
     OutputConstraintInfos.push_back(Info);
   }
@@ -2226,9 +2226,9 @@ void CodeGenFunction::EmitAsmStmt(const AsmStmt &S) {
     if (const GCCAsmStmt *GAS = dyn_cast<GCCAsmStmt>(&S))
       Name = GAS->getInputName(i);
     TargetInfo::ConstraintInfo Info(S.getInputConstraint(i), Name);
-    bool IsValid =
+    [[maybe_unused]] bool IsValid =
       getTarget().validateInputConstraint(OutputConstraintInfos, Info);
-    assert(IsValid && "Failed to parse input constraint"); (void)IsValid;
+    assert(IsValid && "Failed to parse input constraint");
     InputConstraintInfos.push_back(Info);
   }
 

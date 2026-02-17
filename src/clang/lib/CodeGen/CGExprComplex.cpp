@@ -1071,11 +1071,9 @@ ComplexPairTy ComplexExprEmitter::VisitChooseExpr(ChooseExpr *E) {
 }
 
 ComplexPairTy ComplexExprEmitter::VisitInitListExpr(InitListExpr *E) {
-    bool Ignore = TestAndClearIgnoreReal();
-    (void)Ignore;
+    [[maybe_unused]] bool Ignore = TestAndClearIgnoreReal();
     assert (Ignore == false && "init list ignored");
     Ignore = TestAndClearIgnoreImag();
-    (void)Ignore;
     assert (Ignore == false && "init list ignored");
 
   if (E->getNumInits() == 2) {

@@ -319,11 +319,10 @@ static APInt getVariantMatchScore(const VariantMatchInfo &VMI,
   unsigned ConstructIdx = 0;
   assert(NoConstructTraits == ConstructMatches.size() &&
          "Mismatch in the construct traits!");
-  for (TraitProperty Property : VMI.ConstructTraits) {
+  for ([[maybe_unused]] TraitProperty Property : VMI.ConstructTraits) {
     assert(getOpenMPContextTraitSetForProperty(Property) ==
                TraitSet::construct &&
            "Ill-formed variant match info!");
-    (void)Property;
     // ConstructMatches is the position p - 1 and we need 2^(p-1).
     Score += (1ULL << ConstructMatches[ConstructIdx++]);
   }

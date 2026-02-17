@@ -1407,7 +1407,7 @@ MachineOperand &R600InstrInfo::getFlagOp(MachineInstr &MI, unsigned SrcIdx,
     // function, it means we are want to set a flag on an instruction
     // that uses native encoding.
     assert(HAS_NATIVE_OPERANDS(TargetFlags));
-    bool IsOP3 = (TargetFlags & R600_InstFlag::OP3) == R600_InstFlag::OP3;
+    [[maybe_unused]] bool IsOP3 = (TargetFlags & R600_InstFlag::OP3) == R600_InstFlag::OP3;
     switch (Flag) {
     case MO_FLAG_CLAMP:
       FlagIndex = getOperandIdx(MI, R600::OpName::clamp);
@@ -1436,7 +1436,6 @@ MachineOperand &R600InstrInfo::getFlagOp(MachineInstr &MI, unsigned SrcIdx,
     case MO_FLAG_ABS:
       assert(!IsOP3 && "Cannot set absolute value modifier for OP3 "
                        "instructions.");
-      (void)IsOP3;
       switch (SrcIdx) {
       case 0:
         FlagIndex = getOperandIdx(MI, R600::OpName::src0_abs);

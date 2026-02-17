@@ -179,15 +179,13 @@ TemporaryFiles::~TemporaryFiles() {
 
 void TemporaryFiles::addFile(StringRef File) {
   std::lock_guard<std::mutex> Guard(Mutex);
-  auto IsInserted = Files.insert(File).second;
-  (void)IsInserted;
+  [[maybe_unused]] auto IsInserted = Files.insert(File).second;
   assert(IsInserted && "File has already been added");
 }
 
 void TemporaryFiles::removeFile(StringRef File) {
   std::lock_guard<std::mutex> Guard(Mutex);
-  auto WasPresent = Files.erase(File);
-  (void)WasPresent;
+  [[maybe_unused]] auto WasPresent = Files.erase(File);
   assert(WasPresent && "File was not tracked");
   llvm::sys::fs::remove(File);
 }

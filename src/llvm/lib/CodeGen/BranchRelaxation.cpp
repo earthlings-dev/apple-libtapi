@@ -331,9 +331,8 @@ bool BranchRelaxation::fixupConditionalBranch(MachineInstr &MI) {
       computeAndAddLiveIns(LiveRegs, *NewBB);
   };
 
-  bool Fail = TII->analyzeBranch(*MBB, TBB, FBB, Cond);
+  [[maybe_unused]] bool Fail = TII->analyzeBranch(*MBB, TBB, FBB, Cond);
   assert(!Fail && "branches to be relaxed must be analyzable");
-  (void)Fail;
 
   // Add an unconditional branch to the destination and invert the branch
   // condition to jump over it:

@@ -211,7 +211,7 @@ public:
     if (!getVarInfo(Reg).removeKill(MI))
       return false;
 
-    bool Removed = false;
+    [[maybe_unused]] bool Removed = false;
     for (unsigned i = 0, e = MI.getNumOperands(); i != e; ++i) {
       MachineOperand &MO = MI.getOperand(i);
       if (MO.isReg() && MO.isKill() && MO.getReg() == Reg) {
@@ -222,7 +222,6 @@ public:
     }
 
     assert(Removed && "Register is not used by this instruction!");
-    (void)Removed;
     return true;
   }
 
@@ -247,7 +246,7 @@ public:
     if (!getVarInfo(Reg).removeKill(MI))
       return false;
 
-    bool Removed = false;
+    [[maybe_unused]] bool Removed = false;
     for (unsigned i = 0, e = MI.getNumOperands(); i != e; ++i) {
       MachineOperand &MO = MI.getOperand(i);
       if (MO.isReg() && MO.isDef() && MO.getReg() == Reg) {
@@ -257,7 +256,6 @@ public:
       }
     }
     assert(Removed && "Register is not defined by this instruction!");
-    (void)Removed;
     return true;
   }
 

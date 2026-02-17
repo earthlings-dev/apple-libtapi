@@ -183,6 +183,12 @@ std::string getOSAndEnvironmentName(PlatformKind Platform,
     return "tvos" + Version + "-simulator";
   case PlatformKind::watchOSSimulator:
     return "watchos" + Version + "-simulator";
+  case PlatformKind::unknown:
+    return "unknown" + Version;
+  case PlatformKind::bridgeOS:
+    return "bridgeos" + Version;
+  case PlatformKind::driverKit:
+    return "driverkit" + Version;
   }
   llvm_unreachable("Unknown llvm::MachO::PlatformType enum");
 }

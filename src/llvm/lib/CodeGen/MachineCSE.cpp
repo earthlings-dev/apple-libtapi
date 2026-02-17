@@ -336,7 +336,7 @@ bool MachineCSE::PhysRegDefsReach(MachineInstr *CSMI, MachineInstr *MI,
   const MachineBasicBlock *MBB = MI->getParent();
   const MachineBasicBlock *CSMBB = CSMI->getParent();
 
-  bool CrossMBB = false;
+  [[maybe_unused]] bool CrossMBB = false;
   if (CSMBB != MBB) {
     if (MBB->pred_size() != 1 || *MBB->pred_begin() != CSMBB)
       return false;
@@ -361,7 +361,6 @@ bool MachineCSE::PhysRegDefsReach(MachineInstr *CSMI, MachineInstr *MI,
 
     if (I == EE) {
       assert(CrossMBB && "Reaching end-of-MBB without finding MI?");
-      (void)CrossMBB;
       CrossMBB = false;
       NonLocal = true;
       I = MBB->begin();

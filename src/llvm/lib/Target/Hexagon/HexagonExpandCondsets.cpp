@@ -936,8 +936,7 @@ void HexagonExpandCondsets::renameInRange(RegisterRef RO, RegisterRef RN,
 bool HexagonExpandCondsets::predicate(MachineInstr &TfrI, bool Cond,
                                       std::set<Register> &UpdRegs) {
   // TfrI - A2_tfr[tf] Instruction (not A2_tfrsi).
-  unsigned Opc = TfrI.getOpcode();
-  (void)Opc;
+  [[maybe_unused]] unsigned Opc = TfrI.getOpcode();
   assert(Opc == Hexagon::A2_tfrt || Opc == Hexagon::A2_tfrf);
   LLVM_DEBUG(dbgs() << "\nattempt to predicate if-" << (Cond ? "true" : "false")
                     << ": " << TfrI);

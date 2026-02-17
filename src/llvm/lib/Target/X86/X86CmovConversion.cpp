@@ -695,7 +695,7 @@ void X86CmovConverterPass::convertCmovInstsToBranches(
   // Add the sink block to the false block successors.
   FalseMBB->addSuccessor(SinkMBB);
 
-  MachineInstrBuilder MIB;
+  [[maybe_unused]] MachineInstrBuilder MIB;
   MachineBasicBlock::iterator MIItBegin = MachineBasicBlock::iterator(MI);
   MachineBasicBlock::iterator MIItEnd =
       std::next(MachineBasicBlock::iterator(LastCMOV));
@@ -758,10 +758,9 @@ void X86CmovConverterPass::convertCmovInstsToBranches(
     Register TmpReg = MRI->createVirtualRegister(RC);
 
     SmallVector<MachineInstr *, 4> NewMIs;
-    bool Unfolded = TII->unfoldMemoryOperand(*MBB->getParent(), MI, TmpReg,
+    [[maybe_unused]] bool Unfolded = TII->unfoldMemoryOperand(*MBB->getParent(), MI, TmpReg,
                                              /*UnfoldLoad*/ true,
                                              /*UnfoldStore*/ false, NewMIs);
-    (void)Unfolded;
     assert(Unfolded && "Should never fail to unfold a loading cmov!");
 
     // Move the new CMOV to just before the old one and reset any impacted
@@ -838,7 +837,6 @@ void X86CmovConverterPass::convertCmovInstsToBranches(
               .addMBB(FalseMBB)
               .addReg(Op2Reg)
               .addMBB(MBB);
-    (void)MIB;
     LLVM_DEBUG(dbgs() << "\tFrom: "; MIIt->dump());
     LLVM_DEBUG(dbgs() << "\tTo: "; MIB->dump());
 

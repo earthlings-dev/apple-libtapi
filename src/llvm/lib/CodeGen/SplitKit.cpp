@@ -191,8 +191,7 @@ void SplitAnalysis::analyzeUses() {
       .shrinkToUses(const_cast<LiveInterval*>(CurLI));
     UseBlocks.clear();
     ThroughBlocks.clear();
-    bool fixed = calcLiveBlockInfo();
-    (void)fixed;
+    [[maybe_unused]] bool fixed = calcLiveBlockInfo();
     assert(fixed && "Couldn't fix broken live interval");
   }
 
@@ -1635,9 +1634,8 @@ void SplitEditor::splitLiveThroughBlock(unsigned MBBNum,
     //    -____________    Spill on entry.
     //
     selectIntv(IntvIn);
-    SlotIndex Idx = leaveIntvAtTop(*MBB);
+    [[maybe_unused]] SlotIndex Idx = leaveIntvAtTop(*MBB);
     assert((!LeaveBefore || Idx <= LeaveBefore) && "Interference");
-    (void)Idx;
     return;
   }
 
@@ -1649,9 +1647,8 @@ void SplitEditor::splitLiveThroughBlock(unsigned MBBNum,
     //    ___________--    Reload on exit.
     //
     selectIntv(IntvOut);
-    SlotIndex Idx = enterIntvAtEnd(*MBB);
+    [[maybe_unused]] SlotIndex Idx = enterIntvAtEnd(*MBB);
     assert((!EnterAfter || Idx >= EnterAfter) && "Interference");
-    (void)Idx;
     return;
   }
 
@@ -1772,8 +1769,7 @@ void SplitEditor::splitRegInBlock(const SplitAnalysis::BlockInfo &BI,
   // The interference is overlapping somewhere we wanted to use IntvIn. That
   // means we need to create a local interval that can be allocated a
   // different register.
-  unsigned LocalIntv = openIntv();
-  (void)LocalIntv;
+  [[maybe_unused]] unsigned LocalIntv = openIntv();
   LLVM_DEBUG(dbgs() << ", creating local interval " << LocalIntv << ".\n");
 
   if (!BI.LiveOut || BI.LastInstr < LSP) {

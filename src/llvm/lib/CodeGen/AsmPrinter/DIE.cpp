@@ -279,7 +279,7 @@ unsigned DIE::computeOffsetsAndAbbrevs(const AsmPrinter *AP,
                                        unsigned CUOffset) {
   // Unique the abbreviation and fill in the abbreviation number so this DIE
   // can be emitted.
-  const DIEAbbrev &Abbrev = AbbrevSet.uniqueAbbreviation(*this);
+  [[maybe_unused]] const DIEAbbrev &Abbrev = AbbrevSet.uniqueAbbreviation(*this);
 
   // Set compile/type unit relative offset of this DIE.
   setOffset(CUOffset);
@@ -293,7 +293,6 @@ unsigned DIE::computeOffsetsAndAbbrevs(const AsmPrinter *AP,
 
   // Let the children compute their offsets and abbreviation numbers.
   if (hasChildren()) {
-    (void)Abbrev;
     assert(Abbrev.hasChildren() && "Children flag not set");
 
     for (auto &Child : children())

@@ -1585,8 +1585,7 @@ bool LoopInterchangeTransform::adjustLoopBranches() {
   for (PHINode &PHI : drop_begin(OuterLoopHeader->phis(), 1))
     OuterLoopPHIs.push_back(cast<PHINode>(&PHI));
 
-  auto &OuterInnerReductions = LIL.getOuterInnerReductions();
-  (void)OuterInnerReductions;
+  [[maybe_unused]] auto &OuterInnerReductions = LIL.getOuterInnerReductions();
 
   // Now move the remaining reduction PHIs from outer to inner loop header and
   // vice versa. The PHI nodes must be part of a reduction across the inner and

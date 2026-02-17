@@ -69,11 +69,10 @@ static uint64_t fullValue(HexagonDisassembler const &Disassembler, MCInst &MI,
   unsigned Alignment = HexagonMCInstrInfo::getExtentAlignment(MCII, MI);
   uint32_t Lower6 = static_cast<uint32_t>(Value >> Alignment) & 0x3f;
   int64_t Bits;
-  bool Success =
+  [[maybe_unused]] bool Success =
       Disassembler.CurrentExtender->getOperand(0).getExpr()->evaluateAsAbsolute(
           Bits);
   assert(Success);
-  (void)Success;
   uint64_t Upper26 = static_cast<uint64_t>(Bits);
   uint64_t Operand = Upper26 | Lower6;
   return Operand;

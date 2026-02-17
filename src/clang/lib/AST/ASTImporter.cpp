@@ -2486,7 +2486,7 @@ ASTNodeImporter::VisitTypedefNameDecl(TypedefNameDecl *D, bool IsAlias) {
   }
 
   Error Err = Error::success();
-  auto ToUnderlyingType = importChecked(Err, D->getUnderlyingType());
+  [[maybe_unused]] auto ToUnderlyingType = importChecked(Err, D->getUnderlyingType());
   auto ToTypeSourceInfo = importChecked(Err, D->getTypeSourceInfo());
   auto ToBeginLoc = importChecked(Err, D->getBeginLoc());
   if (Err)
@@ -2494,7 +2494,6 @@ ASTNodeImporter::VisitTypedefNameDecl(TypedefNameDecl *D, bool IsAlias) {
 
   // Create the new typedef node.
   // FIXME: ToUnderlyingType is not used.
-  (void)ToUnderlyingType;
   TypedefNameDecl *ToTypedef;
   if (IsAlias) {
     if (GetImportedOrCreateDecl<TypeAliasDecl>(
@@ -9290,8 +9289,7 @@ ASTImporter::getImportDeclErrorIfAny(Decl *FromD) const {
 }
 
 void ASTImporter::setImportDeclError(Decl *From, ImportError Error) {
-  auto InsertRes = ImportDeclErrors.insert({From, Error});
-  (void)InsertRes;
+  [[maybe_unused]] auto InsertRes = ImportDeclErrors.insert({From, Error});
   // Either we set the error for the first time, or we already had set one and
   // now we want to set the same error.
   assert(InsertRes.second || InsertRes.first->second.Error == Error.Error);

@@ -718,14 +718,13 @@ AArch64LoadStoreOpt::mergeNarrowZeroStores(MachineBasicBlock::iterator I,
   // Construct the new instruction.
   DebugLoc DL = I->getDebugLoc();
   MachineBasicBlock *MBB = I->getParent();
-  MachineInstrBuilder MIB;
+  [[maybe_unused]] MachineInstrBuilder MIB;
   MIB = BuildMI(*MBB, InsertionPoint, DL, TII->get(getMatchingWideOpcode(Opc)))
             .addReg(isNarrowStore(Opc) ? AArch64::WZR : AArch64::XZR)
             .add(BaseRegOp)
             .addImm(OffsetImm)
             .cloneMergedMemRefs({&*I, &*MergeMI})
             .setMIFlags(I->mergeFlagsWith(*MergeMI));
-  (void)MIB;
 
   LLVM_DEBUG(dbgs() << "Creating wider store. Replacing instructions:\n    ");
   LLVM_DEBUG(I->print(dbgs()));
@@ -915,7 +914,7 @@ AArch64LoadStoreOpt::mergePairedInsns(MachineBasicBlock::iterator I,
   }
 
   // Construct the new instruction.
-  MachineInstrBuilder MIB;
+  [[maybe_unused]] MachineInstrBuilder MIB;
   DebugLoc DL = I->getDebugLoc();
   MachineBasicBlock *MBB = I->getParent();
   MachineOperand RegOp0 = getLdStRegOp(*RtMI);
@@ -947,7 +946,6 @@ AArch64LoadStoreOpt::mergePairedInsns(MachineBasicBlock::iterator I,
             .cloneMergedMemRefs({&*I, &*Paired})
             .setMIFlags(I->mergeFlagsWith(*Paired));
 
-  (void)MIB;
 
   LLVM_DEBUG(
       dbgs() << "Creating pair load/store. Replacing instructions:\n    ");
@@ -980,12 +978,11 @@ AArch64LoadStoreOpt::mergePairedInsns(MachineBasicBlock::iterator I,
             .addReg(DstRegX, RegState::Define);
     MIBKill->getOperand(2).setImplicit();
     // Create the sign extension.
-    MachineInstrBuilder MIBSXTW =
+    [[maybe_unused]] MachineInstrBuilder MIBSXTW =
         BuildMI(*MBB, InsertionPoint, DL, TII->get(AArch64::SBFMXri), DstRegX)
             .addReg(DstRegX)
             .addImm(0)
             .addImm(31);
-    (void)MIBSXTW;
     LLVM_DEBUG(dbgs() << "  Extend operand:\n    ");
     LLVM_DEBUG(((MachineInstr *)MIBSXTW)->print(dbgs()));
   } else {
@@ -1669,7 +1666,7 @@ AArch64LoadStoreOpt::mergeUpdateInsn(MachineBasicBlock::iterator I,
 
   unsigned NewOpc = IsPreIdx ? getPreIndexedOpcode(I->getOpcode())
                              : getPostIndexedOpcode(I->getOpcode());
-  MachineInstrBuilder MIB;
+  [[maybe_unused]] MachineInstrBuilder MIB;
   int Scale, MinOffset, MaxOffset;
   getPrePostIndexedMemOpInfo(*I, Scale, MinOffset, MaxOffset);
   if (!isPairedLdSt(*I)) {
@@ -1692,7 +1689,6 @@ AArch64LoadStoreOpt::mergeUpdateInsn(MachineBasicBlock::iterator I,
               .setMemRefs(I->memoperands())
               .setMIFlags(I->mergeFlagsWith(*Update));
   }
-  (void)MIB;
 
   if (IsPreIdx) {
     ++NumPreFolded;

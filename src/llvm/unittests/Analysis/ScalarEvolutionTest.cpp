@@ -1353,12 +1353,10 @@ TEST_F(ScalarEvolutionsTest, ProveImplicationViaNarrowing) {
   ASSERT_TRUE(!verifyModule(*M) && "Must have been well formed!");
 
   runWithSE(*M, "foo", [](Function &F, LoopInfo &LI, ScalarEvolution &SE) {
-    auto *IV = SE.getSCEV(getInstructionByName(F, "iv"));
-    auto *Zero = SE.getZero(IV->getType());
+    [[maybe_unused]] auto *IV = SE.getSCEV(getInstructionByName(F, "iv"));
+    [[maybe_unused]] auto *Zero = SE.getZero(IV->getType());
     auto *Backedge = getInstructionByName(F, "iv.next")->getParent();
     ASSERT_TRUE(Backedge);
-    (void)IV;
-    (void)Zero;
     // FIXME: This can only be proved with turned on option
     // scalar-evolution-use-expensive-range-sharpening which is currently off.
     // Enable the check once it's switched true by default.

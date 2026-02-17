@@ -405,8 +405,7 @@ void StackMaps::parseStatepointOpers(const MachineInstr &MI,
     }
 
     SmallVector<std::pair<unsigned, unsigned>, 8> GCPairs;
-    unsigned NumGCPairs = SO.getGCPointerMap(GCPairs);
-    (void)NumGCPairs;
+    [[maybe_unused]] unsigned NumGCPairs = SO.getGCPointerMap(GCPairs);
     LLVM_DEBUG(dbgs() << "NumGCPairs = " << NumGCPairs << "\n");
 
     auto MOB = MI.operands_begin();
@@ -689,7 +688,6 @@ void StackMaps::emitCallsiteEntries(MCStreamer &OS) {
 
 /// Serialize the stackmap data.
 void StackMaps::serializeToStackMapSection() {
-  (void)WSMP;
   // Bail out if there's no stack map data.
   assert((!CSInfos.empty() || ConstPool.empty()) &&
          "Expected empty constant pool too!");

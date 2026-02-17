@@ -628,8 +628,7 @@ bool RegBankSelect::assignInstr(MachineInstr &MI) {
   const RegisterBankInfo::InstructionMapping *BestMapping;
   if (OptMode == RegBankSelect::Mode::Fast) {
     BestMapping = &RBI->getInstrMapping(MI);
-    MappingCost DefaultCost = computeMapping(MI, *BestMapping, RepairPts);
-    (void)DefaultCost;
+    [[maybe_unused]] MappingCost DefaultCost = computeMapping(MI, *BestMapping, RepairPts);
     if (DefaultCost == MappingCost::ImpossibleCost())
       return false;
   } else {

@@ -47,9 +47,8 @@ AllocaInst *llvm::DemoteRegToStack(Instruction &I, bool VolatileLoads,
     if (!II->getNormalDest()->getSinglePredecessor()) {
       unsigned SuccNum = GetSuccessorNumber(II->getParent(), II->getNormalDest());
       assert(isCriticalEdge(II, SuccNum) && "Expected a critical edge!");
-      BasicBlock *BB = SplitCriticalEdge(II, SuccNum);
+      [[maybe_unused]] BasicBlock *BB = SplitCriticalEdge(II, SuccNum);
       assert(BB && "Unable to split critical edge.");
-      (void)BB;
     }
   }
 
@@ -129,9 +128,9 @@ AllocaInst *llvm::DemotePHIToStack(PHINode *P, Instruction *AllocaPoint) {
 
   // Iterate over each operand inserting a store in each predecessor.
   for (unsigned i = 0, e = P->getNumIncomingValues(); i < e; ++i) {
-    if (InvokeInst *II = dyn_cast<InvokeInst>(P->getIncomingValue(i))) {
+    if ([[maybe_unused]] InvokeInst *II = dyn_cast<InvokeInst>(P->getIncomingValue(i))) {
       assert(II->getParent() != P->getIncomingBlock(i) &&
-             "Invoke edge not supported yet"); (void)II;
+             "Invoke edge not supported yet");
     }
     new StoreInst(P->getIncomingValue(i), Slot,
                   P->getIncomingBlock(i)->getTerminator());

@@ -80,9 +80,8 @@ class RewriterTestContext {
   FileID createOnDiskFile(StringRef Name, StringRef Content) {
     SmallString<1024> Path;
     int FD;
-    std::error_code EC = llvm::sys::fs::createTemporaryFile(Name, "", FD, Path);
+    [[maybe_unused]] std::error_code EC = llvm::sys::fs::createTemporaryFile(Name, "", FD, Path);
     assert(!EC);
-    (void)EC;
 
     llvm::raw_fd_ostream OutStream(FD, true);
     OutStream << Content;
@@ -90,11 +89,10 @@ class RewriterTestContext {
     auto File = Files.getOptionalFileRef(Path);
     assert(File);
 
-    StringRef Found =
+    [[maybe_unused]] StringRef Found =
         TemporaryFiles.insert(std::make_pair(Name, std::string(Path.str())))
             .first->second;
     assert(Found == Path);
-    (void)Found;
     return Sources.createFileID(*File, SourceLocation(), SrcMgr::C_User);
   }
 

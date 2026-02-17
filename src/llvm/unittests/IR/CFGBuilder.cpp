@@ -120,8 +120,7 @@ bool CFGBuilder::disconnect(const Arc &A) {
 
 void CFGBuilder::buildCFG(const std::vector<Arc> &NewArcs) {
   for (const auto &A : NewArcs) {
-    const bool Connected = connect(A);
-    (void)Connected;
+    [[maybe_unused]] const bool Connected = connect(A);
     assert(Connected);
   }
 }

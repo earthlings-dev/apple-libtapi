@@ -197,10 +197,9 @@ void ASTStmtReader::VisitAttributedStmt(AttributedStmt *S) {
   // NumAttrs in AttributedStmt is set when creating an empty
   // AttributedStmt in AttributedStmt::CreateEmpty, since it is needed
   // to allocate the right amount of space for the trailing Attr *.
-  uint64_t NumAttrs = Record.readInt();
+  [[maybe_unused]] uint64_t NumAttrs = Record.readInt();
   AttrVec Attrs;
   Record.readAttributes(Attrs);
-  (void)NumAttrs;
   assert(NumAttrs == S->AttributedStmtBits.NumAttrs);
   assert(NumAttrs == Attrs.size());
   std::copy(Attrs.begin(), Attrs.end(), S->getAttrArrayPtr());
@@ -1721,8 +1720,7 @@ void ASTStmtReader::VisitCXXTemporaryObjectExpr(CXXTemporaryObjectExpr *E) {
 
 void ASTStmtReader::VisitLambdaExpr(LambdaExpr *E) {
   VisitExpr(E);
-  unsigned NumCaptures = Record.readInt();
-  (void)NumCaptures;
+  [[maybe_unused]] unsigned NumCaptures = Record.readInt();
   assert(NumCaptures == E->LambdaExprBits.NumCaptures);
   E->IntroducerRange = readSourceRange();
   E->LambdaExprBits.CaptureDefault = Record.readInt();
@@ -1855,9 +1853,9 @@ void ASTStmtReader::VisitCXXScalarValueInitExpr(CXXScalarValueInitExpr *E) {
 void ASTStmtReader::VisitCXXNewExpr(CXXNewExpr *E) {
   VisitExpr(E);
 
-  bool IsArray = Record.readInt();
-  bool HasInit = Record.readInt();
-  unsigned NumPlacementArgs = Record.readInt();
+  [[maybe_unused]] bool IsArray = Record.readInt();
+  [[maybe_unused]] bool HasInit = Record.readInt();
+  [[maybe_unused]] unsigned NumPlacementArgs = Record.readInt();
   bool IsParenTypeId = Record.readInt();
 
   E->CXXNewExprBits.IsGlobalNew = Record.readInt();
@@ -1870,9 +1868,6 @@ void ASTStmtReader::VisitCXXNewExpr(CXXNewExpr *E) {
   assert((NumPlacementArgs == E->getNumPlacementArgs()) &&
          "Wrong NumPlacementArgs!");
   assert((IsParenTypeId == E->isParenTypeId()) && "Wrong IsParenTypeId!");
-  (void)IsArray;
-  (void)HasInit;
-  (void)NumPlacementArgs;
 
   E->setOperatorNew(readDeclAs<FunctionDecl>());
   E->setOperatorDelete(readDeclAs<FunctionDecl>());
@@ -2184,13 +2179,12 @@ void ASTStmtReader::VisitTypoExpr(TypoExpr *E) {
 
 void ASTStmtReader::VisitRecoveryExpr(RecoveryExpr *E) {
   VisitExpr(E);
-  unsigned NumArgs = Record.readInt();
+  [[maybe_unused]] unsigned NumArgs = Record.readInt();
   E->BeginLoc = readSourceLocation();
   E->EndLoc = readSourceLocation();
   assert((NumArgs + 0LL ==
           std::distance(E->children().begin(), E->children().end())) &&
          "Wrong NumArgs!");
-  (void)NumArgs;
   for (Stmt *&Child : E->children())
     Child = Record.readSubStmt();
 }

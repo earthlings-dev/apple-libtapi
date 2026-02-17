@@ -187,8 +187,7 @@ void AsynchronousSymbolQuery::handleFailed(Error Err) {
 
 void AsynchronousSymbolQuery::addQueryDependence(JITDylib &JD,
                                                  SymbolStringPtr Name) {
-  bool Added = QueryRegistrations[&JD].insert(std::move(Name)).second;
-  (void)Added;
+  [[maybe_unused]] bool Added = QueryRegistrations[&JD].insert(std::move(Name)).second;
   assert(Added && "Duplicate dependence notification?");
 }
 
